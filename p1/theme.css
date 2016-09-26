@@ -1,0 +1,144 @@
+/* vim: set noai ts=4 sw=4: */
+html, body {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	margin: auto auto auto auto; /* Center content */
+	font-family: Helvetica;
+}
+
+#header {
+	position: fixed; 
+	width: 80%;
+	height: 60px;
+	line-height: 60px;
+	text-align: center;
+	left: 0;
+	top: 0;
+	z-index: 100;
+	font-size: 200%;
+	color: white;
+	background: #36454f;
+}
+
+#profile {
+	position: fixed; 
+	width: 20%;
+	height: 60px;
+	line-height: 60px;
+	text-align: center;
+	right: 0;
+	top: 0;
+	z-index: 100;
+	color: white;
+	background: #536872;
+}
+
+#sidebar {
+	float: left;
+	position: fixed;
+	width: 180px;
+	height: 100%;
+	padding: 10px 10px;
+	background: #536878;
+}
+
+
+#scrollable {
+	min-height: 100%-30px;
+	margin: 60px 0 30px 200px;
+	padding: 10px 10px;
+	background: lightgrey;
+}
+
+#footer {
+	position: fixed; 
+	width: 100%;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	bottom: 0;
+	z-index: 100;
+	color: white;
+	background: #36454f;
+}
+
+.button1 {
+	width: 170px;
+	height: 32px;
+	padding: 4px 4px;
+	border: none;
+	font-size: 80%;
+	background: #708090;
+	color: white;
+	text-decoration: none;
+	display: inline-block;
+}
+
+.button1 > img {
+	vertical-align: middle;
+	width: 32px;
+}
+
+.button2 {
+	width: 40px;
+	height: 20px;
+	line-height: 20px;
+	text-align: center;
+	border: none;
+	border-radius: 20px;
+	font-size: 12pt;
+	background: #36454f;
+	color: white;
+	text-decoration: none;
+	display: inline-block;
+}
+
+input[type="search"] {
+	width: 100%;
+	border: none;
+}
+
+.match1 {
+	width: 100%;
+	height: 100px;
+	line-height: 100px;
+	text-align: center;
+	border: none;
+	font-size: 200%;
+	background: linear-gradient(to right, red , #6e7f80, #6e7f80, #6e7f80, green);
+	color: white;
+	text-decoration: none;
+	display: inline-block;
+}
+
+.match2 {
+	width: 100%;
+	height: 100px;
+	line-height: 100px;
+	text-align: center;
+	border: none;
+	font-size: 200%;
+	background: #6e7f80;
+	color: white;
+	text-decoration: none;
+	display: inline-block;
+}
+
+.match1 > * {
+	vertical-align: middle;
+}
+
+.match1 > img {
+	width: 64px;
+}
+
+.match2 > * {
+	vertical-align: middle;
+}
+
+.match2 > img {
+	width: 64px;
+}
