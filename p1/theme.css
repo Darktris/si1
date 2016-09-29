@@ -57,6 +57,15 @@ html, body {
 	padding: 0 10px 10px 10px;
 }
 
+#scrollable > form {
+	margin-top: 20px;
+	text-align: center;
+}
+
+#scrollable > .button2 {
+	float: right;
+}
+
 #footer {
 	position: fixed; 
 	width: 100%;
@@ -94,7 +103,6 @@ html, body {
 }
 
 .button2 {
-	width: 40px;
 	height: 20px;
 	line-height: 20px;
 	text-align: center;
@@ -107,9 +115,43 @@ html, body {
 	display: inline-block;
 }
 
+.button2 > * {
+	padding: 0 10px;
+}
+
 input[type="search"] {
 	width: 100%;
 	border: none;
+}
+
+.title {
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	margin-top: 10px;
+	text-align: center;
+	border: none;
+	border-radius: 20px;
+	font-size: 150%;
+	color: #36454f;
+	text-decoration: none;
+	display: inline-block;
+	box-sizing: border-box;
+}
+
+.category {
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	margin-top: 10px;
+	text-align: center;
+	border: solid 1px #36454f;
+	border-radius: 20px;
+	font-size: 150%;
+	color: #36454f;
+	text-decoration: none;
+	display: inline-block;
+	box-sizing: border-box;
 }
 
 .match1 {
@@ -126,6 +168,11 @@ input[type="search"] {
 	display: inline-block;
 }
 
+.match1 > img {
+	vertical-align: middle;
+	width: 64px;
+}
+
 .match2 {
 	width: 100%;
 	height: 100px;
@@ -140,17 +187,12 @@ input[type="search"] {
 	display: inline-block;
 }
 
-.match1 > img {
-	vertical-align: middle;
-	width: 64px;
-}
-
 .match2 > img {
 	vertical-align: middle;
 	width: 64px;
 }
 
-.option1 {
+.option {
 	width: 100%;
 	height: 100px;
 	line-height: 100px;
@@ -164,45 +206,7 @@ input[type="search"] {
 	display: inline-block;
 }
 
-.option1 > img {
-	vertical-align: middle;
-	width: 24px;
-}
-
-.option2 {
-	width: 100%;
-	height: 100px;
-	line-height: 100px;
-	margin-top: 10px;
-	text-align: center;
-	border: none;
-	font-size: 200%;
-	background: linear-gradient(to right, green , #6e7f80, #6e7f80, #6e7f80, green);
-	color: white;
-	text-decoration: none;
-	display: inline-block;
-}
-
-.option2 > img {
-	vertical-align: middle;
-	width: 24px;
-}
-
-.option3 {
-	width: 100%;
-	height: 100px;
-	line-height: 100px;
-	margin-top: 10px;
-	text-align: center;
-	border: none;
-	font-size: 200%;
-	background: linear-gradient(to right, red , #6e7f80, #6e7f80, #6e7f80, red);
-	color: white;
-	text-decoration: none;
-	display: inline-block;
-}
-
-.option3 > img {
+.option > img {
 	vertical-align: middle;
 	width: 24px;
 }

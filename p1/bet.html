@@ -14,33 +14,51 @@
 		</a>
 		<a href="account.html">
 			<div id="account">
-				<img src="account.png" alt=""/> My Account
+				<img src="images/account.png" alt=""/> My Account
 			</div>
 		</a>
 		<div id="sidebar">
 			<form>
 				<input type="search" name="search" placeholder="Search...">
 			</form>
-			<div class="button1">
-				<img src="lol/icon.png" alt=""/> League of Legends
-			</div>
-			<div class="button1">
-				<img src="dota2/icon.png" alt=""/> Dota 2
-			</div>
-			<div class="button1">
-				<img src="hearthstone/icon.png" alt=""/> Hearthstone
-			</div>
-			<div class="button1">
-				<img src="csgo/icon.png" alt=""/> CS:GO
-			</div>
-			<div class="button1">
-				<img src="overwatch/icon.png" alt=""/> Overwatch
-			</div>
+			<a href="index.html?filter=lol">
+				<div class="button1">
+					<img src="lol/icon.png" alt=""/> League of Legends
+				</div>
+			</a>
+			<a href="index.html?filter=dota2">
+				<div class="button1">
+					<img src="dota2/icon.png" alt=""/> Dota 2
+				</div>
+			</a>
+			<a href="index.html?filter=hearthstone">
+				<div class="button1">
+					<img src="hearthstone/icon.png" alt=""/> Hearthstone
+				</div>
+			</a>
+			<a href="index.html?filter=csgo">
+				<div class="button1">
+					<img src="csgo/icon.png" alt=""/> CS:GO
+				</div>
+			</a>
+			<a href="index.html?filter=overwatch">
+				<div class="button1">
+					<img src="overwatch/icon.png" alt=""/> Overwatch
+				</div>
+			</a>
 		</div>
 		<div id="scrollable">
-			<div class="option1">
-				You are betting.
+			<div class="title">
+				You're about to bet for the following match:
 			</div>
+			<div class="match2">
+				<img src="lol/teams/clg.png" alt=""/>
+				CLG vs. G2
+				<img src="lol/teams/g2.png" alt=""/>
+			</div>
+			<form>
+				Amount: <input type="number" name="bid" min="1" step="0.05" value="1"> €<br>    
+			</form>
 		</div>
 		<div id="footer">
 			<a href="http://validator.w3.org/check?uri=referer">
