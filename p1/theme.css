@@ -62,10 +62,6 @@ html, body {
 	text-align: center;
 }
 
-#scrollable > .button2 {
-	float: right;
-}
-
 #footer {
 	position: fixed; 
 	width: 100%;
