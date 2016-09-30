@@ -28,7 +28,7 @@ html, body {
 	position: fixed; 
 	width: 20%;
 	height: 60px;
-	line-height: 60px;
+	line-height: 50px;
 	text-align: center;
 	right: 0;
 	top: 0;
@@ -37,10 +37,77 @@ html, body {
 	background: #536872;
 }
 
+#account > * {
+
+}
 #account > img {
 	height: 32px;
 	vertical-align: middle;
 }
+
+/* Menu desplegable */
+#dropdown  ul ul {
+	display: none;
+}
+
+#dropdown  ul li:hover #account > ul {
+	width: 100%;
+	display: block;
+}
+
+#dropdown  ul {
+	background: #efefef; 
+	background: linear-gradient(top, #efefef 0%, #bbbbbb 100%);  
+	background: -moz-linear-gradient(top, #efefef 0%, #bbbbbb 100%); 
+	background: -webkit-linear-gradient(top, #efefef 0%,#bbbbbb 100%); 
+	padding: 0 20px;
+	vertical-align: middle;
+	list-style: none;
+	position: center;
+	display: inline-table;
+}
+#dropdown  ul:after {
+	content: ""; clear: both; display: block;
+}
+
+
+#dropdown  ul li {
+	float: left;
+}
+
+#dropdown  ul li:hover {
+	background: #4b545f;
+	background: linear-gradient(top, #4f5964 0%, #5f6975 40%);
+	background: -moz-linear-gradient(top, #4f5964 0%, #5f6975 40%);
+	background: -webkit-linear-gradient(top, #4f5964 0%,#5f6975 40%);
+}
+#dropdown  ul li:hover a {
+	color: #fff;
+}
+
+#dropdown  ul li a {
+	display: block; 
+	padding: 0px 40px;
+	color: #757575; 
+	text-decoration: none;
+}
+
+#dropdown  ul ul {
+	background: #5f6975; border-radius: 0px; padding: 0;
+	position: absolute; top: 100%;
+}
+
+#dropdown  ul ul li {
+	float: none; 
+	border-top: 1px solid #6b727c;
+	border-bottom: 1px solid #575f6a;
+	position: relative;
+}
+
+#dropdown  ul ul li a:hover {
+	background: #4b545f;
+}
+
 
 #sidebar {
 	float: left;
