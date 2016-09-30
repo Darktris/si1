@@ -46,6 +46,7 @@ html, body {
 #account {
 	position: fixed; 
 	width: 20%;
+	min-width: 151px;
 	height: 60px;
 	line-height: 60px;
 	text-align: center;
@@ -117,7 +118,6 @@ html, body {
 #dropdown  ul ul li a:hover {
 	background: #4b545f;
 }
-
 
 #sidebar {
 	float: left;
@@ -214,6 +214,7 @@ input[type="search"] {
 
 .category {
 	width: 100%;
+	min-width: 459px;
 	height: 40px;
 	line-height: 40px;
 	margin-top: 10px;
@@ -229,6 +230,7 @@ input[type="search"] {
 
 .match1 {
 	width: 100%;
+	min-width: 459px;
 	height: 100px;
 	line-height: 100px;
 	margin-top: 10px;
@@ -248,6 +250,7 @@ input[type="search"] {
 
 .match2 {
 	width: 100%;
+	min-width: 459px;
 	height: 100px;
 	line-height: 100px;
 	margin-top: 10px;
