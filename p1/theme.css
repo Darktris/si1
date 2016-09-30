@@ -24,7 +24,7 @@ html, body {
 	background: #36454f;
 }
 
-#account {
+#dropdown {
 	position: fixed; 
 	width: 20%;
 	height: 60px;
@@ -37,13 +37,26 @@ html, body {
 	background: #536872;
 }
 
-#account > * {
 
-}
 #account > img {
 	height: 32px;
 	vertical-align: middle;
 }
+
+#account {
+	position: fixed; 
+	width: 20%;
+	height: 60px;
+	line-height: 50px;
+	text-align: center;
+	vertical-align: middle;
+	right: 0;
+	top: 0;
+	z-index: 100;
+	color: white;
+	background: #536872;
+}
+
 
 /* Menu desplegable */
 #dropdown  ul ul {
@@ -67,7 +80,9 @@ html, body {
 	display: inline-table;
 }
 #dropdown  ul:after {
-	content: ""; clear: both; display: block;
+	content: ""; 
+	clear: both; 
+	display: block;
 }
 
 
@@ -75,12 +90,7 @@ html, body {
 	float: left;
 }
 
-#dropdown  ul li:hover {
-	background: #4b545f;
-	background: linear-gradient(top, #4f5964 0%, #5f6975 40%);
-	background: -moz-linear-gradient(top, #4f5964 0%, #5f6975 40%);
-	background: -webkit-linear-gradient(top, #4f5964 0%,#5f6975 40%);
-}
+
 #dropdown  ul li:hover a {
 	color: #fff;
 }
