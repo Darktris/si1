@@ -8,54 +8,58 @@
 	</head>
 	<body>
 		<a href="index.html">
-			<div id="header">
+			<header>
 				BetaBet
-			</div>
+			</header>
 		</a>
-		<div id="dropdown">
-			<ul>
-				<li>
-					<div id="account">
-						<img src="images/account.png" alt=""/> 
-						My Account
-						<ul>
-							<a href="mywallet.html"><li>My Wallet</li></a>
-							<a href="mybets.html"><li>My Bets</li></a>
-							<a href="#"><li>Exit</li></a>
-						</ul>	
-					</div>
-				</li>
-			</ul>
-		</div>
+        <div class="dropdown">
+            <button id="account">
+                <img src="images/account.png" alt=""/> 
+                My Account
+            </button>
+            <div class="dropdown-content">
+                <a href="mywallet.html">My Wallet</a>
+                <a href="mybets.html">My Bets</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
 		<div id="sidebar">
 			<form>
 				<input type="search" name="search" placeholder="Search...">
 			</form>
-			<a href="index.html?filter=lol">
-				<div class="button1">
-					<img src="lol/icon.png" alt=""/> League of Legends
-				</div>
-			</a>
-			<a href="index.html?filter=dota2">
-				<div class="button1">
-					<img src="dota2/icon.png" alt=""/> Dota 2
-				</div>
-			</a>
-			<a href="index.html?filter=hearthstone">
-				<div class="button1">
-					<img src="hearthstone/icon.png" alt=""/> Hearthstone
-				</div>
-			</a>
-			<a href="index.html?filter=csgo">
-				<div class="button1">
-					<img src="csgo/icon.png" alt=""/> CS:GO
-				</div>
-			</a>
-			<a href="index.html?filter=overwatch">
-				<div class="button1">
-					<img src="overwatch/icon.png" alt=""/> Overwatch
-				</div>
-			</a>
+            <div class="dropdown2">
+                <button class="button1"><img src="images/category.png">MOBA</button>
+                <div class="dropdown2-content">
+                    <a href="index.html?filter=lol">
+                        <img src="lol/icon.png" alt=""/> League of Legends
+                    </a>
+                    <a href="index.html?filter=dota2">
+                        <img src="dota2/icon.png" alt=""/> Dota 2
+                    </a>
+                </div>
+            </div>
+            <div class="dropdown2">
+                <button class="button1"><img src="images/category.png">FPS</button>
+                <div class="dropdown2-content">
+                    <a href="index.html?filter=csgo">
+                        <img src="csgo/icon.png" alt=""/> CS:GO
+                    </a>
+                    <a href="index.html?filter=overwatch">
+                        <img src="overwatch/icon.png" alt=""/> Overwatch
+                    </a>
+                </div>
+            </div>
+            <div class="dropdown2">
+                <button class="button1"><img src="images/category.png">Cards</button>
+                <div class="dropdown2-content">
+                    <a href="index.html?filter=hearthstone">
+                        <img src="hearthstone/icon.png" alt=""/> Hearthstone
+                    </a>
+                </div>
+            </div>
+            <div class="links">
+                <a href="#"><div class="buttonL">Login</div></a><a href="register.html"><div class="buttonR">Register</div></a>
+            </div>
 		</div>
 		<div id="scrollable">
 			<div class="category">Last Matches</div>
@@ -129,14 +133,14 @@
 				<a href="bet.html"><div class="button2"><div>Bet</div></div></a>
 			</div>
 		</div>
-		<div id="footer">
+		<footer>
 			<a href="http://validator.w3.org/check?uri=referer">
 				<img src="http://www.w3.org/Icons/valid-xhtml10-blue" alt="Valid XHTML 1.0!"/>
 			</a>
 			<a href="http://jigsaw.w3.org/css-validator/check/referer">
 				<img src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="¡CSS Válido!"/>
 			</a>
-		</div>
+		</footer>
 	</body>
 </html>
 
