@@ -63,16 +63,20 @@
 		</div>
 		<div id="scrollable">
 			<div class="title">
-				You're about to bet for the following match:
+                Register
 			</div>
-			<div class="match2">
-				<img src="lol/teams/clg.png" alt=""/>
-				CLG vs. G2
-				<img src="lol/teams/g2.png" alt=""/>
-			</div>
-			<form>
-                Amount: <input type="number" name="bid" min="1" step="0.05" value="1"> € <br>
-                <input type="submit" value="Confirm">
+			<form method="post" action="index.html">
+                User name:<br>
+                <input type="text" name="user" placeholder="User name" required autofocus><br><br>
+                Password:<br>
+                <input type="password" name="pass" placeholder="Password" required><br>
+                <input type="password" name="passrep" placeholder="Repeat password" required><br><br>
+                E-mail address:<br>
+                <input type="email" name="mail" placeholder="E-mail address" required><br><br>
+                Credit Card No.:<br>
+                <input type="text" name="card" placeholder="Credit Card No." pattern="[0-9]{16}" title="Valid Credit Card number" required><br><br>
+                <input type="submit" value="Register">
+                <input type="reset" value="Clear">
 			</form>
 		</div>
 		<footer>

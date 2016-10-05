@@ -164,6 +164,10 @@ header {
 	text-align: center;
 }
 
+#scrollable > form > input[type="submit"] {
+    margin: 10px;
+}
+
 footer {
 	position: fixed; 
 	width: 100%;
