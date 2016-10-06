@@ -1,0 +1,41 @@
+html {
+    background: white;
+    font-family: Helvetica;
+}
+
+body {
+    width: 320px;
+    height: 200px;
+    position: absolute;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    padding: 20px;
+    border: solid 2px SteelBlue;
+    border-radius: 16px;
+    background: SkyBlue;
+    text-align: justify;
+    display: block;
+}
+
+body form > input[type=text], input[type=number], input[type=radio] {
+    position: absolute;
+    margin: auto;
+    left: 100px;
+}
+
+body form > input[type=text], input[type=number] {
+    width: 240px;
+}
+
+body form > input:not([type]) {
+    width: 320px;
+}
+
+body form label[for] {
+    position: absolute;
+    margin: auto;
+    left: 120px;
+}

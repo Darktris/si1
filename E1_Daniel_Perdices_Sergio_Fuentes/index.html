@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
-<body>
-<form action="form1.php" >
-Nombre: <input type="text" name="nombre"><br>
-Edad:  	<input type="number" name="edad" min="1" max="9999"><br>
-Sexo: 	<input type="radio" name="genero" value="Hombre" checked> Hombre<br>
-  		<input type="radio" name="genero" value="Mujer"> Mujer<br>
-  		<input type="radio" name="genero" value="Otro"> Indefinido<br>
-  		<input type="checkbox" name="eps" checked> Estudiante de la EPS UAM<br>
-<input type="submit" name="submit1" value="Enviar">
-</body>
+    <head>
+        <link rel="stylesheet" type="text/css" href="theme.css">
+    </head>
+    <body>
+        <form action="form1.php" >
+            Nombre: <input type="text" name="nombre" autofocus required><br><br>
+            Edad:  	<input type="number" name="edad" min="1" max="200" required><br><br>
+            Sexo: 	<input type="radio" name="genero" id="h" value="Hombre" checked><label for="h">Hombre</label><br>
+            <input type="radio" name="genero" id="m" value="Mujer"><label for="m">Mujer</label><br>
+            <input type="radio" name="genero" id="o" value="Otro"><label for="o">Indefinido</label><br><br>
+            <input type="checkbox" name="eps" checked> Estudiante de la EPS UAM<br><br>
+            <input type="submit" name="submit1" value="Enviar">
+    </body>
 </html>
