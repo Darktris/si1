@@ -62,23 +62,22 @@
             </div>
 		</div>
 		<div id="scrollable">
-			<div class="category">Settled Matches</div>
-			<div class="match1">
-				<img src="lol/teams/g2.png" alt=""/>
-				G2 vs. CLG
-				<img src="lol/teams/clg.png" alt=""/>
-				<div class="button2">
-					<div class="money">1.000 €</div>
-				</div>
+			<div class="title">
+                Register
 			</div>
-			<div class="category">Unsettled Matches</div>
-			<div class="match2">
-				<a href="bet.html?match=1&team=left"><div class="button2"><div>Bet</div></div></a>
-				<img src="lol/teams/clg.png" alt=""/>
-				CLG vs. G2
-				<img src="lol/teams/g2.png" alt=""/>
-				<a href="bet.html?match=1&team=right"><div class="button2"><div>Bet</div></div></a>
-			</div>
+			<form method="post" action="index.html">
+                User name:<br>
+                <input type="text" name="user" placeholder="User name" required autofocus><br><br>
+                Password:<br>
+                <input type="password" name="pass" placeholder="Password" required><br>
+                <input type="password" name="passrep" placeholder="Repeat password" required><br><br>
+                E-mail address:<br>
+                <input type="email" name="mail" placeholder="E-mail address" required><br><br>
+                Credit Card No.:<br>
+                <input type="text" name="card" placeholder="Credit Card No." pattern="[0-9]{16}" title="Valid Credit Card number" required><br><br>
+                <input type="submit" value="Register">
+                <input type="reset" value="Clear">
+			</form>
 		</div>
         <footer>
             <img src="http://www.w3.org/Icons/valid-xhtml10-blue" alt="Valid XHTML 1.0!"/>
