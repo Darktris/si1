@@ -11,7 +11,7 @@
                 unset($_REQUEST["user"]);
                 return;
             }
-            if(strcmp(md5($_REQUEST["pass"]), $data[1]) == 0) {
+            if(strncmp(md5($_REQUEST["pass"]), $data[1], strlen(md5($_REQUEST["pass"]))) == 0) {
                 setcookie("user", $_REQUEST["user"], time() + (2 * 60 * 60));
             } else {
                 $login_error = "Invalid user or password.";
