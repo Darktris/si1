@@ -10,6 +10,9 @@ foreach($xml->category as $category) {
                 echo '  <img src="'.$match->team[0]->icon.'" alt=""/>';
                 echo '  '.$match->team[0]["name"].' vs. '.$match->team[1]["name"];
                 echo '  <img src="'.$match->team[1]->icon.'" alt=""/>';
+                if(isset($_COOKIE["user"])) {
+                    echo '<br><button class="button2" onclick=loadContent("bet.php?game='.$game["id"].'&match='.$match["id"].'")>Bet</button>';
+                }
                 echo '</div>';
             }
         }

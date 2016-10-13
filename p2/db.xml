@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<database>
+<db>
     <category id="moba" name="MOBA">
         <game id="lol" name="League of Legends">
             <icon>games/lol/icon.png</icon>
@@ -40,4 +40,4 @@
             </matches>
         </game>
     </category>
-</database>
+</db>

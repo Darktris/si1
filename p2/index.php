@@ -3,13 +3,23 @@
 <html>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
-        function loadContent(page) {
+        function loadContent(page, array) {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
                     document.getElementById("scrollable").innerHTML = this.responseText;
                 }
             };
+            if(array) {
+                if(page.indexOf("?") == -1) {
+                    page += "?";
+                }
+                var count=0;
+                array.forEach(function(entry) {
+                    count++;
+                    page += "&" + count + "=" + $(entry).val();
+                });
+            }
             xhttp.open("GET", typeof(page) === 'undefined'? "matches.php" : page, true);
             xhttp.send();
         }

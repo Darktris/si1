@@ -274,17 +274,19 @@ footer img {
 }
 
 .button2 {
-    height: 20px;
-    line-height: 20px;
+    position: relative;
+    height: 16px;
+    line-height: 16px;
+    top: -75px;
+    padding: 0 8px;
     text-align: center;
     border: none;
-    border-radius: 20px;
-    font-size: 12pt;
+    border-radius: 8px;
+    font-size: 10pt;
     background: #36454f;
     color: white;
     text-decoration: none;
     display: inline-block;
-    padding: 0 10px;
     cursor: pointer;
 }
 
@@ -350,7 +352,7 @@ input[type="search"] {
     margin-top: 10px;
     text-align: center;
     border: none;
-    font-size: 200%;
+    font-size: 20pt;
     background: linear-gradient(to right, red , #6e7f80, #6e7f80, #6e7f80, green);
     color: white;
     text-decoration: none;
@@ -359,7 +361,7 @@ input[type="search"] {
 
 .match1 img {
     vertical-align: middle;
-    width: 64px;
+    height: 64px;
 }
 
 .match2 {
