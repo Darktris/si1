@@ -2,9 +2,9 @@
 <!-- vim: set noai ts=4 sw=4: -->
 <div class="category">Last Matches</div>
 <div class="match1">
-    <img src="lol/teams/g2.png" alt=""/>
+    <img src="games/lol/teams/g2.png" alt=""/>
     G2 vs. CLG
-    <img src="lol/teams/clg.png" alt=""/>
+    <img src="games/lol/teams/clg.png" alt=""/>
 </div>
 <div class="category">Upcoming Matches</div>
 <div class="match2">
@@ -15,9 +15,9 @@
     <?php
     }
     ?>
-    <img src="lol/teams/clg.png" alt=""/>
+    <img src="games/lol/teams/clg.png" alt=""/>
     CLG vs. G2
-    <img src="lol/teams/g2.png" alt=""/>
+    <img src="games/lol/teams/g2.png" alt=""/>
     <?php
     if(isset($_COOKIE["user"])) {
     ?>
@@ -34,9 +34,9 @@
     <?php
     }
     ?>
-    <img src="lol/teams/g2.png" alt=""/>
+    <img src="games/lol/teams/g2.png" alt=""/>
     G2 vs. CLG
-    <img src="lol/teams/clg.png" alt=""/>
+    <img src="games/lol/teams/clg.png" alt=""/>
     <?php
     if(isset($_COOKIE["user"])) {
     ?>
@@ -53,9 +53,9 @@
     <?php
     }
     ?>
-    <img src="lol/teams/clg.png" alt=""/>
+    <img src="games/lol/teams/clg.png" alt=""/>
     CLG vs. G2
-    <img src="lol/teams/g2.png" alt=""/>
+    <img src="games/lol/teams/g2.png" alt=""/>
     <?php
     if(isset($_COOKIE["user"])) {
     ?>
@@ -72,9 +72,9 @@
     <?php
     }
     ?>
-    <img src="lol/teams/g2.png" alt=""/>
+    <img src="games/lol/teams/g2.png" alt=""/>
     G2 vs. CLG
-    <img src="lol/teams/clg.png" alt=""/>
+    <img src="games/lol/teams/clg.png" alt=""/>
     <?php
     if(isset($_COOKIE["user"])) {
     ?>
@@ -91,9 +91,9 @@
     <?php
     }
     ?>
-    <img src="lol/teams/clg.png" alt=""/>
+    <img src="games/lol/teams/clg.png" alt=""/>
     CLG vs. G2
-    <img src="lol/teams/g2.png" alt=""/>
+    <img src="games/lol/teams/g2.png" alt=""/>
     <?php
     if(isset($_COOKIE["user"])) {
     ?>
@@ -110,9 +110,9 @@
     <?php
     }
     ?>
-    <img src="lol/teams/g2.png" alt=""/>
+    <img src="games/lol/teams/g2.png" alt=""/>
     G2 vs. CLG
-    <img src="lol/teams/clg.png" alt=""/>
+    <img src="games/lol/teams/clg.png" alt=""/>
     <?php
     if(isset($_COOKIE["user"])) {
     ?>
@@ -129,9 +129,9 @@
     <?php
     }
     ?>
-    <img src="lol/teams/clg.png" alt=""/>
+    <img src="games/lol/teams/clg.png" alt=""/>
     CLG vs. G2
-    <img src="lol/teams/g2.png" alt=""/>
+    <img src="games/lol/teams/g2.png" alt=""/>
     <?php
     if(isset($_COOKIE["user"])) {
     ?>
@@ -148,9 +148,9 @@
     <?php
     }
     ?>
-    <img src="lol/teams/g2.png" alt=""/>
+    <img src="games/lol/teams/g2.png" alt=""/>
     G2 vs. CLG
-    <img src="lol/teams/clg.png" alt=""/>
+    <img src="games/lol/teams/clg.png" alt=""/>
     <?php
     if(isset($_COOKIE["user"])) {
     ?>
@@ -167,9 +167,9 @@
     <?php
     }
     ?>
-    <img src="lol/teams/clg.png" alt=""/>
+    <img src="games/lol/teams/clg.png" alt=""/>
     CLG vs. G2
-    <img src="lol/teams/g2.png" alt=""/>
+    <img src="games/lol/teams/g2.png" alt=""/>
     <?php
     if(isset($_COOKIE["user"])) {
     ?>

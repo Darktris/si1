@@ -20,16 +20,21 @@
         if(file_exists($user_path) && is_dir($user_path)) {
             $data = file($user_path."/data.dat");
             if(!$data) {
-                $login_error = "Login error.";
+                $login_error = "Corrupt user.";
                 return;
             }
             if(strncmp(md5($_REQUEST["pass"]), $data[1], strlen(md5($_REQUEST["pass"]))) == 0) {
                 setcookie("user", $_REQUEST["user"], time() + (2 * 60 * 60));
                 header('Location: '.$_SERVER['PHP_SELF']);
+                if(isset($login_error)) {
+                    unset($login_error);
+                }
                 die;
             } else {
                 $login_error = "Invalid user or password.";
             }
+        } else {
+                $login_error = "Invalid user or password.";
         }
     } elseif(isset($_GET["logout"])) {
         setcookie("user", "", time() - 1);
@@ -68,7 +73,7 @@
                 Login
             </button>
             <div class="dropdown-content">
-                <form method="post" action="/">
+                <form method="post" action="index.php">
                     User name:
                     <input type="text" name="user" autofocus required></input><br>
                     Password:
@@ -94,10 +99,10 @@
                 <button class="button1"><img src="images/category.png" alt="">MOBA</button>
                 <div class="dropdown2-content">
                     <a href="/?filter=lol">
-                        <img src="lol/icon.png" alt=""/> League of Legends
+                        <img src="games/lol/icon.png" alt=""/> League of Legends
                     </a>
                     <a href="/?filter=dota2">
-                        <img src="dota2/icon.png" alt=""/> Dota 2
+                        <img src="games/dota2/icon.png" alt=""/> Dota 2
                     </a>
                 </div>
             </div>
@@ -105,10 +110,10 @@
                 <button class="button1"><img src="images/category.png" alt="">FPS</button>
                 <div class="dropdown2-content">
                     <a href="/?filter=csgo">
-                        <img src="csgo/icon.png" alt=""/> CS:GO
+                        <img src="games/csgo/icon.png" alt=""/> CS:GO
                     </a>
                     <a href="/?filter=overwatch">
-                        <img src="overwatch/icon.png" alt=""/> Overwatch
+                        <img src="games/overwatch/icon.png" alt=""/> Overwatch
                     </a>
                 </div>
             </div>
@@ -116,12 +121,12 @@
                 <button class="button1"><img src="images/category.png" alt="">Cards</button>
                 <div class="dropdown2-content">
                     <a href="/?filter=hearthstone">
-                        <img src="hearthstone/icon.png" alt=""/> Hearthstone
+                        <img src="games/hearthstone/icon.png" alt=""/> Hearthstone
                     </a>
                 </div>
             </div>
             <div class="links">
-                <button class=buttonR onclick=loadContent('register')>Register</button>
+                <button class=buttonR onclick=loadContent('register.php')>Register</button>
             </div>
         </div>
         <div id="scrollable">
