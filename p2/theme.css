@@ -10,6 +10,10 @@ html, body {
     background: lightgrey;
 }
 
+*:focus {
+    outline: 0px;
+}
+
 header {
     position: fixed;
     width: 100%;
@@ -40,7 +44,7 @@ header {
     border: none;
 }
 
-#account > img {
+#account img {
     height: 32px;
     vertical-align: middle;
 }
@@ -96,7 +100,7 @@ header {
     display: block;
 }
 
-.dropdown-content form > input[type="submit"] {
+.dropdown-content form input[type="submit"] {
     position: relative;
     width: 80px;
     height: 30px;
@@ -108,11 +112,11 @@ header {
     cursor: pointer;
 }
 
-.dropdown-content form > input[type="submit"]:hover {
+.dropdown-content form input[type="submit"]:hover {
     background: #708090;
 }
 
-.dropdown-content form > input[type="reset"] {
+.dropdown-content form input[type="reset"] {
     position: relative;
     width: 80px;
     height: 30px;
@@ -125,7 +129,7 @@ header {
     cursor: pointer;
 }
 
-.dropdown-content form > input[type="reset"]:hover {
+.dropdown-content form input[type="reset"]:hover {
     background: #708090;
 }
 
@@ -159,20 +163,29 @@ header {
 }
 
 /* Links inside the dropdown */
-.dropdown2-content a {
-    color: white;
-    padding: 9px 16px;
+.dropdown2-content .button3 {
+    width: 200px;
+    height: 50px;
+    line-height: 50px;
+    border: none;
+    text-align: left;
+    font-size: 10pt;
     text-decoration: none;
+    color: white;
+    background: #536878;
     display: block;
+    cursor: pointer;
 }
 
-.dropdown2-content a img {
+.dropdown2-content .button3 img {
     vertical-align: middle;
     width: 32px;
+    margin-right: 16px;
+    margin-left: 16px;
 }
 
 /* Change color of dropdown links on hover */
-.dropdown2-content a:hover {
+.dropdown2-content .button3:hover {
     background: #708090;
 }
 
@@ -212,12 +225,12 @@ header {
     padding: 0 10px 10px 10px;
 }
 
-#scrollable > form {
+#scrollable form {
     margin-top: 20px;
     text-align: center;
 }
 
-#scrollable > form > input[type="submit"] {
+#scrollable form input[type="submit"] {
     margin: 10px;
 }
 
@@ -233,7 +246,7 @@ footer {
     background: #536878;
 }
 
-footer  > img {
+footer img {
     margin-right: 4px;
     vertical-align: middle;
     height: 20px;
@@ -254,7 +267,7 @@ footer  > img {
     display: inline-block;
 }
 
-.button1 > img {
+.button1 img {
     vertical-align: middle;
     margin-right: 8px;
     width: 32px;
@@ -344,7 +357,7 @@ input[type="search"] {
     display: inline-block;
 }
 
-.match1 > img {
+.match1 img {
     vertical-align: middle;
     width: 64px;
 }
@@ -364,7 +377,7 @@ input[type="search"] {
     display: inline-block;
 }
 
-.match2 > img {
+.match2 img {
     vertical-align: middle;
     width: 64px;
 }
@@ -383,7 +396,7 @@ input[type="search"] {
     display: inline-block;
 }
 
-.option > img {
+.option img {
     vertical-align: middle;
     width: 24px;
 }

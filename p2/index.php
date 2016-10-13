@@ -1,24 +1,19 @@
 <!DOCTYPE html>
 <!-- vim: set noai ts=4 sw=4: -->
 <html>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
-        function loadContent(content, queries, id) {
-            if(typeof(content) === 'undefined') {
-                document.cookie = "content=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-            } else {
-                document.cookie = "content=" + content;
-                if(queries) {
-                    document.cookie = "queries=" + queries;
+        function loadContent(page) {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("scrollable").innerHTML = this.responseText;
                 }
-                if(id) {
-                    value = document.getElementById(id).value;
-                    if(value) {
-                        document.cookie = "value=" + value;
-                    }
-                }
-            }
-            location.reload();
+            };
+            xhttp.open("GET", typeof(page) === 'undefined'? "matches.php" : page, true);
+            xhttp.send();
         }
+        $(document).ready(loadContent());
     </script>
     <?php
     if(isset($_REQUEST["login"])) {
@@ -101,55 +96,24 @@
             <form>
                 <input type="search" name="search" placeholder="Search...">
             </form>
-            <div class="dropdown2">
-                <button class="button1"><img src="images/category.png" alt="">MOBA</button>
-                <div class="dropdown2-content">
-                    <a href="/?filter=lol">
-                        <img src="games/lol/icon.png" alt=""/> League of Legends
-                    </a>
-                    <a href="/?filter=dota2">
-                        <img src="games/dota2/icon.png" alt=""/> Dota 2
-                    </a>
-                </div>
-            </div>
-            <div class="dropdown2">
-                <button class="button1"><img src="images/category.png" alt="">FPS</button>
-                <div class="dropdown2-content">
-                    <a href="/?filter=csgo">
-                        <img src="games/csgo/icon.png" alt=""/> CS:GO
-                    </a>
-                    <a href="/?filter=overwatch">
-                        <img src="games/overwatch/icon.png" alt=""/> Overwatch
-                    </a>
-                </div>
-            </div>
-            <div class="dropdown2">
-                <button class="button1"><img src="images/category.png" alt="">Cards</button>
-                <div class="dropdown2-content">
-                    <a href="/?filter=hearthstone">
-                        <img src="games/hearthstone/icon.png" alt=""/> Hearthstone
-                    </a>
-                </div>
-            </div>
+            <?php
+            $xml = simplexml_load_file("db.xml");
+            foreach($xml->category as $category) {
+                echo '<div class="dropdown2">';
+                echo '    <button class="button1"><img src="images/category.png" alt="">'.$category["name"].'</button>';
+                echo '    <div class="dropdown2-content">';
+                foreach($category->game as $game) {
+                    echo '        <button class="button3" onclick=loadContent("matches.php?game='.$game["id"].'")>'.'<img src="'.$game->icon.'" alt="">'.$game["name"].'</button>';
+                }
+                echo '    </div>';
+                echo '</div>';
+            }
+            ?>
             <div class="links">
                 <button class=buttonR onclick=loadContent('register.php')>Register</button>
             </div>
         </div>
         <div id="scrollable">
-            <?php
-            if(isset($_COOKIE["content"])) {
-                if(isset($_COOKIE["queries"])) {
-                    $queries = $_COOKIE["queries"];
-                    setcookie("queries", "", time() -1);
-                }
-                if(isset($_COOKIE["value"])) {
-                    $value = $_COOKIE["value"];
-                    setcookie("value", "", time() -1);
-                }
-                require_once $_COOKIE["content"];
-            } else {
-                require_once "matches.php";
-            } ?>
         </div>
         <footer>
             <img src="http://www.w3.org/Icons/valid-xhtml10-blue" alt="Valid XHTML 1.0!"/>
@@ -157,4 +121,3 @@
         </footer>
     </body>
 </html>
-

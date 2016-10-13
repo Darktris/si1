@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <category id="moba" name="MOBA">
+        <game id="lol" name="League of Legends">
+            <icon>games/lol/icon.png</icon>
+            <matches>
+                <match id="1">
+                    <team name="SK Telecom T1">
+                        <icon>games/lol/teams/skt1.png</icon>
+                    </team>
+                    <team name="I May">
+                        <icon>games/lol/teams/im.png</icon>
+                    </team>
+                    <result>1-0</result>
+                </match>
+            </matches>
+        </game>
+        <game id="dota2" name="DOTA 2">
+            <icon>games/dota2/icon.png</icon>
+            <matches>
+            </matches>
+        </game>
+    </category>
+    <category id="fps" name="FPS">
+        <game id="csgo" name="CS:GO">
+            <icon>games/csgo/icon.png</icon>
+            <matches>
+            </matches>
+        </game>
+        <game id="overwatch" name="Overwatch">
+            <icon>games/overwatch/icon.png</icon>
+            <matches>
+            </matches>
+        </game>
+    </category>
+    <category id="cards" name="Cards">
+        <game id="hearthstone" name="Hearthstone">
+            <icon>games/hearthstone/icon.png</icon>
+            <matches>
+            </matches>
+        </game>
+    </category>
+</database>
