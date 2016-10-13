@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<!-- vim: set noai ts=4 sw=4: -->
 <div class="title">
     Register
 </div>

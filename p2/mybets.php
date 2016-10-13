@@ -1,3 +1,5 @@
+<!DOCTYPE html>
+<!-- vim: set noai ts=4 sw=4: -->
 <div class="category">Settled Matches</div>
 <div class="match1">
     <img src="lol/teams/g2.png" alt=""/>
