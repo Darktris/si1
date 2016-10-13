@@ -8,7 +8,15 @@
     CLG vs. G2
     <img src="games/lol/teams/g2.png" alt=""/>
 </div>
-<form>
-    Amount: <input type="number" name="bid" min="1" step="0.05" value="1"> € <br>
+<?php
+if(isset($value)) {
+    echo $value;
+} else {
+?>
+<form method="post" name="bet" onsubmit=loadContent('bet.php',,'amount')>
+    Amount: <input id="amount" type="number" min="1" step="0.05" value="1"> € <br>
     <input type="submit" value="Confirm">
 </form>
+<?php
+}
+?>

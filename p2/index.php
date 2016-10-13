@@ -2,13 +2,19 @@
 <!-- vim: set noai ts=4 sw=4: -->
 <html>
     <script>
-        function loadContent(content, queries) {
+        function loadContent(content, queries, id) {
             if(typeof(content) === 'undefined') {
                 document.cookie = "content=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
             } else {
                 document.cookie = "content=" + content;
                 if(queries) {
                     document.cookie = "queries=" + queries;
+                }
+                if(id) {
+                    value = document.getElementById(id).value;
+                    if(value) {
+                        document.cookie = "value=" + value;
+                    }
                 }
             }
             location.reload();
@@ -135,6 +141,10 @@
                 if(isset($_COOKIE["queries"])) {
                     $queries = $_COOKIE["queries"];
                     setcookie("queries", "", time() -1);
+                }
+                if(isset($_COOKIE["value"])) {
+                    $value = $_COOKIE["value"];
+                    setcookie("value", "", time() -1);
                 }
                 require_once $_COOKIE["content"];
             } else {
