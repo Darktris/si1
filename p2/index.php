@@ -34,19 +34,16 @@
                 $login_error = "Corrupt user.";
                 return;
             }
-            if(strncmp(md5($_REQUEST["pass"]), $data[1], strlen(md5($_REQUEST["pass"]))) == 0) {
+            if(strncmp(md5($_REQUEST["pass"]), $data[1], 32) == 0) {
                 setcookie("user", $_REQUEST["user"], time() + (2 * 60 * 60));
-                header('Location: '.$_SERVER['PHP_SELF']);
                 if(isset($login_error)) {
                     unset($login_error);
                 }
+                header('Location: '.$_SERVER['PHP_SELF']);
                 die;
-            } else {
-                $login_error = "Invalid user or password.";
             }
-        } else {
-                $login_error = "Invalid user or password.";
         }
+        $login_error = "Invalid user or password.";
     } elseif(isset($_GET["logout"])) {
         setcookie("user", "", time() - 1);
         header('Location: '.$_SERVER['PHP_SELF']);

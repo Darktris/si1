@@ -76,6 +76,7 @@ header {
     background: #536872;
     font-size: 12pt;
     text-align: center;
+    vertical-align: middle;
     text-decoration: none;
     display: block;
     cursor: pointer;
@@ -169,6 +170,7 @@ header {
     line-height: 50px;
     border: none;
     text-align: left;
+    vertical-align: middle;
     font-size: 10pt;
     text-decoration: none;
     color: white;
@@ -226,12 +228,24 @@ header {
 }
 
 #scrollable form {
-    margin-top: 20px;
-    text-align: center;
+    width: 240px;
+    margin: 16px auto;
+}
+
+#scrollable form input {
+    width: 100%;
+}
+
+#scrollable form input[type="reset"] {
+    width: auto;
+    margin-top: 16px;
+    float: left;
 }
 
 #scrollable form input[type="submit"] {
-    margin: 10px;
+    width: auto;
+    margin-top: 16px;
+    float: right;
 }
 
 footer {
@@ -257,6 +271,7 @@ footer img {
     height: 50px;
     line-height: 50px;
     text-align: left;
+    vertical-align: middle;
     padding: 0 40px;
     margin-top: 10px;
     border: none;
@@ -280,6 +295,7 @@ footer img {
     top: -75px;
     padding: 0 8px;
     text-align: center;
+    vertical-align: middle;
     border: none;
     border-radius: 8px;
     font-size: 10pt;
@@ -295,6 +311,7 @@ footer img {
     width: 180px;
     line-height: 20px;
     text-align: center;
+    vertical-align: middle;
     border: none;
     border-radius: 10px;
     background: #708090;
