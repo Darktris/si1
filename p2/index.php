@@ -1,5 +1,32 @@
 <!DOCTYPE html>
 <!-- vim: set noai ts=4 sw=4: -->
+<?php
+if(isset($_REQUEST["login"])) {
+    $user_path = "users/".$_REQUEST["user"];
+    if(file_exists($user_path) && is_dir($user_path)) {
+        $data = file($user_path."/data.dat");
+        unset($user_path);
+        if(!$data) {
+            unset($data);
+            $login_error = "Corrupt user.";
+            return;
+        }
+        if(strncmp(md5($_REQUEST["pass"]), $data[1], 32) == 0) {
+            setcookie("user", $_REQUEST["user"], time() + (2 * 60 * 60));
+            unset($data);
+            unset($login_error);
+            header('Location: index.php');
+            die;
+        }
+    }
+    unset($user_path);
+    $login_error = "Invalid user or password.";
+} elseif(isset($_GET["logout"])) {
+    setcookie("user", "", time() - 1);
+    header('Location: '.$_SERVER['PHP_SELF']);
+    die;
+}
+?>
 <html>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
@@ -90,33 +117,6 @@
         }
         $(document).ready(loadContent());
     </script>
-    <?php
-    if(isset($_REQUEST["login"])) {
-        $user_path = "users/".$_REQUEST["user"];
-        if(file_exists($user_path) && is_dir($user_path)) {
-            $data = file($user_path."/data.dat");
-            unset($user_path);
-            if(!$data) {
-                unset($data);
-                $login_error = "Corrupt user.";
-                return;
-            }
-            if(strncmp(md5($_REQUEST["pass"]), $data[1], 32) == 0) {
-                setcookie("user", $_REQUEST["user"], time() + (2 * 60 * 60));
-                unset($data);
-                unset($login_error);
-                header('Location: '.$_SERVER['PHP_SELF']);
-                die;
-            }
-        }
-        unset($user_path);
-        $login_error = "Invalid user or password.";
-    } elseif(isset($_GET["logout"])) {
-        setcookie("user", "", time() - 1);
-        header('Location: '.$_SERVER['PHP_SELF']);
-        die;
-    }
-    ?>
     <head>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
         <title>BetaBet</title>
