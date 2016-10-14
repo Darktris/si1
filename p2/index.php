@@ -72,19 +72,21 @@
         $user_path = "users/".$_REQUEST["user"];
         if(file_exists($user_path) && is_dir($user_path)) {
             $data = file($user_path."/data.dat");
+            unset($user_path);
             if(!$data) {
+                unset($data);
                 $login_error = "Corrupt user.";
                 return;
             }
             if(strncmp(md5($_REQUEST["pass"]), $data[1], 32) == 0) {
                 setcookie("user", $_REQUEST["user"], time() + (2 * 60 * 60));
-                if(isset($login_error)) {
-                    unset($login_error);
-                }
+                unset($data);
+                unset($login_error);
                 header('Location: '.$_SERVER['PHP_SELF']);
                 die;
             }
         }
+        unset($user_path);
         $login_error = "Invalid user or password.";
     } elseif(isset($_GET["logout"])) {
         setcookie("user", "", time() - 1);
@@ -129,9 +131,9 @@
                     Password:
                     <input type="password" name="pass"required></input>
             <?php
-            if(isset($login_error)) {
-                echo "<div class='error'>".$login_error."</div>";
-            }
+                if(isset($login_error)) {
+                    echo "<div class='error'>".$login_error."</div>";
+                }
             ?>
                     <input type="submit" name="login" value="Login">
                     <input type="reset" value="Clear">
@@ -157,10 +159,15 @@
                 echo '    </div>';
                 echo '</div>';
             }
+            unset($xml);
+            if(!isset($_COOKIE["user"])) {
             ?>
             <div class="links">
                 <button class=buttonR onclick=loadContent('register.php')>Register</button>
             </div>
+            <?php
+            }
+            ?>
         </div>
         <div id="scrollable">
         </div>
