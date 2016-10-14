@@ -27,10 +27,11 @@ if(isset($_GET["1"]) && isset($_GET["2"]) && isset($_GET["3"]) && isset($_GET["4
 <form method="post" name="regform" onsubmit="return false">
     User name:<br>
     <input type="text" id="user" placeholder="User name" autofocus><br>
-    <div class="error" id="user_error"><?php if($uexists) echo 'User '.$uexists.' already exists.';?></div>
+    <div class="error" id="user_error"><?php if(isset($uexists)) echo 'User '.$uexists.' already exists.';?></div>
     <br>Password:<br>
-    <input type="password" id="pass" placeholder="Password"><br>
+    <input type="password" id="pass" placeholder="Password" onkeyup="passwordStrength(this.value)"><br>
     <input type="password" id="passrep" placeholder="Repeat password"><br>
+    <div id="passwordStrength" class="strength0"></div>
     <div class="error" id="pass_error"></div>
     <br>E-mail address:<br>
     <input type="email" id="mail" placeholder="E-mail address"><br>

@@ -65,6 +65,29 @@
                 loadContent("register.php?",['#user','#pass','#mail','#card']);
             }
         }
+        function passwordStrength(password) {
+            var desc = new Array();
+            desc[0] = "Too Weak";
+            desc[1] = "Very Weak";
+            desc[2] = "Medium";
+            desc[3] = "Strong";
+            desc[4] = "Very Strong";
+            desc[5] = "The Strongest";
+            var score   = 0;
+            //if password bigger than 4 give 1 point
+            if (password.length > 4) score++;
+            ///if password has both lower and uppercase characters give 1 point
+            if ( ( password.match(/[a-z]/) ) && ( password.match(/[A-Z]/) ) ) score++;
+            ///if password has at least one number give 1 point
+            if (password.match(/\d+/)) score++;
+            //if password has at least one special caracther give 1 point
+            if ( password.match(/.[\!,\@,\#,\$,\%,\^,\&,\*,\?,\~,\-,\(,\),\[,\]]/) ) score++;
+            //if password bigger than 8 give another 1 point
+            if (password.length > 8) score++;
+            strength = document.getElementById("passwordStrength");
+            strength.innerHTML = desc[score];
+            strength.className = "strength" + score;
+        }
         $(document).ready(loadContent());
     </script>
     <?php
