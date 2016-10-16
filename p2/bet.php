@@ -50,7 +50,7 @@ if(isset($_COOKIE["user"]) && isset($_GET["game"]) && isset($_GET["match"])) {
         echo '  <input type="radio" name="team" value="1"></input>';
         echo '</div>';
         echo '<form method="post" name="betform" onsubmit="return false">';
-        echo '  Amount: <input id="amount" type="number" min="5" max="1000000" step="5" value="10"> €<br>';
+        echo '  Amount: <span class="input-euro"><input id="amount" type="number" min="5" max="1000000" step="5" value="10"></span><br>';
         echo "  <input type='reset' value='Back' onclick=loadContent('matches.php')>";
         echo "  <input type='submit' value='Confirm' onclick=loadContent('bet.php?game=".$_GET["game"]."&match=".$_GET["match"]."',['input[name=team]:checked','#amount'])>";
         echo '</div>';

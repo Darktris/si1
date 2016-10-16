@@ -31,7 +31,7 @@ if(isset($_GET["1"]) && isset($_GET["2"]) && isset($_GET["3"]) && isset($_GET["4
     <br>Password:<br>
     <input type="password" id="pass" placeholder="Password" onkeyup="passwordStrength(this.value)"><br>
     <input type="password" id="passrep" placeholder="Repeat password"><br>
-    <div id="passwordStrength" class="strength0"></div>
+    <div id="strength" class="strength0">Password Strength</div>
     <div class="error" id="pass_error"></div>
     <br>E-mail address:<br>
     <input type="email" id="mail" placeholder="E-mail address"><br>
