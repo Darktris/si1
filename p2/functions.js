@@ -18,6 +18,7 @@ function loadContent(page, array) {
     xhttp.open("GET", typeof(page) === 'undefined'? "matches.php" : page, true);
     xhttp.send();
 }
+
 function validateRegister() {
     var regex;
     var formok = true;
@@ -60,6 +61,28 @@ function validateRegister() {
         loadContent("register.php?",['#user','#pass','#mail','#card']);
     }
 }
+
+function validateBet(game, match) {
+    var max = 1000;
+    var min = 10;
+    var amount = document.forms["betform"]["amount"].value;
+    if(amount == null || amount == '' || isNaN(amount)) {
+        document.getElementById("amount_error").innerHTML = "Please write a correct amount.";
+    } else if(amount < min) {
+        document.getElementById("amount_error").innerHTML = "The minimum bet is " + min + " €.";
+    } else if(amount > max) {
+        document.getElementById("amount_error").innerHTML = "The maximum bet is " + max + " €.";
+    } else {
+        document.getElementById("amount_error").innerHTML = "";
+        loadContent("bet.php?game=" + game + "&match=" + match, ['input[name=team]:checked','#amount']);
+    }
+}
+
+function changeTeam(team) {
+    document.getElementById("side").className = "side" + team;
+    document.getElementById("arrow").className = "arrow" + team;
+}
+
 function passwordStrength(password) {
     var desc = new Array();
     desc[1] = "Too Short";

@@ -64,9 +64,9 @@ if(isset($_REQUEST["login"])) {
             <div class="dropdown-content">
                 <form method="post" action="index.php">
                     User name:
-                    <input type="text" name="user" autofocus required></input><br>
+                    <input type="text" name="user" autofocus required><br>
                     Password:
-                    <input type="password" name="pass"required></input>
+                    <input type="password" name="pass"required>
             <?php
                 if(isset($login_error)) {
                     echo "<div class='error'>".$login_error."</div>";

@@ -8,7 +8,7 @@ if(isset($_GET["1"]) && isset($_GET["2"]) && isset($_GET["3"]) && isset($_GET["4
     /* "1" is user, "2" is pass, "3" is mail, "4" is card */
     $user_path = "users/".$_GET["1"];
     if(!file_exists($user_path)) {
-        mkdir($user_path);
+        mkdir($user_path, 0755, true);
         $data = fopen($user_path."/data.dat", "w");
         fwrite($data, $_GET["1"]."\n".md5($_GET["2"])."\n".$_GET["3"]."\n".$_GET["4"]."\n0");
         fclose($data);
