@@ -37,10 +37,17 @@ foreach($xml->category as $category) {
     foreach($category->game as $game) {
         if(empty($_GET["game"]) || isset($_GET["game"]) && strcmp($game["id"], $_GET["game"]) == 0) {
             foreach($game->matches->match as $match) {
-                if(isset($match->result)) {
-                    $latest[] = array("g" => $game, "m" => $match);
-                } else {
-                    $upcoming[] = array("g" => $game, "m" => $match);
+                if(empty($_GET["1"]) || isset($_GET["1"]) && (
+                    strpos($category["name"], $_GET["1"]) !== false ||
+                    strpos($game["name"], $_GET["1"]) !== false ||
+                    strpos($match->team[0]["name"], $_GET["1"]) !== false ||
+                    strpos($match->team[1]["name"], $_GET["1"])  !== false
+                )) {
+                    if(isset($match->result)) {
+                        $latest[] = array("g" => $game, "m" => $match);
+                    } else {
+                        $upcoming[] = array("g" => $game, "m" => $match);
+                    }
                 }
             }
         }

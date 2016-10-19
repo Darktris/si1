@@ -28,13 +28,13 @@ if(isset($_REQUEST["login"])) {
 }
 ?>
 <html>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="functions.js"></script>
-    <script>$(document).ready(loadContent())</script>
     <head>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
         <title>BetaBet</title>
         <link rel="stylesheet" type="text/css" href="theme.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="functions.js"></script>
+        <script>$(document).ready(loadContent())</script>
     </head>
     <body>
         <header onclick=loadContent()>
@@ -81,9 +81,7 @@ if(isset($_REQUEST["login"])) {
             ?>
         </div>
         <div id="sidebar">
-            <form>
-                <input type="search" name="search" placeholder="Search...">
-            </form>
+            <input type="search" id="search" placeholder="Search..." oninput=loadContent('matches.php?',['#search'])>
             <?php
             $xml = simplexml_load_file("db.xml");
             foreach($xml->category as $category) {

@@ -78,9 +78,23 @@ function validateBet(game, match) {
     }
 }
 
-function changeTeam(team) {
-    document.getElementById("side").className = "side" + team;
-    document.getElementById("arrow").className = "arrow" + team;
+function updateBet(wnnr) {
+    var newvalue = document.getElementById("amount").value;
+    if(wnnr) {
+        if(!newvalue) {
+            newvalue = document.getElementById("wnnrside").innerHTML.slice(0, -2);
+        }
+        $("#wnnrside").remove();
+        $("#wnnrarrow").remove();
+        if(wnnr == "0") {
+            $("#match").prepend("<div class='side0' id='wnnrside'></div><div class='arrow0' id='wnnrarrow'></div>");
+        } else if(wnnr == "1") {
+            $("#match").append("<div class='side1' id='wnnrside'></div><div class='arrow1' id='wnnrarrow'></div>");
+        }
+    }
+    if(newvalue) {
+        document.getElementById("wnnrside").innerHTML = newvalue.substr(0,4) + " €";
+    }
 }
 
 function passwordStrength(password) {
