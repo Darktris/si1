@@ -15,7 +15,7 @@ if(isset($_REQUEST["login"])) {
             setcookie("user", $_REQUEST["user"], time() + (2 * 60 * 60));
             unset($data);
             unset($login_error);
-            header('Location: index.php');
+            header('Location: /');
             die;
         }
     }
@@ -62,7 +62,7 @@ if(isset($_REQUEST["login"])) {
                 Login
             </button>
             <div class="dropdown-content">
-                <form method="post" action="index.php">
+                <form method="post" action="/">
                     User name:
                     <input type="text" name="user" autofocus required><br>
                     Password:
