@@ -16,6 +16,7 @@ if(isset($_COOKIE["user"]) && isset($_GET["game"]) && isset($_GET["match"])) {
         $newbet->addChild('game',$game);
         $newmatch = $newbet->addChild('match');
         $newmatch->addAttribute('id',$match["id"]);
+        $newmatch->addChild('date',$match->date);
         $team0 = $newmatch->addChild('team');
         $team0->addAttribute('name',$match->team[0]["name"]);
         $team0->addChild('icon',$match->team[0]->icon);
