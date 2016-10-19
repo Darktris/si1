@@ -64,7 +64,7 @@ if(isset($_REQUEST["login"])) {
             <div class="dropdown-content">
                 <form method="post" action="/">
                     User name:
-                    <input type="text" name="user" autofocus required><br>
+                    <input type="text" name="user" required><br>
                     Password:
                     <input type="password" name="pass"required>
             <?php

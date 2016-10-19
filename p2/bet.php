@@ -11,7 +11,9 @@ if(isset($_COOKIE["user"]) && isset($_GET["game"]) && isset($_GET["match"])) {
         $hispath = 'users/'.$_COOKIE["user"].'/history.xml';
         $his = simplexml_load_file($hispath);
         $newbet = $his->addChild('bet');
+        $newbet->addChild('winner',$_GET["1"]);
         $newbet->addChild('amount',$_GET["2"]);
+        $newbet->addChild('game',$game);
         $newmatch = $newbet->addChild('match');
         $newmatch->addAttribute('id',$match["id"]);
         $team0 = $newmatch->addChild('team');
