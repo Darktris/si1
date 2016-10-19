@@ -3,11 +3,10 @@
 <?php
 if(isset($_COOKIE["user"]) && isset($_GET["game"]) && isset($_GET["match"])) {
     $xml = simplexml_load_file("db.xml");
+    $game = $xml->xpath('/db/category[@*]/game[@id = "'.$_GET["game"].'"]')[0]["name"];
     $match = $xml->xpath('/db/category[@*]/game[@id = "'.$_GET["game"].'"]/matches/match[@id = "'.$_GET["match"].'"]')[0];
     unset($xml);
-    if(isset($match->result)) {
-        echo "WIP";
-    } elseif(isset($_GET["1"]) && isset($_GET["2"])) {
+    if(isset($_GET["1"]) && isset($_GET["2"])) {
         /* "1" is left/right team, "2" is amount */
         $hispath = 'users/'.$_COOKIE["user"].'/history.xml';
         $his = simplexml_load_file($hispath);
@@ -29,13 +28,22 @@ if(isset($_COOKIE["user"]) && isset($_GET["game"]) && isset($_GET["match"])) {
         unset($team0);
         unset($team1);
         echo '<div class="title">';
-        echo '  You just betted for the following match:';
+        echo '  Your bet has been successfully submitted.';
         echo '</div>';
-        echo '<div class="match2">';
-        echo '  <img src="'.$match->team[0]->icon.'" alt=""/>';
-        echo '  '.$match->team[0]["name"].' vs. '.$match->team[1]["name"];
-        echo '  <img src="'.$match->team[1]->icon.'" alt=""/>';
-        echo '  <br><div class="side'.$_GET["1"].'">'.$_GET["2"].' €</div><div class="arrow'.$_GET["1"].'"></div>';
+        echo '<div class="match">';
+        if(strcmp($_GET["1"], "0") == 0) {
+            echo '  <div class="side0">'.$_GET["2"].' €</div><div class="arrow0"></div>';
+        }
+        echo '  <div class="matchinfo">';
+        echo '      <div class="matchdetail">'.$match->date.'</div>';
+        echo '      <img src="'.$match->team[0]->icon.'" alt=""/>';
+        echo '      '.$match->team[0]["name"].' vs. '.$match->team[1]["name"];
+        echo '      <img src="'.$match->team[1]->icon.'" alt=""/>';
+        echo '      <div class="matchdetail">'.$game.'</div>';
+        echo '  </div>';
+        if(strcmp($_GET["1"], "1") == 0) {
+            echo '  <div class="side1">'.$_GET["2"].' €</div><div class="arrow1"></div>';
+        }
         echo '</div>';
         echo '<form method="post" onsubmit="return false">';
         echo "  <button onclick=loadContent('matches.php')>OK</button>";
