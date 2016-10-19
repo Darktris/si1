@@ -99,19 +99,23 @@ function updateBet(wnnr) {
 
 function passwordStrength(password) {
     var desc = new Array();
+    desc[0] = "Password Strength";
     desc[1] = "Too Short";
     desc[2] = "Weak";
     desc[3] = "Medium";
     desc[4] = "Strong";
     desc[5] = "Very Strong";
-    var score = 1;
-    if (password.length > 4) {
+    var score = 0;
+    if(password) {
         score++;
-        if ( ( password.match(/[a-z]/) ) && ( password.match(/[A-Z]/) ) ) score++;
-        if (password.match(/\d+/)) score++;
-        if ( password.match(/.[\!,\@,\#,\$,\%,\^,\&,\*,\?,\~,\-,\(,\),\[,\]]/) ) score++;
+        if (password.length > 4) {
+            score++;
+            if ( ( password.match(/[a-z]/) ) && ( password.match(/[A-Z]/) ) ) score++;
+            if (password.match(/\d+/)) score++;
+            if ( password.match(/.[\!,\@,\#,\$,\%,\^,\&,\*,\?,\~,\-,\(,\),\[,\]]/) ) score++;
+        }
     }
-        strength = document.getElementById("strength");
+    strength = document.getElementById("strength");
     strength.innerHTML = desc[score];
     strength.className = "strength" + score;
 }
