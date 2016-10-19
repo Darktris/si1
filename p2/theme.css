@@ -21,10 +21,15 @@ header {
     left: 0;
     top: 0;
     z-index: 90;
-    font-size: 200%;
+    font-size: 24pt;
     color: white;
     background: #536878;
     cursor: pointer;
+}
+
+header img {
+    height: 23px;
+    margin-right: 1px;
 }
 
 #account {

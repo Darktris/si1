@@ -38,7 +38,7 @@ if(isset($_REQUEST["login"])) {
     </head>
     <body>
         <header onclick=loadContent()>
-            BetaBet
+            <img src="images/logo.png" alt="">etaBet
         </header>
         <div class="dropdown">
             <?php
