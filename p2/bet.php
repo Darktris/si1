@@ -35,7 +35,7 @@ if(isset($_COOKIE["user"]) && isset($_GET["game"]) && isset($_GET["match"])) {
             echo '  <div class="side0">'.$_GET["2"].' €</div><div class="arrow0"></div>';
         }
         echo '  <div class="matchinfo">';
-        echo '      <div class="matchdetail">'.$match->date.'</div>';
+        echo '      <div class="matchdetail">'.date('D, jS F Y @ H:i',strtotime($match->date)).'</div>';
         echo '      <img src="'.$match->team[0]->icon.'" alt=""/>';
         echo '      '.$match->team[0]["name"].' vs. '.$match->team[1]["name"];
         echo '      <img src="'.$match->team[1]->icon.'" alt=""/>';
@@ -55,7 +55,7 @@ if(isset($_COOKIE["user"]) && isset($_GET["game"]) && isset($_GET["match"])) {
         echo '<div class="match" id="match">';
         echo '  <div class="side0" id="wnnrside">10 €</div><div class="arrow0" id="wnnrarrow"></div>';
         echo '  <div class="matchinfo">';
-        echo '      <div class="matchdetail">'.$match->date.'</div>';
+        echo '      <div class="matchdetail">'.date('D, jS F Y @ H:i',strtotime($match->date)).'</div>';
         echo "      <input type='radio' name='team' value='0' checked onclick=updateBet('0')>";
         echo '      <img src="'.$match->team[0]->icon.'" alt=""/>';
         echo '      '.$match->team[0]["name"].' vs. '.$match->team[1]["name"];

@@ -19,7 +19,7 @@ function showmatch($game, $match, $set) {
         echo '<div class="match" onclick=loadContent("bet.php?game='.$game["id"].'&match='.$match["id"].'")>';
     }
     echo '  <div class="matchinfo">';
-    echo '      <div class="matchdetail">'.$match->date.'</div>';
+    echo '      <div class="matchdetail">'.date('D, jS F Y @ H:i',strtotime($match->date)).'</div>';
     echo '      <img src="'.$match->team[0]->icon.'" alt=""/>';
     echo '      '.$match->team[0]["name"].' vs. '.$match->team[1]["name"];
     echo '      <img src="'.$match->team[1]->icon.'" alt=""/>';

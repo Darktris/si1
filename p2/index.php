@@ -81,7 +81,7 @@ if(isset($_REQUEST["login"])) {
             ?>
         </div>
         <div id="sidebar">
-            <input type="search" id="search" placeholder="Search..." oninput=loadContent('matches.php?',['#search'])>
+            <input type="search" id="search" placeholder="Search..." autocomplete="off" oninput=loadContent('matches.php?',['#search'])>
             <?php
             $xml = simplexml_load_file("db.xml");
             foreach($xml->category as $category) {
