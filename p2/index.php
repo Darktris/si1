@@ -23,7 +23,7 @@ if(isset($_REQUEST["login"])) {
     $login_error = "Invalid user or password.";
 } elseif(isset($_GET["logout"])) {
     setcookie("user", "", time() - 1);
-    header('Location: '.$_SERVER['PHP_SELF']);
+    header('Location: /');
     die;
 }
 ?>
