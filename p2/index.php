@@ -47,9 +47,19 @@ if(isset($_REQUEST["login"])) {
         </header>
         <?php
         if(isset($_SESSION["bag"])) {
-            echo '<button id="bag">';
-            echo '  <img src="images/bag.png" alt="">Total: '.$_SESSION["bag"]["total"].' €';
-            echo '</button>';
+            $total = 0;
+            foreach($_SESSION["bag"] as $bet) {
+                $total += $bet["amount"];
+            }
+            echo "<div id='bag' onclick=loadContent('checkout.php')>";
+            echo '  <span id="baginfo">';
+            echo '      <img src="images/bag.png" alt="">Total: '.$total.' €';
+            echo '  </span>';
+            echo '  <span id="checkout">';
+            echo '      Checkout';
+            echo '  </span>';
+            echo '</div>';
+            unset($total);
         }
         ?>
         <div class="dropdown">

@@ -45,10 +45,30 @@ header img {
     color: white;
     background: #708090;
     border: none;
-    display: none;
+    cursor: pointer;
 }
 
-#bag img {
+#bag #checkout {
+    position: relative;
+    top: -100%;
+    opacity: 0;
+}
+
+#bag #baginfo, #bag #checkout {
+    width: 100%;
+    transition: opacity 0.5s;
+    display: inline-block;
+}
+
+#bag:hover #baginfo {
+    opacity: 0;
+}
+
+#bag:hover #checkout {
+    opacity: 1;
+}
+
+#baginfo img {
     height: 28px;
     margin-right: 8px;
     vertical-align: middle;
