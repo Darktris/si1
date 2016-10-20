@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <!-- vim: set noai ts=4 sw=4: -->
 <?php
-if(isset($_COOKIE["user"])) {
+session_start();
+if(isset($_SESSION["user"])) {
     echo '<div class="title">';
     echo '  My bets';
     echo '</div>';
-    $his = simplexml_load_file('users/'.$_COOKIE["user"].'/history.xml');
+    $his = simplexml_load_file('users/'.$_SESSION["user"].'/history.xml');
     foreach($his->bet as $bet) {
         $match = $bet->match;
         echo '<div class="match">';

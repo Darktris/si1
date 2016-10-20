@@ -23,7 +23,7 @@ function validateRegister() {
     var regex;
     var formok = true;
     var user = document.forms["regform"]["user"].value;
-    regex = /^[a-zA-Z0-9]*$/;
+    regex = /^[a-zA-Z0-9]+$/;
     if(user == null || user == '' || !regex.test(user)) {
         document.getElementById("user_error").innerHTML = "Invalid user name.";
         formok = false;
@@ -50,15 +50,20 @@ function validateRegister() {
         document.getElementById("mail_error").innerHTML = "";
     }
     var card = document.forms["regform"]["card"].value;
+    var exp = document.forms["regform"]["exp"].value;
     regex = /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|6(?:011|5[0-9][0-9])[0-9]{12}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|(?:2131|1800|35\d{3})\d{11})$/;
+    var regex2 = /^(0[1-9]|1[0-2])\/?([0-9]{4}|[0-9]{2})$/;
     if(card == null || card == '' || !regex.test(card)) {
         document.getElementById("card_error").innerHTML = "Invalid credit card number.";
+        formok = false;
+    } else if(exp == null || exp == '' || !regex2.test(exp)) {
+        document.getElementById("card_error").innerHTML = "Invalid expiry date.";
         formok = false;
     } else {
         document.getElementById("card_error").innerHTML = "";
     }
     if(formok) {
-        loadContent("register.php?",['#user','#pass','#mail','#card']);
+        loadContent("register.php?",['#user','#pass','#mail','#card','#exp']);
     }
 }
 

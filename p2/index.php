@@ -1,32 +1,37 @@
-<!DOCTYPE html>
 <!-- vim: set noai ts=4 sw=4: -->
 <?php
+session_start();
 if(isset($_REQUEST["login"])) {
     $user_path = "users/".$_REQUEST["user"];
     if(file_exists($user_path) && is_dir($user_path)) {
         $data = file($user_path."/data.dat");
         unset($user_path);
         if(!$data) {
-            unset($data);
             $login_error = "Corrupt user.";
+            unset($data);
             return;
         }
         if(strncmp(md5($_REQUEST["pass"]), $data[1], 32) == 0) {
+            session_start();
+            $_SESSION["user"] = $_REQUEST["user"];
             setcookie("user", $_REQUEST["user"], time() + (2 * 60 * 60));
-            unset($data);
             unset($login_error);
-            header('Location: /');
-            die;
+            unset($data);
+        } else {
+            $login_error = "Invalid user or password.";
+            unset($data);
         }
+    } else {
+        $login_error = "Invalid user or password.";
+        unset($user_path);
     }
-    unset($user_path);
-    $login_error = "Invalid user or password.";
 } elseif(isset($_GET["logout"])) {
-    setcookie("user", "", time() - 1);
+    session_unset();
+    session_destroy();
     header('Location: /');
-    die;
 }
 ?>
+<!DOCTYPE html>
 <html>
     <head>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
@@ -40,14 +45,21 @@ if(isset($_REQUEST["login"])) {
         <header onclick=loadContent()>
             <img src="images/logo.png" alt="">etaBet
         </header>
+        <?php
+        if(isset($_SESSION["bag"])) {
+            echo '<button id="bag">';
+            echo '  <img src="images/bag.png" alt="">Total: '.$_SESSION["bag"]["total"].' €';
+            echo '</button>';
+        }
+        ?>
         <div class="dropdown">
             <?php
-            if(isset($_COOKIE["user"])) {
+            if(isset($_SESSION["user"])) {
             ?>
             <button id="account">
                 <img src="images/account.png" alt=""/>
             <?php
-                echo substr($_COOKIE["user"], 0, 10);
+                echo substr($_SESSION["user"], 0, 10);
             ?>
             </button>
             <div class="dropdown-content">
@@ -64,7 +76,7 @@ if(isset($_REQUEST["login"])) {
             <div class="dropdown-content">
                 <form method="post" action="/">
                     User name:
-                    <input type="text" name="user" required><br>
+                    <input type="text" name="user" <?php if(isset($_COOKIE["user"])) echo 'value="'.$_COOKIE["user"].'"';?> required><br>
                     Password:
                     <input type="password" name="pass"required>
             <?php
@@ -95,7 +107,7 @@ if(isset($_REQUEST["login"])) {
                 echo '</div>';
             }
             unset($xml);
-            if(!isset($_COOKIE["user"])) {
+            if(!isset($_SESSION["user"])) {
             ?>
             <div class="links">
                 <button class=buttonR onclick=loadContent('register.php')>Register</button>

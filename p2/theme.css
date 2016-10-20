@@ -32,6 +32,28 @@ header img {
     margin-right: 1px;
 }
 
+#bag {
+    position: fixed;
+    width: 180px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    left: 10px;
+    top: 10px;
+    z-index: 100;
+    font-size: 12pt;
+    color: white;
+    background: #708090;
+    border: none;
+    display: none;
+}
+
+#bag img {
+    height: 28px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
 #account {
     position: fixed;
     width: 200px;
@@ -41,7 +63,7 @@ header img {
     right: 0;
     top: 0;
     z-index: 100;
-    font-size: 100%;
+    font-size: 12pt;
     color: white;
     background: #708090;
     border: none;
@@ -232,6 +254,11 @@ header img {
     z-index: 0;
 }
 
+#scrollable .text {
+    margin: 16px;
+    text-align: center;
+}
+
 #scrollable form button {
     left: 50%;
     margin-left: 100px;
@@ -260,6 +287,19 @@ header img {
     top: 0;
     right: 4px;
     content: "€";
+}
+
+#scrollable form .cardinfo {
+    position: relative;
+}
+
+#scrollable form .cardinfo input[id="card"] {
+    width: 172px;
+}
+
+#scrollable form .cardinfo input[id="exp"] {
+    position: absolute;
+    width: 60px;
 }
 
 #scrollable form input[type="reset"] {
