@@ -22,7 +22,7 @@ if(isset($_SESSION["user"])) {
                         echo '      <img src="'.$match->team[0]->icon.'" alt=""/>';
                         echo '      '.$match->team[0]["name"].' vs. '.$match->team[1]["name"];
                         echo '      <img src="'.$match->team[1]->icon.'" alt=""/>';
-                        echo '      <div class="matchdetail">'.$game.'</div>';
+                        echo '      <div class="matchdetail">'.$game["name"].'</div>';
                         echo '  </div>';
                         if(strcmp($bet["winner"], "1") == 0) {
                             echo '  <div class="side1">'.$bet["amount"].' €</div><div class="arrow1"></div>';
