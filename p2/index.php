@@ -1,4 +1,4 @@
-<!-- vim: set noai ts=4 sw=4: -->
+<!DOCTYPE html>
 <?php
 session_start();
 if(isset($_REQUEST["login"])) {
@@ -27,7 +27,6 @@ if(isset($_REQUEST["login"])) {
     unset($_SESSION["bag"][strval($_POST["bag_remove"])]);
 }
 ?>
-<!DOCTYPE html>
 <html>
     <head>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
@@ -76,8 +75,8 @@ if(isset($_REQUEST["login"])) {
             ?>
             </button>
             <div class="dropdown-content">
-                <button class="buttonD" onclick=loadContent('mywallet.php')>My Wallet</button>
-                <button class="buttonD" onclick=loadContent('mybets.php')>My Bets</button>
+                <button class="buttonD" onclick=loadContent('credit.php')>Credit</button>
+                <button class="buttonD" onclick=loadContent('history.php')>Bet History</button>
                 <a href="/?logout=">Logout</a>
             </div>
             <?php

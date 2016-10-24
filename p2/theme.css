@@ -279,6 +279,30 @@ header img {
     text-align: center;
 }
 
+#scrollable .totaltext, #scrollable .total {
+    color: #36454f;
+    font-size: 10pt;
+}
+
+#scrollable .totaltext {
+    float: left;
+    margin-left: 4px;
+}
+
+#scrollable .total {
+    float: right;
+    margin-right: 4px;
+}
+
+#scrollable hr {
+    height: 1px;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    color: #708090;
+    background: #708090;
+    border: none;
+}
+
 #scrollable form button {
     left: 50%;
     margin-left: 100px;
@@ -588,7 +612,7 @@ input[type="search"] {
 
 .match .edit, .match .remove {
     opacity: 0;
-    transition: opacity 0.5s;
+    transition: opacity 1s;
     cursor: pointer;
 }
 

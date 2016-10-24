@@ -1,14 +1,15 @@
 <!DOCTYPE html>
-<!-- vim: set noai ts=4 sw=4: -->
 <?php
 session_start();
 if(isset($_SESSION["user"])) {
     echo '<div class="title">';
-    echo '  My bets';
+    echo '  Bet History';
     echo '</div>';
+    $xml = simplexml_load_file('db.xml');
     $his = simplexml_load_file('users/'.$_SESSION["user"].'/history.xml');
     foreach($his->bet as $bet) {
-        $match = $bet->match;
+        $game = $xml->xpath('/db/category[@*]/game[@id = "'.$bet->game.'"]')[0];
+        $match = $xml->xpath('/db/category[@*]/game[@id = "'.$bet->game.'"]/matches/match[@id = "'.$bet["id"].'"]')[0];
         echo '<div class="match">';
         if(strcmp($bet->winner, "0") == 0) {
             echo '  <div class="side0">'.$bet->amount.' €</div><div class="arrow0"></div>';
@@ -18,12 +19,14 @@ if(isset($_SESSION["user"])) {
         echo '      <img src="'.$match->team[0]->icon.'" alt=""/>';
         echo '      '.$match->team[0]["name"].' vs. '.$match->team[1]["name"];
         echo '      <img src="'.$match->team[1]->icon.'" alt=""/>';
-        echo '      <div class="matchdetail">'.$bet->game.'</div>';
+        echo '      <div class="matchdetail">'.$game["name"].'</div>';
         echo '  </div>';
         if(strcmp($bet->winner, "1") == 0) {
             echo '  <div class="side1">'.$bet->amount.' €</div><div class="arrow1"></div>';
         }
         echo '</div>';
+        unset($game);
         unset($match);
     }
 }
+?>

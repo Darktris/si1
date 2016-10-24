@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- vim: set noai ts=4 sw=4: -->
 <?php
 session_start();
 function showmatch($game, $match, $set) {

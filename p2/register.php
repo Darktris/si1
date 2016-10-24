@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- vim: set noai ts=4 sw=4: -->
 <?php
 session_start();
 if(!isset($_SESSION["user"])) {
@@ -14,7 +13,7 @@ if(!isset($_SESSION["user"])) {
         if(!file_exists($user_path)) {
             mkdir($user_path, 0755, true);
             $data = fopen($user_path."/data.dat", "w");
-            fwrite($data, $_GET["1"]."\n".md5($_GET["2"])."\n".$_GET["3"]."\n".$_GET["4"]."\n".$_GET["5"]."\n0\n");
+            fwrite($data, $_GET["1"].PHP_EOL.md5($_GET["2"]).PHP_EOL.$_GET["3"].PHP_EOL.$_GET["4"].PHP_EOL.$_GET["5"].PHP_EOL."0".PHP_EOL);
             fclose($data);
             unset($data);
             $his = new SimpleXMLElement("<history></history>");

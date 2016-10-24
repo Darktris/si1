@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!-- vim: set noai ts=4 sw=4: -->
 <?php
 session_start();
 if(isset($_GET["game"]) && isset($_GET["match"])) {
