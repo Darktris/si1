@@ -5,30 +5,26 @@ if(isset($_REQUEST["login"])) {
     $user_path = "users/".$_REQUEST["user"];
     if(file_exists($user_path) && is_dir($user_path)) {
         $data = file($user_path."/data.dat");
-        unset($user_path);
         if(!$data) {
             $login_error = "Corrupt user.";
-            unset($data);
-            return;
-        }
-        if(strncmp(md5($_REQUEST["pass"]), $data[1], 32) == 0) {
-            session_start();
+        } elseif(strncmp(md5($_REQUEST["pass"]), $data[1], 32) == 0) {
             $_SESSION["user"] = $_REQUEST["user"];
             setcookie("user", $_REQUEST["user"], time() + (2 * 60 * 60));
             unset($login_error);
-            unset($data);
         } else {
             $login_error = "Invalid user or password.";
-            unset($data);
         }
+        unset($data);
     } else {
         $login_error = "Invalid user or password.";
-        unset($user_path);
     }
+    unset($user_path);
 } elseif(isset($_GET["logout"])) {
     session_unset();
     session_destroy();
     header('Location: /');
+} elseif(isset($_POST["bag_remove"]) && isset($_SESSION["bag"])) {
+    unset($_SESSION["bag"][strval($_POST["bag_remove"])]);
 }
 ?>
 <!DOCTYPE html>
@@ -39,18 +35,25 @@ if(isset($_REQUEST["login"])) {
         <link rel="stylesheet" type="text/css" href="theme.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="functions.js"></script>
-        <script>$(document).ready(loadContent())</script>
+        <?php
+        if(isset($_POST["content"])) {
+            echo '<script>$(document).ready(loadContent("'.$_POST["content"].'"))</script>';
+        } else {
+            echo '<script>$(document).ready(loadContent())</script>';
+        }
+        unset($content);
+        ?>
     </head>
     <body>
         <header onclick=loadContent()>
             <img src="images/logo.png" alt="">etaBet
         </header>
         <?php
-        if(isset($_SESSION["bag"])) {
-            $total = 0;
-            foreach($_SESSION["bag"] as $bet) {
-                $total += $bet["amount"];
-            }
+        if(isset($_SESSION["bag"]) && !empty($_SESSION["bag"])) {
+            $total = array_reduce($_SESSION["bag"], function($carry, $item) {
+                $carry += $item["amount"];
+                return $carry;
+            }, 0);
             echo "<div id='bag' onclick=loadContent('checkout.php')>";
             echo '  <span id="baginfo">';
             echo '      <img src="images/bag.png" alt="">Total: '.$total.' €';
@@ -92,6 +95,7 @@ if(isset($_REQUEST["login"])) {
             <?php
                 if(isset($login_error)) {
                     echo "<div class='error'>".$login_error."</div>";
+                    unset($login_error);
                 }
             ?>
                     <input type="submit" name="login" value="Login">
