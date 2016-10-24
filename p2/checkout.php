@@ -13,9 +13,12 @@ if(isset($_SESSION["user"])) {
                 foreach($game->matches->match as $match) {
                     if(array_key_exists(strval($match["id"]), $_SESSION["bag"])) {
                         $bet = $_SESSION["bag"][strval($match["id"])];
-                        echo '<div class="match">';
+                        echo '<div class="match" name="checkout">';
                         if(strcmp($bet["winner"], "0") == 0) {
                             echo '  <div class="side0">'.$bet["amount"].' €</div><div class="arrow0"></div>';
+                            echo '  <div class="edit" onclick="loadContent(\'bet.php?game='.$game["id"].'&match='.$match["id"].'&edit=true\')"><div class="side0g">Edit</div><div class="arrow0g"></div></div>';
+                        } else {
+                            echo '  <div class="remove" onclick="loadContent(\'checkout.php?remove='.$match["id"].'\')"><div class="side0r">Remove</div><div class="arrow0r"></div></div>';
                         }
                         echo '  <div class="matchinfo">';
                         echo '      <div class="matchdetail">'.date('D, jS F Y @ H:i',strtotime($match->date)).'</div>';
@@ -26,8 +29,12 @@ if(isset($_SESSION["user"])) {
                         echo '  </div>';
                         if(strcmp($bet["winner"], "1") == 0) {
                             echo '  <div class="side1">'.$bet["amount"].' €</div><div class="arrow1"></div>';
+                            echo '  <div class="edit" onclick="loadContent(\'bet.php?game='.$game["id"].'&match='.$match["id"].'&edit=true\')"><div class="side1g">Edit</div><div class="arrow1g"></div></div>';
+                        } else {
+                            echo '  <div class="remove" onclick="loadContent(\'checkout.php?remove='.$match["id"].'\')"><div class="side1r">Remove</div><div class="arrow1r"></div></div>';
                         }
                         echo '</div>';
+                        unset($bet);
                     }
                 }
             }

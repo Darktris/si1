@@ -586,6 +586,30 @@ input[type="search"] {
     border-right: 50px solid #804d4d;
 }
 
+.match .edit, .match .remove {
+    opacity: 0;
+    transition: opacity 0.5s;
+    cursor: pointer;
+}
+
+.match .edit .side0g, .match .edit .arrow0g {
+    position: relative;
+    left: -200px;
+}
+
+.match .edit .side1g, .match .edit .arrow1g {
+    position: relative;
+    right: -200px;
+}
+
+.match[name=checkout]:hover .edit {
+    opacity: 1;
+}
+
+.match[name=checkout]:hover .remove {
+    opacity: 1;
+}
+
 .error {
     font-weight: bold;
     color: red;
