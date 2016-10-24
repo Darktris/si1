@@ -41,7 +41,7 @@ if(isset($_SESSION["user"])) {
                     unset($user_path);
                     unset($chckt_error);
                     echo '<div class="text">';
-                    echo '  Your shopping bag was successfully processed.';
+                    echo '  Your shopping bag has been successfully processed.';
                     echo '</div>';
                     echo '<form method="post" action="/">';
                     echo '  <button type="submit">Back</button>';
@@ -64,7 +64,7 @@ if(isset($_SESSION["user"])) {
             echo '  <input type="hidden" name="bag_remove" value="'.$id.'">';
             echo '  <input type="hidden" name="content" value="checkout.php">';
             echo '</form>';
-            echo '<div class="match">';
+            echo '<div class="match" name="bagmatch">';
             if(strcmp($bet["winner"], "0") == 0) {
                 echo '  <div class="side0">'.$bet["amount"].' €</div><div class="arrow0"></div>';
                 echo '  <div class="edit" onclick="loadContent(\'bet.php?game='.$game["id"].'&match='.$id.'&edit=true\')"><div class="side0g">Edit</div><div class="arrow0g"></div></div>';
@@ -91,14 +91,13 @@ if(isset($_SESSION["user"])) {
         echo '<hr>';
         echo '<div class="totaltext">Total:</div>';
         echo '<div class="total">'.$total.' €</div>';
-        echo '<form action="/" method="post">';
+        echo '<form method="post" onsubmit="return false">';
         if(isset($chckt_error)) {
             echo '  <div class="error">'.$chckt_error.'</div>';
             unset($chckt_error);
         }
-        echo "  <input type='hidden' name='content' value='checkout.php?confirm=true'>";
         echo "  <input type='reset' value='Back' onclick=loadContent()>";
-        echo "  <input type='submit' value='Confirm'>";
+        echo "  <input type='submit' value='Confirm' onclick=loadContent('checkout.php?confirm=true')>";
         echo '</div>';
         unset($total);
     } else {

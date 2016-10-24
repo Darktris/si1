@@ -626,11 +626,11 @@ input[type="search"] {
     right: -200px;
 }
 
-.match[name=checkout]:hover .edit {
+.match[name=bagmatch]:hover .edit {
     opacity: 1;
 }
 
-.match[name=checkout]:hover .remove {
+.match[name=bagmatch]:hover .remove {
     opacity: 1;
 }
 
