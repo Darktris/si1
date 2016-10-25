@@ -34,14 +34,15 @@ if(isset($_REQUEST["login"])) {
         <link rel="stylesheet" type="text/css" href="theme.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="functions.js"></script>
-        <?php
-        if(isset($_POST["content"])) {
-            echo '<script>$(document).ready(loadContent("'.$_POST["content"].'"))</script>';
-        } else {
-            echo '<script>$(document).ready(loadContent())</script>';
-        }
-        unset($content);
-        ?>
+        <script>
+            $(document).ready(function() {
+                <?php
+                echo 'loadContent('.(isset($_POST["content"])? '"'.$_POST["content"].'"' : '').');';
+                ?>
+                updateUserCount();
+                setInterval(updateUserCount, 3000);
+            });
+        </script>
     </head>
     <body>
         <header onclick=loadContent()>
@@ -132,6 +133,7 @@ if(isset($_REQUEST["login"])) {
         <div id="scrollable">
         </div>
         <footer>
+            <div id="usercount"></div>
             <img src="http://www.w3.org/Icons/valid-xhtml10-blue" alt="Valid XHTML 1.0!"/>
             <img src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="¡CSS Válido!"/>
         </footer>

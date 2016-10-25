@@ -19,6 +19,19 @@ function loadContent(page, array) {
     xhttp.send();
 }
 
+function updateUserCount() {
+    var previous = document.getElementById("usercount").innerHTML;
+    previous = previous? parseInt(previous.split(">").pop()) : "";
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            document.getElementById("usercount").innerHTML = this.responseText;
+        }
+    };
+    xhttp.open("GET", "usercount.php?previous=" + previous, true);
+    xhttp.send();
+}
+
 function validateRegister() {
     var regex;
     var formok = true;
