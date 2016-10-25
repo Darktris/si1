@@ -68,15 +68,18 @@ function validateRegister() {
 }
 
 function validateBet(game, match) {
-    var max = 1000;
-    var min = 10;
-    var amount = document.forms["betform"]["amount"].value;
+    var min = parseInt(document.getElementById("amount").getAttribute("min"));
+    var max = parseInt(document.getElementById("amount").getAttribute("max"));
+    var step = parseInt(document.getElementById("amount").getAttribute("step"));
+    var amount = document.getElementById("amount").value;
     if(amount == null || amount == '' || isNaN(amount)) {
         document.getElementById("amount_error").innerHTML = "Please write a correct amount.";
     } else if(amount < min) {
         document.getElementById("amount_error").innerHTML = "The minimum bet is " + min + " €.";
     } else if(amount > max) {
         document.getElementById("amount_error").innerHTML = "The maximum bet is " + max + " €.";
+    } else if(amount % step !== 0) {
+        document.getElementById("amount_error").innerHTML = "No loose change below " + step + " €.";
     } else {
         document.getElementById("amount_error").innerHTML = "";
         loadContent("bet.php?game=" + game + "&match=" + match, ['input[name=team]:checked','#amount']);
@@ -84,11 +87,10 @@ function validateBet(game, match) {
 }
 
 function updateBet(wnnr) {
-    var newvalue = document.getElementById("amount").value;
+    var min = parseInt(document.getElementById("amount").getAttribute("min"));
+    var max = parseInt(document.getElementById("amount").getAttribute("max"));
+    var amount = parseInt(document.getElementById("amount").value) || document.getElementById("wnnrside").innerHTML.slice(0, -2);
     if(wnnr) {
-        if(!newvalue) {
-            newvalue = document.getElementById("wnnrside").innerHTML.slice(0, -2);
-        }
         $("#wnnrside").remove();
         $("#wnnrarrow").remove();
         if(wnnr == "0") {
@@ -97,9 +99,7 @@ function updateBet(wnnr) {
             $("#match").append("<div class='side1' id='wnnrside'></div><div class='arrow1' id='wnnrarrow'></div>");
         }
     }
-    if(newvalue) {
-        document.getElementById("wnnrside").innerHTML = newvalue.substr(0,4) + " €";
-    }
+    document.getElementById("wnnrside").innerHTML = Math.min(Math.max(amount, min), max) + " €";
 }
 
 function passwordStrength(password) {
