@@ -14,25 +14,51 @@ if(isset($_SESSION["user"])) {
             if(isset($_GET["option"])) {
                 if(strcmp($_GET["option"], "charge") == 0) {
                     if(isset($_GET["1"])) {
-
+                        $data[5] += $_GET["1"];
+                        $fdata = fopen($user_path."/data.dat", "w");
+                        foreach($data as $line) {
+                            fwrite($fdata, $line);
+                        }
+                        fclose($fdata);
+                        unset($fdata);
+                        echo '<div class="text">';
+                        echo '  You have charged '.$_GET["1"].' € into your account.';
+                        echo '</div>';
+                        echo '<form method="post" onsubmit="return false">';
+                        echo '  <button type="submit" onclick="loadContent()">OK</button>';
+                        echo '</form>';
                     } else {
                         echo '<div class="text">Charge credit</div>';
-                        echo '<form method="post" name="chrgform" onsubmit="return false">';
+                        echo '<form method="post" name="chargeform" onsubmit="return false">';
                         echo '  Amount: <span class="input-euro"><input id="amount" type="number" min="10" max="1000000" step="1" value="1000"></span><br>';
-                        echo "  <input type='reset' value='Back' onclick=loadContent()>";
-                        echo "  <input type='submit' value='Confirm'>";
-                        echo '</div>';
+                        echo '  <div class="error" id="amount_error"></div>';
+                        echo '  <input type="reset" value="Back" onclick="loadContent(\'credit.php\')">';
+                        echo '  <input type="submit" value="Confirm" onclick="validateCredit(\'charge\')">';
+                        echo '</div><br>';
                     }
                 } elseif(strcmp($_GET["option"], "withdraw") == 0) {
                     if(isset($_GET["1"])) {
-
+                        $data[5] -= $_GET["1"];
+                        $fdata = fopen($user_path."/data.dat", "w");
+                        foreach($data as $line) {
+                            fwrite($fdata, $line);
+                        }
+                        fclose($fdata);
+                        unset($fdata);
+                        echo '<div class="text">';
+                        echo '  You have withdrawn '.$_GET["1"].' € from your account.';
+                        echo '</div>';
+                        echo '<form method="post" onsubmit="return false">';
+                        echo '  <button type="submit" onclick="loadContent()">OK</button>';
+                        echo '</form>';
                     } else {
                         echo '<div class="text">Withdraw credit</div>';
-                        echo '<form method="post" name="wdrwform" onsubmit="return false">';
+                        echo '<form method="post" name="withdrawform" onsubmit="return false">';
                         echo '  Amount: <span class="input-euro"><input id="amount" type="number" min="10" max="'.$data[5].'" step="1" value="10"></span><br>';
-                        echo "  <input type='reset' value='Back' onclick=loadContent()>";
-                        echo "  <input type='submit' value='Confirm'>";
-                        echo '</div>';
+                        echo '  <div class="error" id="amount_error"></div>';
+                        echo '  <input type="reset" value="Back" onclick="loadContent(\'credit.php\')">';
+                        echo '  <input type="submit" value="Confirm" onclick="validateCredit(\'withdraw\')">';
+                        echo '</div><br>';
                     }
                 } else {
                     echo '<div class="error">Invalid option.</div>';

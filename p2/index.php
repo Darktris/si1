@@ -45,7 +45,7 @@ if(isset($_REQUEST["login"])) {
         </script>
     </head>
     <body>
-        <header onclick=loadContent()>
+        <header onclick="loadContent()">
             <img src="images/logo.png" alt="">etaBet
         </header>
         <?php
@@ -54,7 +54,7 @@ if(isset($_REQUEST["login"])) {
                 $carry += $item["amount"];
                 return $carry;
             }, 0);
-            echo "<div id='bag' onclick=loadContent('checkout.php')>";
+            echo '<div id=\'bag\' onclick="loadContent(\'checkout.php\')">';
             echo '  <span id="baginfo">';
             echo '      <img src="images/bag.png" alt="">Total: '.$total.' €';
             echo '  </span>';
@@ -76,8 +76,8 @@ if(isset($_REQUEST["login"])) {
             ?>
             </button>
             <div class="dropdown-content">
-                <button class="buttonD" onclick=loadContent('credit.php')>Credit</button>
-                <button class="buttonD" onclick=loadContent('history.php')>Bet History</button>
+                <button class="buttonD" onclick="loadContent('credit.php')">Credit</button>
+                <button class="buttonD" onclick="loadContent('history.php')">Bet History</button>
                 <a href="/?logout=">Logout</a>
             </div>
             <?php
@@ -107,7 +107,7 @@ if(isset($_REQUEST["login"])) {
             ?>
         </div>
         <div id="sidebar">
-            <input type="search" id="search" placeholder="Search..." autocomplete="off" oninput=loadContent('matches.php?',['#search'])>
+            <input type="search" id="search" placeholder="Search..." autocomplete="off" oninput="loadContent('matches.php?',['#search'])">
             <?php
             $xml = simplexml_load_file("db.xml");
             foreach($xml->category as $category) {
@@ -115,7 +115,7 @@ if(isset($_REQUEST["login"])) {
                 echo '    <button class="button1"><img src="images/category.png" alt="">'.$category["name"].'</button>';
                 echo '    <div class="dropdown2-content">';
                 foreach($category->game as $game) {
-                    echo '        <button class="button3" onclick=loadContent("matches.php?game='.$game["id"].'")>'.'<img src="'.$game->icon.'" alt="">'.$game["name"].'</button>';
+                    echo '        <button class="button3" onclick="loadContent(\'matches.php?game='.$game["id"].'\')">'.'<img src="'.$game->icon.'" alt="">'.$game["name"].'</button>';
                 }
                 echo '    </div>';
                 echo '</div>';
@@ -124,7 +124,7 @@ if(isset($_REQUEST["login"])) {
             if(!isset($_SESSION["user"])) {
             ?>
             <div class="links">
-                <button class=buttonR onclick=loadContent('register.php')>Register</button>
+                <button class=buttonR onclick="loadContent('register.php')">Register</button>
             </div>
             <?php
             }

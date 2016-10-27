@@ -16,7 +16,7 @@ function showmatch($game, $match, $set) {
         echo '<div class="match">';
         echo '  <div class="side0'.$c0.'">'.$match->team[0]->score.'</div><div class="arrow0'.$c0.'"></div>';
     } else {
-        echo '<div class="match" onclick=loadContent("bet.php?game='.$game["id"].'&match='.$match["id"].'")>';
+        echo '<div class="match" onclick="loadContent(\'bet.php?game='.$game["id"].'&match='.$match["id"].'\')">';
     }
     echo '  <div class="matchinfo">';
     echo '      <div class="matchdetail">'.date('D, jS F Y @ H:i',strtotime($match->date)).'</div>';

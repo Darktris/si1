@@ -96,9 +96,9 @@ if(isset($_SESSION["user"])) {
             echo '  <div class="error">'.$chckt_error.'</div>';
             unset($chckt_error);
         }
-        echo "  <input type='reset' value='Back' onclick=loadContent()>";
-        echo "  <input type='submit' value='Confirm' onclick=loadContent('checkout.php?confirm=true')>";
-        echo '</div>';
+        echo '  <input type="reset" value="Back" onclick="loadContent()">';
+        echo '  <input type="submit" value="Confirm" onclick="loadContent(\'checkout.php?confirm=true\')">';
+        echo '</div><br>';
         unset($total);
     } else {
         echo '<div class="text">';

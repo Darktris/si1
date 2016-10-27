@@ -53,7 +53,7 @@ if(!isset($_SESSION["user"])) {
     <div class="error" id="card_error"></div>
     <input type="reset" id="clear" value="Clear" onclick="passwordStrength()">
     <input type="submit" id="register" value="Register" onclick="validateRegister()">
-</form>
+</form><br>
 <?php
 }
 ?>

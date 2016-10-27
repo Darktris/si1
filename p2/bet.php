@@ -71,9 +71,9 @@ if(isset($_GET["game"]) && isset($_GET["match"])) {
         echo '<form method="post" name="betform" onsubmit="return false">';
         echo '  Amount: <span class="input-euro"><input id="amount" type="number" min="10" max="1000" step="1" value="'.(isset($bet)? $bet["amount"] : "10").'" oninput=updateBet()></span><br>';
         echo '  <div class="error" id="amount_error"></div>';
-        echo "  <input type='reset' value='Back' onclick=loadContent()>";
-        echo "  <input type='submit' value='Confirm' onclick=validateBet('".$game["id"]."','".$match["id"]."')>";
-        echo '</div>';
+        echo '  <input type="reset" value="Back" onclick="loadContent()">';
+        echo '  <input type="submit" value="Confirm" onclick="validateBet(\''.$game["id"].'\',\''.$match["id"].'\')">';
+        echo '</div><br>';
     }
 } else {
     echo '<div class="error">Illegal access.</div>';

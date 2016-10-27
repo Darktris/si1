@@ -80,6 +80,25 @@ function validateRegister() {
     }
 }
 
+function validateCredit(option) {
+    var min = parseInt(document.getElementById("amount").getAttribute("min"));
+    var max = parseInt(document.getElementById("amount").getAttribute("max"));
+    var step = parseInt(document.getElementById("amount").getAttribute("step"));
+    var amount = document.getElementById("amount").value;
+    if(amount == null || amount == '' || isNaN(amount)) {
+        document.getElementById("amount_error").innerHTML = "Please write a correct amount.";
+    } else if(amount < min) {
+        document.getElementById("amount_error").innerHTML = "The minimum amount you can " + option + " is " + min + " €.";
+    } else if(amount > max) {
+        document.getElementById("amount_error").innerHTML = "The maximum amount you can " + option + " is " + max + " €.";
+    } else if(amount % step !== 0) {
+        document.getElementById("amount_error").innerHTML = "No loose change below " + step + " €.";
+    } else {
+        document.getElementById("amount_error").innerHTML = "";
+        loadContent("credit.php?option=" + option, ['#amount']);
+    }
+}
+
 function validateBet(game, match) {
     var min = parseInt(document.getElementById("amount").getAttribute("min"));
     var max = parseInt(document.getElementById("amount").getAttribute("max"));
