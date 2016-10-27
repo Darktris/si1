@@ -78,7 +78,7 @@ if(isset($_REQUEST["login"])) {
             <div class="dropdown-content">
                 <button class="buttonD" onclick="loadContent('credit.php')">Credit</button>
                 <button class="buttonD" onclick="loadContent('history.php')">Bet History</button>
-                <a href="/?logout=">Logout</a>
+                <a href="?logout=">Logout</a>
             </div>
             <?php
             } else {

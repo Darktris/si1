@@ -13,7 +13,7 @@ if(!isset($_SESSION["user"])) {
         if(!file_exists($user_path)) {
             mkdir($user_path, 0755, true);
             $data = fopen($user_path."/data.dat", "w");
-            fwrite($data, $_GET["1"].PHP_EOL.md5($_GET["2"]).PHP_EOL.$_GET["3"].PHP_EOL.$_GET["4"].PHP_EOL.$_GET["5"].PHP_EOL."2000".PHP_EOL); //TODO 2000€ for debugging
+            fwrite($data, $_GET["1"].PHP_EOL.md5($_GET["2"]).PHP_EOL.$_GET["3"].PHP_EOL.$_GET["4"].PHP_EOL.$_GET["5"].PHP_EOL."0".PHP_EOL);
             fclose($data);
             unset($data);
             $his = new SimpleXMLElement("<history></history>");
