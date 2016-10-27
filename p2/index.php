@@ -91,7 +91,7 @@ if(isset($_REQUEST["login"])) {
                     User name:
                     <input type="text" name="user" <?php if(isset($_COOKIE["user"])) echo 'value="'.$_COOKIE["user"].'"';?> required><br>
                     Password:
-                    <input type="password" name="pass"required>
+                    <input type="password" name="pass" required>
             <?php
                 if(isset($login_error)) {
                     echo "<div class='error'>".$login_error."</div>";
