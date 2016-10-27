@@ -12,10 +12,10 @@ if(isset($_SESSION["user"])) {
     foreach($his->bet as $bet) {
         $bets[] = $bet;
     }
-    foreach(array_reverse($bets) as $bet) {
+    foreach(array_reverse($bets) as $i => $bet) {
         $game = $xml->xpath('/db/category[@*]/game[@id = "'.$bet->game.'"]')[0];
         $match = $xml->xpath('/db/category[@*]/game[@id = "'.$bet->game.'"]/matches/match[@id = "'.$bet["id"].'"]')[0];
-        echo '<div class="match" onclick="showBetDetails(\''.$bet["id"].'\')">';
+        echo '<div class="match" onclick="showBetDetails(\''.$i.'\')">';
         if(strcmp($bet->winner, "0") == 0) {
             echo '  <div class="side0">'.$bet->amount.' €</div><div class="arrow0"></div>';
         }
@@ -30,7 +30,7 @@ if(isset($_SESSION["user"])) {
             echo '  <div class="side1">'.$bet->amount.' €</div><div class="arrow1"></div>';
         }
         echo '</div>';
-        echo '<div class="betdetails" id="details'.$bet["id"].'">';
+        echo '<div class="betdetails" id="details'.$i.'">';
         echo '  Bet made on '.date('D, jS F Y \a\t H:i', intval($bet->time));
         echo '</div>';
         unset($game);
