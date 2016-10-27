@@ -22,7 +22,7 @@ if(isset($_REQUEST["login"])) {
 } elseif(isset($_GET["logout"])) {
     session_unset();
     session_destroy();
-    header('Location: '.$_SERVER['PHP_SELF']);
+    header('Location: '.strtok($_SERVER["REQUEST_URI"],'?'));
 } elseif(isset($_POST["bag_remove"]) && isset($_SESSION["bag"])) {
     unset($_SESSION["bag"][strval($_POST["bag_remove"])]);
 }
