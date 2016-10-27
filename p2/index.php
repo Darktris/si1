@@ -31,6 +31,7 @@ if(isset($_REQUEST["login"])) {
     <head>
         <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
         <title>BetaBet</title>
+        <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA////AI2NjQA8PDwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEREREQAAAAEREBEREAAAAREQEREQAAABEREQARAAAAARERMREAAAABEREREgAAAAEREREAAAAAAREQERAAAAAREQABEQAAABEREBERAAAAEREQERAAAAARERERAAAAAAAAAAAAAAAAAAAAAAAAD4HwAA4AcAAMADAACAAQAAgAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIABAACAAQAAwAMAAOAHAAD4HwAA" rel="icon" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="theme.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
         <script src="functions.js"></script>
