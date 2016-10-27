@@ -135,13 +135,22 @@ function updateUserCount() {
 }
 
 function passwordStrength(password) {
-    var desc = new Array();
-    desc[0] = "Password Strength";
-    desc[1] = "Too Short";
-    desc[2] = "Weak";
-    desc[3] = "Medium";
-    desc[4] = "Strong";
-    desc[5] = "Very Strong";
+    var desc = new Array(
+        "Password Strength",
+        "Too Short",
+        "Weak",
+        "Medium",
+        "Strong",
+        "Very Strong"
+    );
+    var bg = new Array(
+        "#f5f5f5",
+        "linear-gradient(to right, #ff8b94 0%, #ff8b94 20%, #f5f5f5 20%, #f5f5f5 100%)",
+        "linear-gradient(to right, #ffaaa5 0%, #ffaaa5 40%, #f5f5f5 40%, #f5f5f5 100%)",
+        "linear-gradient(to right, #ffd3b6 0%, #ffd3b6 60%, #f5f5f5 60%, #f5f5f5 100%)",
+        "linear-gradient(to right, #dcedc1 0%, #dcedc1 80%, #f5f5f5 80%, #f5f5f5 100%)",
+        "#a8e6cf"
+    );
     var score = 0;
     if(password) {
         score++;
@@ -152,7 +161,16 @@ function passwordStrength(password) {
             if ( password.match(/.[\!,\@,\#,\$,\%,\^,\&,\*,\?,\~,\-,\(,\),\[,\]]/) ) score++;
         }
     }
-    strength = document.getElementById("strength");
-    strength.innerHTML = desc[score];
-    strength.className = "strength" + score;
+    strength = $("#strength");
+    strength.html(desc[score]);
+    strength.css("background", bg[score]);
+}
+
+function showBetDetails(id) {
+    var details = $("#details" + id);
+    if(details.height() === 0) {
+        details.animate({height: "20"}, {queue: false});
+    } else {
+        details.animate({height: "0"}, {queue: false});
+    }
 }

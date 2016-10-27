@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+date_default_timezone_set('Europe/Madrid');
 session_start();
 if(isset($_SESSION["user"])) {
     echo '<div class="title">';
@@ -7,10 +8,14 @@ if(isset($_SESSION["user"])) {
     echo '</div>';
     $xml = simplexml_load_file('db.xml');
     $his = simplexml_load_file('users/'.$_SESSION["user"].'/history.xml');
+    $bets = array();
     foreach($his->bet as $bet) {
+        $bets[] = $bet;
+    }
+    foreach(array_reverse($bets) as $bet) {
         $game = $xml->xpath('/db/category[@*]/game[@id = "'.$bet->game.'"]')[0];
         $match = $xml->xpath('/db/category[@*]/game[@id = "'.$bet->game.'"]/matches/match[@id = "'.$bet["id"].'"]')[0];
-        echo '<div class="match">';
+        echo '<div class="match" onclick="showBetDetails(\''.$bet["id"].'\')">';
         if(strcmp($bet->winner, "0") == 0) {
             echo '  <div class="side0">'.$bet->amount.' €</div><div class="arrow0"></div>';
         }
@@ -24,6 +29,9 @@ if(isset($_SESSION["user"])) {
         if(strcmp($bet->winner, "1") == 0) {
             echo '  <div class="side1">'.$bet->amount.' €</div><div class="arrow1"></div>';
         }
+        echo '</div>';
+        echo '<div class="betdetails" id="details'.$bet["id"].'">';
+        echo '  Bet made on '.date('D, jS F Y \a\t H:i', intval($bet->time));
         echo '</div>';
         unset($game);
         unset($match);

@@ -33,6 +33,7 @@ if(isset($_SESSION["user"])) {
                         $newbet->addChild("game", $bet["game"]);
                         $newbet->addChild("winner", $bet["winner"]);
                         $newbet->addChild("amount", $bet["amount"]);
+                        $newbet->addChild("time", time());
                         unset($newbet);
                     }
                     $his->asXML($user_path.'/history.xml');
@@ -43,7 +44,7 @@ if(isset($_SESSION["user"])) {
                     echo '<div class="text">';
                     echo '  Your shopping bag has been successfully processed.';
                     echo '</div>';
-                    echo '<form method="post" action="/">';
+                    echo '<form method="post" action="">';
                     echo '  <button type="submit">Back</button>';
                     echo '</form>';
                     return;
@@ -60,17 +61,15 @@ if(isset($_SESSION["user"])) {
         foreach($_SESSION["bag"] as $id => $bet) {
             $game = $xml->xpath('/db/category[@*]/game[@id = "'.$bet["game"].'"]')[0];
             $match = $xml->xpath('/db/category[@*]/game[@id = "'.$bet["game"].'"]/matches/match[@id = "'.$id.'"]')[0];
-            echo '<form action="/" method="post" id="remove'.$id.'">';
+            echo '<form action="" method="post" id="remove'.$id.'">';
             echo '  <input type="hidden" name="bag_remove" value="'.$id.'">';
             echo '  <input type="hidden" name="content" value="checkout.php">';
             echo '</form>';
             echo '<div class="match" name="bagmatch">';
             if(strcmp($bet["winner"], "0") == 0) {
                 echo '  <div class="side0">'.$bet["amount"].' €</div><div class="arrow0"></div>';
-                echo '  <div class="edit" onclick="loadContent(\'bet.php?game='.$game["id"].'&match='.$id.'&edit=true\')"><div class="side0g">Edit</div><div class="arrow0g"></div></div>';
-            } else {
-                echo '  <div class="remove" onclick="$(\'#remove'.$id.'\').submit()"><div class="side0r">Remove</div><div class="arrow0r"></div></div>';
             }
+            echo '  <div class="edit" onclick="loadContent(\'bet.php?game='.$game["id"].'&match='.$id.'&edit=true\')"><div class="side0g">Edit</div><div class="arrow0g"></div></div>';
             echo '  <div class="matchinfo">';
             echo '      <div class="matchdetail">'.date('D, jS F Y @ H:i',strtotime($match->date)).'</div>';
             echo '      <img src="'.$match->team[0]->icon.'" alt=""/>';
@@ -80,10 +79,8 @@ if(isset($_SESSION["user"])) {
             echo '  </div>';
             if(strcmp($bet["winner"], "1") == 0) {
                 echo '  <div class="side1">'.$bet["amount"].' €</div><div class="arrow1"></div>';
-                echo '  <div class="edit" onclick="loadContent(\'bet.php?game='.$game["id"].'&match='.$id.'&edit=true\')"><div class="side1g">Edit</div><div class="arrow1g"></div></div>';
-            } else {
-                echo '  <div class="remove" onclick="$(\'#remove'.$id.'\').submit()"><div class="side1r">Remove</div><div class="arrow1r"></div></div>';
             }
+            echo '  <div class="remove" onclick="$(\'#remove'.$id.'\').submit()"><div class="side1r">Remove</div><div class="arrow1r"></div></div>';
             echo '</div>';
             unset($game);
             unset($match);

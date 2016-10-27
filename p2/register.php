@@ -24,7 +24,7 @@ if(!isset($_SESSION["user"])) {
             echo '<div class="text">';
             echo '  Welcome to BetaBet, '.$_GET["1"].'!';
             echo '</div>';
-            echo '<form method="post" action="/">';
+            echo '<form method="post" action="">';
             echo '  <button type="submit">Back</button>';
             echo '</form>';
             return;
@@ -40,7 +40,7 @@ if(!isset($_SESSION["user"])) {
     <br>Password:<br>
     <input type="password" id="pass" placeholder="Password" oninput="passwordStrength(this.value)" required><br>
     <input type="password" id="passrep" placeholder="Repeat password" required><br>
-    <div id="strength" class="strength0">Password Strength</div>
+    <div id="strength" class="strength">Password Strength</div>
     <div class="error" id="pass_error"></div>
     <br>E-mail address:<br>
     <input type="email" id="mail" placeholder="E-mail address" required><br>
