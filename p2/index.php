@@ -22,7 +22,7 @@ if(isset($_REQUEST["login"])) {
 } elseif(isset($_GET["logout"])) {
     session_unset();
     session_destroy();
-    header('Location: /');
+    header('Location: '.$_SERVER['PHP_SELF']);
 } elseif(isset($_POST["bag_remove"]) && isset($_SESSION["bag"])) {
     unset($_SESSION["bag"][strval($_POST["bag_remove"])]);
 }
@@ -78,7 +78,7 @@ if(isset($_REQUEST["login"])) {
             <div class="dropdown-content">
                 <button class="buttonD" onclick="loadContent('credit.php')">Credit</button>
                 <button class="buttonD" onclick="loadContent('history.php')">Bet History</button>
-                <a href="?logout=true">Logout</a>
+                <a href="?logout=">Logout</a>
             </div>
             <?php
             } else {
