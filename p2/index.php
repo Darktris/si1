@@ -128,7 +128,7 @@ if(isset($_POST["login"])) {
                 Login
             </button>
             <div class="dropdown-content">
-                <form method="post" action="">
+                <form method="post">
                     User name:
                     <input type="text" name="user" <?php if(isset($_COOKIE["user"])) echo 'value="'.$_COOKIE["user"].'"';?> required><br>
                     Password:

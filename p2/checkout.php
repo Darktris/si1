@@ -53,7 +53,7 @@ if(isset($_SESSION["user"])) {
                     echo '<div class="text">';
                     echo '  Your shopping bag has been successfully processed.';
                     echo '</div>';
-                    echo '<form method="post" action="">';
+                    echo '<form method="post">';
                     echo '  <button type="submit">Back</button>';
                     echo '</form>';
                     return;
@@ -70,7 +70,7 @@ if(isset($_SESSION["user"])) {
         foreach($_SESSION["bag"] as $id => $bet) {
             $game = $xml->xpath('/db/category[@*]/game[@id = "'.$bet["game"].'"]')[0];
             $match = $xml->xpath('/db/category[@*]/game[@id = "'.$bet["game"].'"]/matches/match[@id = "'.$id.'"]')[0];
-            echo '<form action="" method="post" id="remove'.$id.'">';
+            echo '<form method="post" id="remove'.$id.'">';
             echo '  <input type="hidden" name="content" value="checkout.php?remove='.$id.'">';
             echo '</form>';
             echo '<div class="match" name="bagmatch">';
@@ -109,7 +109,7 @@ if(isset($_SESSION["user"])) {
         echo '<div class="text">';
         echo '  Your bag is empty.';
         echo '</div>';
-        echo '<form method="post" action="">';
+        echo '<form method="post">';
         echo '  <button type="submit">Back</button>';
         echo '</form>';
     }
@@ -117,7 +117,7 @@ if(isset($_SESSION["user"])) {
     echo '<div class="text">';
     echo '  You must login before proceeding to checkout';
     echo '</div>';
-    echo '<form method="post" action="">';
+    echo '<form method="post">';
     echo '  <button type="submit">Back</button>';
     echo '</form>';
 }
