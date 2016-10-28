@@ -1,24 +1,3 @@
-function loadContent(page, array) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("scrollable").innerHTML = this.responseText;
-        }
-    };
-    if(array) {
-        if(page.indexOf("?") == -1) {
-            page += "?";
-        }
-        var count=0;
-        array.forEach(function(entry) {
-            count++;
-            page += "&" + count + "=" + $(entry).val();
-        });
-    }
-    xhttp.open("GET", typeof(page) === 'undefined'? "matches.php" : page, true);
-    xhttp.send();
-}
-
 function validateRegister() {
     var regex;
     var formok = true;
@@ -86,7 +65,7 @@ function validateCredit(option) {
     }
 }
 
-function validateBet(game, match) {
+function validateBet(game, match, edit) {
     var min = parseInt(document.getElementById("amount").getAttribute("min"));
     var max = parseInt(document.getElementById("amount").getAttribute("max"));
     var step = parseInt(document.getElementById("amount").getAttribute("step"));
@@ -101,7 +80,7 @@ function validateBet(game, match) {
         document.getElementById("amount_error").innerHTML = "No loose change below " + step + " €.";
     } else {
         document.getElementById("amount_error").innerHTML = "";
-        loadContent("bet.php?game=" + game + "&match=" + match, ['input[name=team]:checked','#amount']);
+        loadContent("bet.php?game=" + game + "&match=" + match + "&edit=" + (edit || "false"), ['input[name=team]:checked','#amount']);
     }
 }
 
@@ -119,19 +98,6 @@ function updateBet(wnnr) {
         }
     }
     document.getElementById("wnnrside").innerHTML = Math.min(Math.max(amount, min), max) + " €";
-}
-
-function updateUserCount() {
-    var previous = document.getElementById("usercount").innerHTML;
-    previous = previous? parseInt(previous.split(">").pop()) : "";
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("usercount").innerHTML = this.responseText;
-        }
-    };
-    xhttp.open("GET", "usercount.php?previous=" + previous, true);
-    xhttp.send();
 }
 
 function passwordStrength(password) {

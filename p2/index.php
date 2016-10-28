@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <?php
 session_start();
-if(isset($_REQUEST["login"])) {
-    $user_path = "users/".$_REQUEST["user"];
+$_SESSION["index_token"] = uniqid("", true);
+if(isset($_POST["login"])) {
+    $user_path = "users/".$_POST["user"];
     if(file_exists($user_path) && is_dir($user_path)) {
         $data = file($user_path."/data.dat");
         if(!$data) {
             $login_error = "Corrupt user.";
-        } elseif(strncmp(md5($_REQUEST["pass"]), $data[1], 32) == 0) {
-            $_SESSION["user"] = $_REQUEST["user"];
-            setcookie("user", $_REQUEST["user"], time() + (2 * 60 * 60));
+        } elseif(strncmp(md5($_POST["pass"]), $data[1], 32) == 0) {
+            $_SESSION["user"] = $_POST["user"];
+            setcookie("user", $_POST["user"], time() + (2 * 60 * 60));
             unset($login_error);
         } else {
             $login_error = "Invalid user or password.";
@@ -23,8 +24,7 @@ if(isset($_REQUEST["login"])) {
     session_unset();
     session_destroy();
     header('Location: '.strtok($_SERVER["REQUEST_URI"],'?'));
-} elseif(isset($_POST["bag_remove"]) && isset($_SESSION["bag"])) {
-    unset($_SESSION["bag"][strval($_POST["bag_remove"])]);
+    die;
 }
 ?>
 <html>
@@ -34,6 +34,46 @@ if(isset($_REQUEST["login"])) {
         <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA////AI2NjQA8PDwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABEREREQAAAAEREBEREAAAAREQEREQAAABEREQARAAAAARERMREAAAABEREREgAAAAEREREAAAAAAREQERAAAAAREQABEQAAABEREBERAAAAEREQERAAAAARERERAAAAAAAAAAAAAAAAAAAAAAAAD4HwAA4AcAAMADAACAAQAAgAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIABAACAAQAAwAMAAOAHAAD4HwAA" rel="icon" type="image/x-icon" />
         <link rel="stylesheet" type="text/css" href="theme.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script>
+            function loadContent(page, array) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("scrollable").innerHTML = this.responseText;
+                    }
+                };
+                if(array) {
+                    if(page.indexOf("?") == -1) {
+                        page += "?";
+                    }
+                    var count=0;
+                    array.forEach(function(entry) {
+                        count++;
+                        page += "&" + count + "=" + $(entry).val();
+                    });
+                }
+                xhttp.open("POST", page || "matches.php", true);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                <?php
+                echo 'xhttp.send("index_token='.$_SESSION["index_token"].'");';
+                ?>
+            }
+            function updateUserCount() {
+                var previous = document.getElementById("usercount").innerHTML;
+                previous = previous? parseInt(previous.split(">").pop()) : "";
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("usercount").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("POST", "usercount.php", true);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                <?php
+                echo 'xhttp.send("index_token='.$_SESSION["index_token"].'&previous=" + previous);';
+                ?>
+            }
+        </script>
         <script src="functions.js"></script>
         <script>
             $(document).ready(function() {

@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <?php
-date_default_timezone_set('Europe/Madrid');
 session_start();
+if(!isset($_POST["index_token"]) || strcmp($_POST["index_token"], $_SESSION["index_token"]) !== 0) {
+    header('Location: '.dirname(strtok($_SERVER["REQUEST_URI"],'?')));
+    die;
+}
+date_default_timezone_set('Europe/Madrid');
 if(isset($_SESSION["user"])) {
     echo '<div class="title">';
     echo '  Bet History';

@@ -1,9 +1,15 @@
 <!DOCTYPE html>
+<?php
+session_start();
+if(!isset($_POST["index_token"]) || strcmp($_POST["index_token"], $_SESSION["index_token"]) !== 0) {
+    header('Location: '.dirname(strtok($_SERVER["REQUEST_URI"],'?')));
+    die;
+}
+?>
 <div class="title">
     Credit
 </div>
 <?php
-session_start();
 if(isset($_SESSION["user"])) {
     $user_path = "users/".$_SESSION["user"];
     if(file_exists($user_path) && is_dir($user_path)) {
@@ -25,7 +31,7 @@ if(isset($_SESSION["user"])) {
                         echo '  You have charged '.$_GET["1"].' € into your account.';
                         echo '</div>';
                         echo '<form method="post" onsubmit="return false">';
-                        echo '  <button type="submit" onclick="loadContent(\'credit.php\')">OK</button>';
+                        echo '  <button type="submit" onclick="loadContent(\'credit.php\')">Back</button>';
                         echo '</form>';
                     } else {
                         echo '<div class="text">Charge credit</div>';
@@ -49,7 +55,7 @@ if(isset($_SESSION["user"])) {
                         echo '  You have withdrawn '.$_GET["1"].' € from your account.';
                         echo '</div>';
                         echo '<form method="post" onsubmit="return false">';
-                        echo '  <button type="submit" onclick="loadContent(\'credit.php\')">OK</button>';
+                        echo '  <button type="submit" onclick="loadContent(\'credit.php\')">Back</button>';
                         echo '</form>';
                     } else {
                         echo '<div class="text">Withdraw credit</div>';

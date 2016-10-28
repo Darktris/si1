@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <?php
 session_start();
+if(!isset($_POST["index_token"]) || strcmp($_POST["index_token"], $_SESSION["index_token"]) !== 0) {
+    header('Location: '.dirname(strtok($_SERVER["REQUEST_URI"],'?')));
+    die;
+}
 function showmatch($game, $match, $set) {
     if($set) {
         if(strcmp($match->result, "0") == 0) {

@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <?php
 session_start();
+if(!isset($_POST["index_token"]) || strcmp($_POST["index_token"], $_SESSION["index_token"]) !== 0) {
+    header('Location: '.dirname(strtok($_SERVER["REQUEST_URI"],'?')));
+    die;
+}
 if(isset($_GET["game"]) && isset($_GET["match"])) {
     $xml = simplexml_load_file("db.xml");
     $game = $xml->xpath('/db/category[@*]/game[@id = "'.$_GET["game"].'"]')[0];
     $match = $xml->xpath('/db/category[@*]/game[@id = "'.$_GET["game"].'"]/matches/match[@id = "'.$_GET["match"].'"]')[0];
     unset($xml);
+    $edit = isset($_GET["edit"]) && (strcmp($_GET["edit"], "true") == 0);
     if(isset($_GET["1"]) && isset($_GET["2"])) {
         /* "1" is left/right team, "2" is amount */
         if(!isset($_SESSION["bag"])) {
@@ -35,12 +40,13 @@ if(isset($_GET["game"]) && isset($_GET["match"])) {
         }
         echo '</div>';
         echo '<form method="post" action="">';
+        if($edit) {
+            echo '  <input type="hidden" name="content" value="checkout.php">';
+        }
         echo '  <button type="submit">OK</button>';
         echo '</form>';
     } else {
-        if(isset($_GET["edit"]) &&
-            strcmp($_GET["edit"], "true") == 0 &&
-            isset($_SESSION["bag"]) &&
+        if($edit && isset($_SESSION["bag"]) &&
             array_key_exists(strval($match["id"]), $_SESSION["bag"])) {
             $bet = $_SESSION["bag"][strval($match["id"])];
         }
@@ -72,7 +78,7 @@ if(isset($_GET["game"]) && isset($_GET["match"])) {
         echo '  Amount: <span class="input-euro"><input id="amount" type="number" min="10" max="1000" step="1" value="'.(isset($bet)? $bet["amount"] : "10").'" oninput=updateBet()></span><br>';
         echo '  <div class="error" id="amount_error"></div>';
         echo '  <input type="reset" value="Back" onclick="loadContent()">';
-        echo '  <input type="submit" value="Confirm" onclick="validateBet(\''.$game["id"].'\',\''.$match["id"].'\')">';
+        echo '  <input type="submit" value="Confirm" onclick="validateBet(\''.$game["id"].'\',\''.$match["id"].'\',\''.($edit? "true" : "false").'\')">';
         echo '</div><br>';
     }
 } else {

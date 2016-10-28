@@ -1,10 +1,19 @@
 <!DOCTYPE html>
 <?php
 session_start();
-echo '<div class="title">';
-echo '  Checkout';
-echo '</div>';
+if(!isset($_POST["index_token"]) || strcmp($_POST["index_token"], $_SESSION["index_token"]) !== 0) {
+    header('Location: '.dirname(strtok($_SERVER["REQUEST_URI"],'?')));
+    die;
+}
+?>
+<div class="title">
+    Checkout
+</div>
+<?php
 if(isset($_SESSION["user"])) {
+    if(isset($_GET["remove"])) {
+        unset($_SESSION["bag"][strval($_GET["remove"])]);
+    }
     if(isset($_SESSION["bag"]) && !empty($_SESSION["bag"])) {
         $total = array_reduce($_SESSION["bag"], function($carry, $item) {
             $carry += $item["amount"];
@@ -62,8 +71,7 @@ if(isset($_SESSION["user"])) {
             $game = $xml->xpath('/db/category[@*]/game[@id = "'.$bet["game"].'"]')[0];
             $match = $xml->xpath('/db/category[@*]/game[@id = "'.$bet["game"].'"]/matches/match[@id = "'.$id.'"]')[0];
             echo '<form action="" method="post" id="remove'.$id.'">';
-            echo '  <input type="hidden" name="bag_remove" value="'.$id.'">';
-            echo '  <input type="hidden" name="content" value="checkout.php">';
+            echo '  <input type="hidden" name="content" value="checkout.php?remove='.$id.'">';
             echo '</form>';
             echo '<div class="match" name="bagmatch">';
             if(strcmp($bet["winner"], "0") == 0) {
