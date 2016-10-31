@@ -1,3 +1,10 @@
 !users
 users/*
 !users/Debug
+mem/mem.aux
+mem/mem.fdb_latexmk
+mem/mem.fls
+mem/mem.log
+mem/mem.out
+mem/mem.synctex.gz
+mem/mem.toc

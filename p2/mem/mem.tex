@@ -24,11 +24,12 @@
 \usepackage{fancyhdr} % Required for custom headers
 \usepackage{lastpage} % Required to determine the last page for the footer
 \usepackage{graphicx} % Required to insert images
-\usepackage{enumitem}
+\usepackage[export]{adjustbox}
 \usepackage{multicol}
+\usepackage{enumitem}
 \usepackage{environ}
-\usepackage{caption}
 \usepackage{hyperref}
+\usepackage[font=small]{caption}
 \usepackage{calc}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
@@ -154,47 +155,92 @@ La entrega final de la práctica está compuesta por los siguientes archivos:
 \section{Instrucciones de uso}
 \subsection{Encontrar una apuesta}
 Al acceder a la página principal se muestra el conjunto de todas las apuestas, organizadas en dos secciones:
-\begin{multicols}{2}
-    \textbf{\textit{Upcoming Matches}}: Encuentros que aún no se han celebrado o que aún no han terminado y por los que se puede apostar, los más inminentes aparecen primero.
+\begin{itemize}
+    \item\textbf{\textit{Upcoming Matches}}: Encuentros que aún no se han celebrado o que aún no han terminado y por los que se puede apostar, los más inminentes aparecen primero.
+    \smallskip\newline
     \begin{minipage}{\linewidth}
         \centering
         \captionsetup{type=figure}
-        \includegraphics[width=\linewidth]{fig1}
+        \includegraphics[width=.9\linewidth]{fig1}
         \caption{\textit{Upcoming Matches}}
         \label{fig:fig1}
     \end{minipage}
-    \columnbreak\newline
-    \textbf{\textit{Latest Matches}}: Encuentros finalizados por los que ya no es posible apostar y cuyos resultados se indican en la página, los más recientes aparecen primero.
+    \item\textbf{\textit{Latest Matches}}: Encuentros finalizados por los que ya no es posible apostar y cuyos resultados se indican en la página, los más recientes aparecen primero.\
+    \smallskip\newline
     \begin{minipage}{\linewidth}
         \centering
         \captionsetup{type=figure}
-        \includegraphics[width=\linewidth]{fig2}
+        \includegraphics[width=.9\linewidth]{fig2}
         \caption{\textit{Latest Matches}}
         \label{fig:fig2}
     \end{minipage}
-\end{multicols}
+\end{itemize}
+\newpage
 Existen dos mecanismos de filtrado de apuestas para localizar encuentros determinados de manera sencilla:
-\begin{multicols}{2}
-    \textbf{Categorías}: Desplegando los menús de la barra lateral y pulsando los botones correspondientes es posible filtrar las apuestas por categoría.
+\begin{itemize}
+    \item\textbf{Categorías}: Desplegando los menús de la barra lateral y pulsando los botones correspondientes es posible filtrar las apuestas por categoría.
+    \smallskip\newline
     \begin{minipage}{\linewidth}
         \centering
         \captionsetup{type=figure}
-        \includegraphics[width=\linewidth]{fig3}
+        \includegraphics[width=.9\linewidth]{fig3}
         \caption{Filtrado por categorías}
         \label{fig:fig3}
     \end{minipage}
-    \columnbreak\newline
-    \textbf{Búsqueda}: Encuentros finalizados por los que ya no es posible apostar y cuyos resultados se indican en la página, los más recientes aparecen primero.
+    \item\textbf{Búsqueda}: Escribiendo directamente en el campo de búsqueda se filtran de forma instantánea apuestas cuyos detalles coinciden con el texto buscado.
+    \smallskip\newline
     \begin{minipage}{\linewidth}
         \centering
         \captionsetup{type=figure}
-        \includegraphics[width=\linewidth]{fig4}
+        \includegraphics[width=.9\linewidth]{fig4}
         \caption{Filtrado por búsqueda}
         \label{fig:fig4}
     \end{minipage}
-\end{multicols}
+\end{itemize}
 \newpage
 \subsection{Realizar una apuesta}
+Una vez localizada la apuesta deseada, basta con hacer clic en ella para acceder a su formulario de apuesta.
+\smallskip\newline
+\begin{minipage}{\linewidth}
+    \centering
+    \captionsetup{type=figure}
+    \includegraphics[width=.9\linewidth]{fig5}
+    \caption{Formulario de apuesta}
+    \label{fig:fig5}
+\end{minipage}
+\smallskip\newline
+Tras confirmar un ganador y una cantidad para apostar, se comprueba la validez de los datos introducidos.
+\begin{multicols}{4}
+\begin{center}
+    \adjincludegraphics[width=.975\linewidth,clip,trim=616px 426px 416px 251px]{bet1}
+    Formato incorrecto
+\end{center}
+\columnbreak
+\begin{center}
+    \adjincludegraphics[width=.975\linewidth,clip,trim=616px 426px 416px 251px]{bet2}
+    Apuesta muy pequeña
+\end{center}
+\columnbreak
+\begin{center}
+    \adjincludegraphics[width=.975\linewidth,clip,trim=616px 426px 416px 251px]{bet3}
+    Apuesta muy grande
+\end{center}
+\columnbreak
+\begin{center}
+    \adjincludegraphics[width=.975\linewidth,clip,trim=616px 426px 416px 251px]{bet4}
+    Céntimos no permitidos
+\end{center}
+\end{multicols}
+Cuando se confirma una apuesta válida, se muestra una confirmación y posteriormente se añade al carrito.
+\smallskip\newline
+\begin{minipage}{\linewidth}
+    \centering
+    \captionsetup{type=figure}
+    \includegraphics[width=.9\linewidth]{fig6}
+    \caption{Confirmación de apuesta}
+    \label{fig:fig6}
+\end{minipage}
+\newpage
 \subsection{Confirmar el carrito}
 \subsection{Registrar un nuevo usuario}
 \subsection{Iniciar sesión con un usuario}
