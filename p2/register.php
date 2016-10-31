@@ -28,7 +28,7 @@ if(!isset($_SESSION["user"])) {
             echo '<div class="text">';
             echo '  Welcome to BetaBet, '.$_GET["1"].'!';
             echo '</div>';
-            echo '<form method="post" action="">';
+            echo '<form method="post">';
             echo '  <button type="submit">Back</button>';
             echo '</form>';
             return;

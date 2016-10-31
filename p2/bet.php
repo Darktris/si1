@@ -39,11 +39,11 @@ if(isset($_GET["game"]) && isset($_GET["match"])) {
             echo '  <div class="side1">'.$_GET["2"].' €</div><div class="arrow1"></div>';
         }
         echo '</div>';
-        echo '<form method="post" action="">';
+        echo '<form method="post">';
         if($edit) {
             echo '  <input type="hidden" name="content" value="checkout.php">';
         }
-        echo '  <button type="submit">OK</button>';
+        echo '  <button type="submit">Confirm</button>';
         echo '</form>';
     } else {
         if($edit && isset($_SESSION["bag"]) &&

@@ -60,7 +60,7 @@ if(isset($_SESSION["user"])) {
                     } else {
                         echo '<div class="text">Withdraw credit</div>';
                         echo '<form method="post" name="withdrawform" onsubmit="return false">';
-                        echo '  Amount: <span class="input-euro"><input id="amount" type="number" min="10" max="'.$data[5].'" step="1" value="10"></span><br>';
+                        echo '  Amount: <span class="input-euro"><input id="amount" type="number" min="1" max="'.$data[5].'" step="1" value="10"></span><br>';
                         echo '  <div class="error" id="amount_error"></div>';
                         echo '  <input type="reset" value="Back" onclick="loadContent(\'credit.php\')">';
                         echo '  <input type="submit" value="Confirm" onclick="validateCredit(\'withdraw\')">';
