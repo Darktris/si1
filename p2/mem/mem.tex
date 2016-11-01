@@ -24,11 +24,11 @@
 \usepackage{fancyhdr} % Required for custom headers
 \usepackage{lastpage} % Required to determine the last page for the footer
 \usepackage{graphicx} % Required to insert images
-\usepackage[export]{adjustbox}
 \usepackage{multicol}
 \usepackage{enumitem}
 \usepackage{environ}
 \usepackage{hyperref}
+\usepackage{marvosym}
 \usepackage[font=small]{caption}
 \usepackage{calc}
 \usepackage[utf8]{inputenc}
@@ -120,36 +120,36 @@
 \section{Archivos}
 La entrega final de la práctica está compuesta por los siguientes archivos:
 \begin{ldescription}
-    \item[$\bullet$ \texttt{index.php}]
-        Página principal del sitio web ({\small\autoref{fig:fig1}}).
-    \item[$\bullet$ \texttt{matches.php}]
-        Listado de partidos disponibles para apostar ({\small\autoref{fig:fig1}, \autoref{fig:fig2}, \autoref{fig:fig3}}).
-    \item[$\bullet$ \texttt{register.php}]
-        Formulario de registro de un nuevo usuario.
-    \item[$\bullet$ \texttt{bet.php}]
-        Formulario de realización de una apuesta.
-    \item[$\bullet$ \texttt{checkout.php}]
-        Administración del carrito de apuestas.
-    \item[$\bullet$ \texttt{credit.php}]
-        Administración de saldo del usuario.
-    \item[$\bullet$ \texttt{history.php}]
-        Historial de apuestas del usuario.
-    \item[$\bullet$ \texttt{usercount.php}]
-        Banner con número de usuarios conectados.
-    \item[$\bullet$ \texttt{theme.css}]
-        Hoja de estilo CSS del sitio web.
-    \item[$\bullet$ \texttt{functions.js}]
-        Librería de funciones JavaScript.
-    \item[$\bullet$ \texttt{db.xml}]
-        Conjunto de apuestas disponibles en XML.
-    \item[$\bullet$ \texttt{users/}]
-        Directorio de datos de los usuarios.
-    \item[$\bullet$ \texttt{games/}]
-        Directorio de recursos gráficos para las apuestas.
-    \item[$\bullet$ \texttt{images/}]
-        Directorio de recursos gráficos de propósito general.
-    \item[$\bullet$ \texttt{Memoria-P2.pdf}]
-        Memoria del trabajo realizado (este archivo).
+\item[$\bullet$ \texttt{index.php}]
+    Página principal del sitio web ({\small\autoref{fig:fig1}}).
+\item[$\bullet$ \texttt{matches.php}]
+    Listado de partidos disponibles para apostar ({\small\autoref{fig:fig1}, \autoref{fig:fig2}, \autoref{fig:fig3}}).
+\item[$\bullet$ \texttt{register.php}]
+    Formulario de registro de un nuevo usuario.
+\item[$\bullet$ \texttt{bet.php}]
+    Formulario de realización de una apuesta.
+\item[$\bullet$ \texttt{checkout.php}]
+    Administración del carrito de apuestas.
+\item[$\bullet$ \texttt{credit.php}]
+    Administración de saldo del usuario.
+\item[$\bullet$ \texttt{history.php}]
+    Historial de apuestas del usuario.
+\item[$\bullet$ \texttt{usercount.php}]
+    Banner con número de usuarios conectados.
+\item[$\bullet$ \texttt{theme.css}]
+    Hoja de estilo CSS del sitio web.
+\item[$\bullet$ \texttt{functions.js}]
+    Librería de funciones JavaScript.
+\item[$\bullet$ \texttt{db.xml}]
+    Conjunto de apuestas disponibles en XML.
+\item[$\bullet$ \texttt{users/}]
+    Directorio de datos de los usuarios.
+\item[$\bullet$ \texttt{games/}]
+    Directorio de recursos gráficos para las apuestas.
+\item[$\bullet$ \texttt{images/}]
+    Directorio de recursos gráficos de propósito general.
+\item[$\bullet$ \texttt{Memoria-P2.pdf}]
+    Memoria del trabajo realizado (este archivo).
 \end{ldescription}
 \newpage
 \section{Instrucciones de uso}
@@ -157,91 +157,97 @@ La entrega final de la práctica está compuesta por los siguientes archivos:
 Al acceder a la página principal se muestra el conjunto de todas las apuestas, organizadas en dos secciones:
 \begin{itemize}
     \item\textbf{\textit{Upcoming Matches}}: Encuentros que aún no se han celebrado o que aún no han terminado y por los que se puede apostar, los más inminentes aparecen primero.
-    \smallskip\newline
-    \begin{minipage}{\linewidth}
-        \centering
-        \captionsetup{type=figure}
-        \includegraphics[width=.9\linewidth]{fig1}
-        \caption{\textit{Upcoming Matches}}
-        \label{fig:fig1}
-    \end{minipage}
+        \smallskip\newline
+        \begin{minipage}{\linewidth}
+            \centering
+            \captionsetup{type=figure}
+            \includegraphics[width=\linewidth]{fig1}
+            \caption{\textit{Upcoming Matches}}
+            \label{fig:fig1}
+        \end{minipage}
     \item\textbf{\textit{Latest Matches}}: Encuentros finalizados por los que ya no es posible apostar y cuyos resultados se indican en la página, los más recientes aparecen primero.\
-    \smallskip\newline
-    \begin{minipage}{\linewidth}
-        \centering
-        \captionsetup{type=figure}
-        \includegraphics[width=.9\linewidth]{fig2}
-        \caption{\textit{Latest Matches}}
-        \label{fig:fig2}
-    \end{minipage}
+        \smallskip\newline
+        \begin{minipage}{\linewidth}
+            \centering
+            \captionsetup{type=figure}
+            \includegraphics[width=\linewidth]{fig2}
+            \caption{\textit{Latest Matches}}
+            \label{fig:fig2}
+        \end{minipage}
 \end{itemize}
 \newpage
-Existen dos mecanismos de filtrado de apuestas para localizar encuentros determinados de manera sencilla:
+Existen dos mecanismos de filtrado de apuestas para localizar encuentros según unos intereses determinados:
 \begin{itemize}
-    \item\textbf{Categorías}: Desplegando los menús de la barra lateral y pulsando los botones correspondientes es posible filtrar las apuestas por categoría.
-    \smallskip\newline
-    \begin{minipage}{\linewidth}
-        \centering
-        \captionsetup{type=figure}
-        \includegraphics[width=.9\linewidth]{fig3}
-        \caption{Filtrado por categorías}
-        \label{fig:fig3}
-    \end{minipage}
-    \item\textbf{Búsqueda}: Escribiendo directamente en el campo de búsqueda se filtran de forma instantánea apuestas cuyos detalles coinciden con el texto buscado.
-    \smallskip\newline
-    \begin{minipage}{\linewidth}
-        \centering
-        \captionsetup{type=figure}
-        \includegraphics[width=.9\linewidth]{fig4}
-        \caption{Filtrado por búsqueda}
-        \label{fig:fig4}
-    \end{minipage}
+    \item\textbf{Categorías}: Desplegando los menús del panel lateral y pulsando los botones correspondientes es posible mostrar únicamente las apuestas de una cierta categoría.
+        \smallskip\newline
+        \begin{minipage}{\linewidth}
+            \centering
+            \captionsetup{type=figure}
+            \includegraphics[width=\linewidth]{fig3}
+            \caption{Filtrado por categorías}
+            \label{fig:fig3}
+        \end{minipage}
+    \item\textbf{Búsqueda}: Escribiendo directamente en el campo de búsqueda del panel lateral se filtran automáticamente las apuestas cuyos datos coinciden con el patrón buscado.
+        \smallskip\newline
+        \begin{minipage}{\linewidth}
+            \centering
+            \captionsetup{type=figure}
+            \includegraphics[width=\linewidth]{fig4}
+            \caption{Filtrado por búsqueda}
+            \label{fig:fig4}
+        \end{minipage}
 \end{itemize}
 \newpage
 \subsection{Realizar una apuesta}
-Una vez localizada la apuesta deseada, basta con hacer clic en ella para acceder a su formulario de apuesta.
+Una vez localizada la apuesta deseada, basta con hacer clic en ella para acceder al formulario de apuesta.
 \smallskip\newline
 \begin{minipage}{\linewidth}
     \centering
     \captionsetup{type=figure}
-    \includegraphics[width=.9\linewidth]{fig5}
+    \includegraphics[width=\linewidth]{fig5}
     \caption{Formulario de apuesta}
     \label{fig:fig5}
 \end{minipage}
 \smallskip\newline
 Tras confirmar un ganador y una cantidad para apostar, se comprueba la validez de los datos introducidos.
 \begin{multicols}{4}
-\begin{center}
-    \adjincludegraphics[width=.975\linewidth,clip,trim=616px 426px 416px 251px]{bet1}
-    Formato incorrecto
-\end{center}
-\columnbreak
-\begin{center}
-    \adjincludegraphics[width=.975\linewidth,clip,trim=616px 426px 416px 251px]{bet2}
-    Apuesta muy pequeña
-\end{center}
-\columnbreak
-\begin{center}
-    \adjincludegraphics[width=.975\linewidth,clip,trim=616px 426px 416px 251px]{bet3}
-    Apuesta muy grande
-\end{center}
-\columnbreak
-\begin{center}
-    \adjincludegraphics[width=.975\linewidth,clip,trim=616px 426px 416px 251px]{bet4}
-    Céntimos no permitidos
-\end{center}
+    \begin{center}
+        \includegraphics[width=.975\linewidth]{bet1}
+        Formato incorrecto
+    \end{center}
+    \columnbreak
+    \begin{center}
+        \includegraphics[width=.975\linewidth]{bet2}
+        Apuesta muy pequeña
+    \end{center}
+    \columnbreak
+    \begin{center}
+        \includegraphics[width=.975\linewidth]{bet3}
+        Apuesta muy grande
+    \end{center}
+    \columnbreak
+    \begin{center}
+        \includegraphics[width=.975\linewidth]{bet4}
+        Céntimos no permitidos
+    \end{center}
 \end{multicols}
 Cuando se confirma una apuesta válida, se muestra una confirmación y posteriormente se añade al carrito.
 \smallskip\newline
 \begin{minipage}{\linewidth}
     \centering
     \captionsetup{type=figure}
-    \includegraphics[width=.9\linewidth]{fig6}
+    \includegraphics[width=\linewidth]{fig6}
     \caption{Confirmación de apuesta}
     \label{fig:fig6}
 \end{minipage}
 \newpage
 \subsection{Confirmar el carrito}
+Si el carrito contiene una o más apuestas, aparece un botón en la esquina superior izquierda de la página indicando la cantidad total de dinero apostado. Al situar el puntero sobre este botón el texto cambia a \textit{Checkout}, y al pulsarlo se accede a la página de administración del carrito de apuestas.
+\begin{center}
+    $\vcenter{\hbox{\includegraphics[width=.25\linewidth]{checkout1}}}$
+    $\vcenter{\hbox{\scalebox{2}{\MVRightarrow}}}$
+    $\vcenter{\hbox{\includegraphics[width=.25\linewidth]{checkout2}}}$
+\end{center}
 \subsection{Registrar un nuevo usuario}
 \subsection{Iniciar sesión con un usuario}
 \subsection{Consultar saldo de la cuenta}

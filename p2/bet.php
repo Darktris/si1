@@ -5,6 +5,11 @@ if(!isset($_POST["index_token"]) || strcmp($_POST["index_token"], $_SESSION["ind
     header('Location: '.dirname(strtok($_SERVER["REQUEST_URI"],'?')));
     die;
 }
+?>
+<div class="title">
+    Bet Details
+</div>
+<?php
 if(isset($_GET["game"]) && isset($_GET["match"])) {
     $xml = simplexml_load_file("db.xml");
     $game = $xml->xpath('/db/category[@*]/game[@id = "'.$_GET["game"].'"]')[0];
@@ -21,8 +26,8 @@ if(isset($_GET["game"]) && isset($_GET["match"])) {
             "winner" => $_GET["1"],
             "amount" => $_GET["2"]
         );
-        echo '<div class="title">';
-        echo '  The bet below will be placed in your shopping bag';
+        echo '<div class="text">';
+        echo '  The bet below will be placed in your shopping bag.';
         echo '</div>';
         echo '<div class="match">';
         if(strcmp($_GET["1"], "0") == 0) {
@@ -50,8 +55,8 @@ if(isset($_GET["game"]) && isset($_GET["match"])) {
             array_key_exists(strval($match["id"]), $_SESSION["bag"])) {
             $bet = $_SESSION["bag"][strval($match["id"])];
         }
-        echo '<div class="title">';
-        echo '  Please choose a winner and the amount to bet';
+        echo '<div class="text">';
+        echo '  Please choose a winner and the amount to bet.';
         echo '</div>';
         echo '<div class="match" id="match">';
         if(isset($bet)) {

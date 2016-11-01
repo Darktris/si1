@@ -16,6 +16,7 @@ if(isset($_SESSION["user"])) {
     foreach($his->bet as $bet) {
         $bets[] = $bet;
     }
+    unset($his);
     foreach(array_reverse($bets) as $i => $bet) {
         $game = $xml->xpath('/db/category[@*]/game[@id = "'.$bet->game.'"]')[0];
         $match = $xml->xpath('/db/category[@*]/game[@id = "'.$bet->game.'"]/matches/match[@id = "'.$bet["id"].'"]')[0];
@@ -40,5 +41,7 @@ if(isset($_SESSION["user"])) {
         unset($game);
         unset($match);
     }
+    unset($bets);
+    unset($xml);
 }
 ?>

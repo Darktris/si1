@@ -100,6 +100,15 @@ function updateBet(wnnr) {
     document.getElementById("wnnrside").innerHTML = Math.min(Math.max(amount, min), max) + " €";
 }
 
+function showBetDetails(id) {
+    var details = $("#details" + id);
+    if(details.height() === 0) {
+        details.animate({height: "20"}, {queue: false});
+    } else {
+        details.animate({height: "0"}, {queue: false});
+    }
+}
+
 function passwordStrength(password) {
     var desc = new Array(
         "Password Strength",
@@ -130,13 +139,4 @@ function passwordStrength(password) {
     strength = $("#strength");
     strength.html(desc[score]);
     strength.css("background", bg[score]);
-}
-
-function showBetDetails(id) {
-    var details = $("#details" + id);
-    if(details.height() === 0) {
-        details.animate({height: "20"}, {queue: false});
-    } else {
-        details.animate({height: "0"}, {queue: false});
-    }
 }
