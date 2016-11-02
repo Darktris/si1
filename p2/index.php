@@ -37,25 +37,23 @@ if(isset($_POST["login"])) {
         <script>
             function loadContent(page, array) {
                 var xhttp = new XMLHttpRequest();
+                var data = "";
                 xhttp.onreadystatechange = function() {
                     if (this.readyState == 4 && this.status == 200) {
                         document.getElementById("scrollable").innerHTML = this.responseText;
                     }
                 };
                 if(array) {
-                    if(page.indexOf("?") == -1) {
-                        page += "?";
-                    }
-                    var count=0;
+                    var count=1;
                     array.forEach(function(entry) {
+                        data += "&" + count + "=" + $(entry).val();
                         count++;
-                        page += "&" + count + "=" + $(entry).val();
                     });
                 }
                 xhttp.open("POST", page || "matches.php", true);
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 <?php
-                echo 'xhttp.send("index_token='.$_SESSION["index_token"].'");';
+                echo 'xhttp.send("index_token='.$_SESSION["index_token"].'" + data);';
                 ?>
             }
             function updateUserCount() {
@@ -148,7 +146,7 @@ if(isset($_POST["login"])) {
             ?>
         </div>
         <div id="sidebar">
-            <input type="search" id="search" placeholder="Search..." autocomplete="off" oninput="loadContent('matches.php?',['#search'])">
+            <input type="search" id="search" placeholder="Search..." autocomplete="off" oninput="loadContent('matches.php',['#search'])">
             <?php
             $xml = simplexml_load_file("db.xml");
             foreach($xml->category as $category) {

@@ -16,22 +16,22 @@ if(isset($_GET["game"]) && isset($_GET["match"])) {
     $match = $xml->xpath('/db/category[@*]/game[@id = "'.$_GET["game"].'"]/matches/match[@id = "'.$_GET["match"].'"]')[0];
     unset($xml);
     $edit = isset($_GET["edit"]) && (strcmp($_GET["edit"], "true") == 0);
-    if(isset($_GET["1"]) && isset($_GET["2"])) {
+    if(isset($_POST["1"]) && isset($_POST["2"])) {
         /* "1" is left/right team, "2" is amount */
         if(!isset($_SESSION["bag"])) {
             $_SESSION["bag"] = array();
         }
         $_SESSION["bag"][strval($match["id"])] = array(
             "game" => strval($game["id"]),
-            "winner" => $_GET["1"],
-            "amount" => $_GET["2"]
+            "winner" => $_POST["1"],
+            "amount" => $_POST["2"]
         );
         echo '<div class="text">';
         echo '  The bet below will be placed in your shopping bag.';
         echo '</div>';
         echo '<div class="match">';
-        if(strcmp($_GET["1"], "0") == 0) {
-            echo '  <div class="side0">'.$_GET["2"].' €</div><div class="arrow0"></div>';
+        if(strcmp($_POST["1"], "0") == 0) {
+            echo '  <div class="side0">'.$_POST["2"].' €</div><div class="arrow0"></div>';
         }
         echo '  <div class="matchinfo">';
         echo '      <div class="matchdetail">'.date('D, jS F Y @ H:i',strtotime($match->date)).'</div>';
@@ -40,8 +40,8 @@ if(isset($_GET["game"]) && isset($_GET["match"])) {
         echo '      <img src="'.$match->team[1]->icon.'" alt=""/>';
         echo '      <div class="matchdetail">'.$game["name"].'</div>';
         echo '  </div>';
-        if(strcmp($_GET["1"], "1") == 0) {
-            echo '  <div class="side1">'.$_GET["2"].' €</div><div class="arrow1"></div>';
+        if(strcmp($_POST["1"], "1") == 0) {
+            echo '  <div class="side1">'.$_POST["2"].' €</div><div class="arrow1"></div>';
         }
         echo '</div>';
         echo '<form method="post">';

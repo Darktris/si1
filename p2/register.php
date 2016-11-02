@@ -11,29 +11,29 @@ if(!isset($_SESSION["user"])) {
     Register
 </div>
 <?php
-    if(isset($_GET["1"]) && isset($_GET["2"]) && isset($_GET["3"]) && isset($_GET["4"]) && isset($_GET["5"])) {
+    if(isset($_POST["1"]) && isset($_POST["2"]) && isset($_POST["3"]) && isset($_POST["4"]) && isset($_POST["5"])) {
         /* "1" is user, "2" is pass, "3" is mail, "4" is card */
-        $user_path = "users/".$_GET["1"];
+        $user_path = "users/".$_POST["1"];
         if(!file_exists($user_path)) {
             mkdir($user_path, 0755, true);
             $data = fopen($user_path."/data.dat", "w");
-            fwrite($data, $_GET["1"].PHP_EOL.md5($_GET["2"]).PHP_EOL.$_GET["3"].PHP_EOL.$_GET["4"].PHP_EOL.$_GET["5"].PHP_EOL."0".PHP_EOL);
+            fwrite($data, $_POST["1"].PHP_EOL.md5($_POST["2"]).PHP_EOL.$_POST["3"].PHP_EOL.$_POST["4"].PHP_EOL.$_POST["5"].PHP_EOL."0".PHP_EOL);
             fclose($data);
             unset($data);
             $his = new SimpleXMLElement("<history></history>");
             $his->asXML($user_path."/history.xml");
             unset($his);
             unset($user_path);
-            setcookie("user", $_GET["1"], time() + (2 * 60 * 60));
+            setcookie("user", $_POST["1"], time() + (2 * 60 * 60));
             echo '<div class="text">';
-            echo '  Welcome to BetaBet, '.$_GET["1"].'!';
+            echo '  Welcome to BetaBet, '.$_POST["1"].'!';
             echo '</div>';
             echo '<form method="post">';
             echo '  <button type="submit">Back</button>';
             echo '</form>';
             return;
         } else {
-            $uexists = $_GET["1"];
+            $uexists = $_POST["1"];
         }
     }
 ?>

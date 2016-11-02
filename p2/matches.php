@@ -41,11 +41,11 @@ foreach($xml->category as $category) {
     foreach($category->game as $game) {
         if(empty($_GET["game"]) || isset($_GET["game"]) && strcmp($game["id"], $_GET["game"]) == 0) {
             foreach($game->matches->match as $match) {
-                if(empty($_GET["1"]) || isset($_GET["1"]) && (
-                    stripos($category["name"], $_GET["1"]) !== false ||
-                    stripos($game["name"], $_GET["1"]) !== false ||
-                    stripos($match->team[0]["name"], $_GET["1"]) !== false ||
-                    stripos($match->team[1]["name"], $_GET["1"])  !== false
+                if(empty($_POST["1"]) || isset($_POST["1"]) && (
+                    stripos($category["name"], $_POST["1"]) !== false ||
+                    stripos($game["name"], $_POST["1"]) !== false ||
+                    stripos($match->team[0]["name"], $_POST["1"]) !== false ||
+                    stripos($match->team[1]["name"], $_POST["1"])  !== false
                 )) {
                     if(isset($match->result)) {
                         $latest[] = array("g" => $game, "m" => $match);

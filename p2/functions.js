@@ -42,7 +42,7 @@ function validateRegister() {
         document.getElementById("card_error").innerHTML = "";
     }
     if(formok) {
-        loadContent("register.php?",['#user','#pass','#mail','#card','#exp']);
+        loadContent("register.php",['#user','#pass','#mail','#card','#exp']);
     }
 }
 

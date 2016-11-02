@@ -19,8 +19,8 @@ if(isset($_SESSION["user"])) {
         } else {
             if(isset($_GET["option"])) {
                 if(strcmp($_GET["option"], "charge") == 0) {
-                    if(isset($_GET["1"])) {
-                        $data[5] += $_GET["1"];
+                    if(isset($_POST["1"])) {
+                        $data[5] += $_POST["1"];
                         $fdata = fopen($user_path."/data.dat", "w");
                         foreach($data as $line) {
                             fwrite($fdata, $line);
@@ -28,7 +28,7 @@ if(isset($_SESSION["user"])) {
                         fclose($fdata);
                         unset($fdata);
                         echo '<div class="text">';
-                        echo '  You have charged '.$_GET["1"].' € into your account.';
+                        echo '  You have charged '.$_POST["1"].' € into your account.';
                         echo '</div>';
                         echo '<form method="post" onsubmit="return false">';
                         echo '  <button type="submit" onclick="loadContent(\'credit.php\')">Back</button>';
@@ -43,8 +43,8 @@ if(isset($_SESSION["user"])) {
                         echo '</div><br>';
                     }
                 } elseif(strcmp($_GET["option"], "withdraw") == 0) {
-                    if(isset($_GET["1"])) {
-                        $data[5] -= $_GET["1"];
+                    if(isset($_POST["1"])) {
+                        $data[5] -= $_POST["1"];
                         $fdata = fopen($user_path."/data.dat", "w");
                         foreach($data as $line) {
                             fwrite($fdata, $line);
@@ -52,7 +52,7 @@ if(isset($_SESSION["user"])) {
                         fclose($fdata);
                         unset($fdata);
                         echo '<div class="text">';
-                        echo '  You have withdrawn '.$_GET["1"].' € from your account.';
+                        echo '  You have withdrawn '.$_POST["1"].' € from your account.';
                         echo '</div>';
                         echo '<form method="post" onsubmit="return false">';
                         echo '  <button type="submit" onclick="loadContent(\'credit.php\')">Back</button>';
