@@ -26,6 +26,7 @@
 \usepackage{fancyhdr} % Required for custom headers
 \usepackage{lastpage} % Required to determine the last page for the footer
 \usepackage{graphicx} % Required to insert images
+\usepackage[export]{adjustbox}
 \usepackage{enumitem}
 \usepackage{environ}
 \usepackage{multicol}
@@ -160,7 +161,7 @@ La entrega final de la práctica está compuesta por los siguientes archivos:
 Al acceder a la página principal se muestra el conjunto de todas las apuestas, organizadas en dos secciones:
 \begin{itemize}
     \item\textbf{\textit{Upcoming Matches}}: Encuentros que aún no se han celebrado o que aún no han terminado y por los que se puede apostar, los más inminentes aparecen primero.
-        \smallskip\newline
+        \smallbreak
         \begin{minipage}{\linewidth}
             \centering
             \captionsetup{type=figure}
@@ -169,7 +170,7 @@ Al acceder a la página principal se muestra el conjunto de todas las apuestas, 
             \label{fig:fig1}
         \end{minipage}
     \item\textbf{\textit{Latest Matches}}: Encuentros finalizados por los que ya no es posible apostar y cuyos resultados se indican en la página, los más recientes aparecen primero.\
-        \smallskip\newline
+        \smallbreak
         \begin{minipage}{\linewidth}
             \centering
             \captionsetup{type=figure}
@@ -182,7 +183,7 @@ Al acceder a la página principal se muestra el conjunto de todas las apuestas, 
 Existen dos mecanismos de filtrado de apuestas para localizar encuentros según unos intereses determinados:
 \begin{itemize}
     \item\textbf{Categorías}: Desplegando los menús del panel lateral y pulsando los botones correspondientes es posible mostrar únicamente las apuestas de una cierta categoría.
-        \smallskip\newline
+        \smallbreak
         \begin{minipage}{\linewidth}
             \centering
             \captionsetup{type=figure}
@@ -191,7 +192,7 @@ Existen dos mecanismos de filtrado de apuestas para localizar encuentros según 
             \label{fig:fig3}
         \end{minipage}
     \item\textbf{Búsqueda}: Escribiendo directamente en el campo de búsqueda del panel lateral se filtran automáticamente las apuestas cuyos datos coinciden con el patrón buscado.
-        \smallskip\newline
+        \smallbreak
         \begin{minipage}{\linewidth}
             \centering
             \captionsetup{type=figure}
@@ -203,7 +204,7 @@ Existen dos mecanismos de filtrado de apuestas para localizar encuentros según 
 \newpage
 \subsection{Realizar una apuesta}
 Una vez localizada la apuesta deseada, basta con hacer clic en ella para acceder al formulario de apuesta.
-\smallskip\newline
+\smallbreak
 \begin{minipage}{\linewidth}
     \centering
     \captionsetup{type=figure}
@@ -211,7 +212,7 @@ Una vez localizada la apuesta deseada, basta con hacer clic en ella para acceder
     \caption{Formulario de apuesta}
     \label{fig:fig5}
 \end{minipage}
-\smallskip\newline
+\smallbreak
 Tras confirmar un ganador y una cantidad para apostar, se comprueba la validez de los datos introducidos.
 \begin{multicols}{4}
     \begin{center}
@@ -235,7 +236,7 @@ Tras confirmar un ganador y una cantidad para apostar, se comprueba la validez d
     \end{center}
 \end{multicols}
 Cuando se confirma una apuesta válida, se muestra una confirmación y posteriormente se añade al carrito.
-\smallskip\newline
+\smallbreak
 \begin{minipage}{\linewidth}
     \centering
     \captionsetup{type=figure}
@@ -243,7 +244,7 @@ Cuando se confirma una apuesta válida, se muestra una confirmación y posterior
     \caption{Confirmación de apuesta}
     \label{fig:fig6}
 \end{minipage}
-\smallskip\newline
+\smallbreak
 Nota: Los botones \textit{Back} (\autoref{fig:fig5}) y \textit{Confirm} (\autoref{fig:fig6}) llevan al usuario de vuelta a la página principal.
 \newpage
 \subsection{Confirmar el carrito}
@@ -254,7 +255,7 @@ Si el carrito contiene una o más apuestas, aparece un botón en la esquina supe
     \raisebox{-.5\height}{\includegraphics[width=.2\linewidth]{checkout2}}
 \end{center}
 Esta página muestra todas las apuestas incluidas en el carrito junto con el dinero total que será apostado.
-\smallskip\newline
+\smallbreak
 \begin{minipage}{\linewidth}
     \centering
     \captionsetup{type=figure}
@@ -262,34 +263,123 @@ Esta página muestra todas las apuestas incluidas en el carrito junto con el din
     \caption{Carrito de apuestas}
     \label{fig:fig7}
 \end{minipage}
-\smallskip\newline
+\smallbreak
 Situando el cursor sobre una apuesta del carrito, aparecen botones para modificar o eliminar dicha apuesta.
 \begin{center}
     \includegraphics[width=.8\linewidth]{checkout3}
 \end{center}
 La opción \textit{Edit} conduce al usuario a una página similar a \autoref{fig:fig5} que permite modificar apuesta inicial, mientras que \textit{Remove} muestra una confirmación equivalente a \autoref{fig:fig6} para eliminar la apuesta del carrito.
-\smallskip\newline
+\smallbreak
 Nota: Los botones \textit{Back} (\autoref{fig:fig5}) y \textit{Confirm} (\autoref{fig:fig6}) correspondientes en este caso vuelven a \textit{Checkout}.
-\bigskip\newline
-Una vez confirmado el carrito de apuestas, se comprueba que el usuario haya iniciado sesión y que tenga suficiente saldo en su cuenta. En caso contrario, se muestran los avisos pertinentes en el formulario.
+\bigbreak
+Cuando el usuario confirma el carrito de apuestas, se comprueba que éste haya iniciado sesión y que tenga suficiente saldo en su cuenta. En caso contrario, se muestran los avisos pertinentes en el formulario.
 \begin{multicols}{3}
     \begin{center}
         \includegraphics[width=.975\linewidth]{checkout4}
-        \cmark\,Confirmación exitosa del carrito
+        \cmark$\;$Carrito procesado con éxito
     \end{center}
     \columnbreak
     \begin{center}
         \includegraphics[width=.975\linewidth]{checkout5}
-        \xmark\,El usuario no ha iniciado sesión
+        \xmark$\;$No hay una sesión iniciada
     \end{center}
     \columnbreak
     \begin{center}
         \includegraphics[width=.975\linewidth]{checkout6}
-        \xmark\,Saldo insuficiente en la cuenta
+        \xmark$\;$Saldo insuficiente en la cuenta
     \end{center}
 \end{multicols}
+\bigbreak
+Una vez el carrito ha sido procesado correctamente éste queda vacío, el saldo de la cuenta del usuario se ve decrementado convenientemente y las apuestas están disponibles en el historial de apuestas.
+\newpage
 \subsection{Registrar un nuevo usuario}
+Si el usuario no ha iniciado sesión, aparece en la esquina inferior izquierda de la página el botón \textit{Register}, que lleva al formulario de registro de un nuevo usuario.
+\smallbreak
+\begin{minipage}{\linewidth}
+    \centering
+    \captionsetup{type=figure}
+    \includegraphics[width=\linewidth]{fig8}
+    \caption{Formulario de registro}
+    \label{fig:fig8}
+\end{minipage}
+\smallbreak
+Al escribir en el campo \textit{Password}, el medidor de fortaleza de la contraseña se actualiza correspondientemente.
+{\centering
+    \includegraphics[width=.16\linewidth]{strength1}
+    \includegraphics[width=.16\linewidth]{strength2}
+    \includegraphics[width=.16\linewidth]{strength3}
+    \includegraphics[width=.16\linewidth]{strength4}
+    \includegraphics[width=.16\linewidth]{strength5}
+    \includegraphics[width=.16\linewidth]{strength6}
+}
+\medbreak
+El botón \textit{Register} comprueba que todos los datos introducidos son válidos. De ser así, se da la bienvenida al nuevo usuario, en otro caso se informa de los campos en los que se han introducido datos incorrectos.
+\begin{multicols}{4}
+    \begin{center}
+        \includegraphics[width=.975\linewidth]{register1}
+        \cmark$\;$Registro con éxito
+    \end{center}
+    \columnbreak
+    \begin{center}
+        \includegraphics[width=.975\linewidth]{register2}
+        \xmark$\;$El usuario ya existe
+    \end{center}
+    \columnbreak
+    \begin{center}
+        \includegraphics[width=.975\linewidth]{register3}
+        \xmark$\;$Usuario incorrecto
+    \end{center}
+    \columnbreak
+    \begin{center}
+        \includegraphics[width=.975\linewidth]{register4}
+        \xmark$\;$Contraseña incorrecta
+    \end{center}
+\end{multicols}
+\begin{multicols}{4}
+    \begin{center}
+        \includegraphics[width=.975\linewidth]{register5}
+        \xmark$\;$Contraseñas distintas
+    \end{center}
+    \columnbreak
+    \begin{center}
+        \includegraphics[width=.975\linewidth]{register6}
+        \xmark$\;$Email incorrecto
+    \end{center}
+    \columnbreak
+    \begin{center}
+        \includegraphics[width=.975\linewidth]{register7}
+        \xmark$\;$Nº Tarjeta incorrecto
+    \end{center}
+    \columnbreak
+    \begin{center}
+        \includegraphics[width=.975\linewidth]{register8}
+        \xmark$\;$Caducidad incorrecta
+    \end{center}
+\end{multicols}
+Nota: El campo \textit{User name} del inicio de sesión (\autoref{fig:fig9}) se actualiza con aquel introducido al registrarse.
 \subsection{Iniciar sesión con un usuario}
+Colocando el puntero sobre el menú de \textit{Login} en la esquina superior derecha de la página, se despliega automáticamente el formulario de inicio de sesión.
+\vspace{-12pt}
+\begin{center}
+    \begin{minipage}[t][][b]{.275\linewidth}
+        \includegraphics[width=.91\linewidth]{login1}
+    \end{minipage}
+    \raisebox{-2.33\height}{\scalebox{2}{\myarrow}}$\;$
+    \begin{minipage}[t][][b]{.275\linewidth}
+        \centering
+        \captionsetup{type=figure}
+        \includegraphics[width=.91\linewidth]{fig9}
+        \caption{Formulario de \textit{Login}}
+        \label{fig:fig9}
+    \end{minipage}
+\end{center}
+\newpage
+Si los datos son correctos, el menú de inicio de sesión cambia a un menú de cuenta de usuario para indicar que hay una sesión iniciada. En caso contrario, se informa al usuario de que ha introducido datos incorrectos.
+\vspace{-12pt}
+\begin{center}
+    \includegraphics[width=.25\linewidth]{login2}
+\end{center}
+\medbreak
 \subsection{Consultar saldo de la cuenta}
 \subsection{Ingresar o retirar saldo}
 \subsection{Consultar el historial de apuestas}
