@@ -26,6 +26,7 @@
 \usepackage{fancyhdr} % Required for custom headers
 \usepackage{lastpage} % Required to determine the last page for the footer
 \usepackage{graphicx} % Required to insert images
+\usepackage{tikz}
 \usepackage[export]{adjustbox}
 \usepackage{enumitem}
 \usepackage{environ}
@@ -76,7 +77,7 @@
         }%
         \setbox0=\hbox{\BODY}%
     }
-    \begin{description}[leftmargin=\dimexpr\widest+0.5em\relax,labelindent=16pt, labelwidth=\widest]
+    \begin{description}[leftmargin=\dimexpr\widest+0.5em\relax,labelindent=0pt, labelwidth=\widest]
         \BODY
 \end{description}%
 }
@@ -98,12 +99,19 @@
 \title{
     \vspace{2in}
     \textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
-    \normalsize\vspace{0.1in}\small{\today}\\
+    \vspace{0.1in}
+    \begin{center}
+        \begin{tikzpicture}
+            \begin{scope}
+                \clip [rounded corners=12pt] (0,0) rectangle coordinate (centerpoint) (160pt,40pt);
+                \node [inner sep=0pt] at (centerpoint) {\includegraphics[width=160pt]{betabet}};
+            \end{scope}
+        \end{tikzpicture}
+    \end{center}
     \vspace{3in}
 }
 
 \author{\textbf{\hmwkAuthorName}}
-\date{} % Insert date here if you want it to appear below your name
 
 %----------------------------------------------------------------------------------
 
@@ -125,13 +133,13 @@
 La entrega final de la práctica está compuesta por los siguientes archivos:
 \begin{ldescription}
     \item[$\bullet$ \texttt{index.php}]
-        Página principal del sitio web ({\small\autoref{fig:fig1}}).
+        Página principal del sitio web.
     \item[$\bullet$ \texttt{matches.php}]
-        Listado de partidos disponibles para apostar ({\small\autoref{fig:fig1}, \autoref{fig:fig2}, \autoref{fig:fig3}}).
+        Listado y búsqueda de encuentros disponibles para apostar.
     \item[$\bullet$ \texttt{register.php}]
         Formulario de registro de un nuevo usuario.
     \item[$\bullet$ \texttt{bet.php}]
-        Formulario de realización de una apuesta.
+        Formulario de realización y modificación de una apuesta.
     \item[$\bullet$ \texttt{checkout.php}]
         Administración del carrito de apuestas.
     \item[$\bullet$ \texttt{credit.php}]
@@ -139,7 +147,7 @@ La entrega final de la práctica está compuesta por los siguientes archivos:
     \item[$\bullet$ \texttt{history.php}]
         Historial de apuestas del usuario.
     \item[$\bullet$ \texttt{usercount.php}]
-        Banner con número de usuarios conectados.
+        Banner con el número de usuarios conectados.
     \item[$\bullet$ \texttt{theme.css}]
         Hoja de estilo CSS del sitio web.
     \item[$\bullet$ \texttt{functions.js}]
@@ -374,15 +382,85 @@ Colocando el puntero sobre el menú de \textit{Login} en la esquina superior der
     \end{minipage}
 \end{center}
 \newpage
-Si los datos son correctos, el menú de inicio de sesión cambia a un menú de cuenta de usuario para indicar que hay una sesión iniciada. En caso contrario, se informa al usuario de que ha introducido datos incorrectos.
+Si los datos introducidos son incorrectos, se informa de ello en el propio menú de \textit{Login}. En caso contrario, el menú de inicio de sesión cambia a un menú de cuenta de usuario para indicar que hay una sesión iniciada.
 \vspace{-12pt}
 \begin{center}
-    \includegraphics[width=.25\linewidth]{login2}
+    \begin{minipage}[t][][b]{.275\linewidth}
+        \includegraphics[width=.91\linewidth]{login2}\newline
+        Datos de \textit{Login} incorrectos.
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t][][b]{.275\linewidth}
+        \includegraphics[width=.91\linewidth]{login3}
+    \end{minipage}
+    \raisebox{-2.33\height}{\scalebox{2}{\myarrow}}$\;$
+    \begin{minipage}[t][][b]{.275\linewidth}
+        \centering
+        \captionsetup{type=figure}
+        \includegraphics[width=.91\linewidth]{fig10}
+        \caption{Menú del usuario}
+        \label{fig:fig10}
+    \end{minipage}
 \end{center}
-\medbreak
-\subsection{Consultar saldo de la cuenta}
-\subsection{Ingresar o retirar saldo}
+Al situar el puntero sobre este segundo menú, se despliegan las opciones principales de la cuenta (\autoref{fig:fig10}).
+\smallbreak
+Nota: Cada vez que un usuario inicia sesión desde su navegador, el campo \textit{User name} del inicio de sesión (\autoref{fig:fig9}) queda percargado con su nombre de usuario para la próxima vez que desee iniciar sesión.
+\subsection{Consultar, ingresar y retirar saldo}
+Pulsando el botón \textit{Credit} del menú de usuario (\autoref{fig:fig10}) es posible acceder a la página de administración de saldo y visualizar la cantidad actual de dinero disponible para realizar apuestas.
+\smallbreak
+\begin{minipage}{\linewidth}
+    \centering
+    \captionsetup{type=figure}
+    \includegraphics[width=\linewidth]{fig11}
+    \caption{Administración de saldo}
+    \label{fig:fig11}
+\end{minipage}
+\bigbreak
+Para ingresar o retirar saldo basta con elegir la opción deseada (\textit{Charge} o \textit{Withdraw}, respectivamente) en esta misma página. A continuación, se solicitará al usuario la cantidad que desea ingresar o retirar de su saldo, se comprobarán los datos introducidos y finalmente se mostrará una página de confirmación mediante una interfaz muy similar a la mostrada en \autoref{fig:fig5} y \autoref{fig:fig6}.
+\smallbreak
+Nota: La tarjeta de crédito con la que se registra el usuario es puramente simbólica. Para fines prácticos, ingresar o retirar dinero únicamente suma o resta al saldo de la cuenta la cantidad introducida después de comprobar su formato y que no excede un umbral (o el saldo disponible, en el caso de la retirada).
+\newpage
 \subsection{Consultar el historial de apuestas}
+De forma análoga, para consultar el historial de apuestas del usuario se utiliza el botón \textit{Bet History} del menú desplegable de usuario (\autoref{fig:fig10}). En esta página, se muestra un listado de todas las apuestas realizadas por el usuario ordenadas según el momento en el que se realizaron, empezando por las más recientes.
+\smallbreak
+\begin{minipage}{\linewidth}
+    \centering
+    \captionsetup{type=figure}
+    \includegraphics[width=\linewidth]{fig12}
+    \caption{Historial de apuestas}
+    \label{fig:fig12}
+\end{minipage}
+\medbreak
+Pulsando cualquier apuesta del historial, se despliega información sobre el momento exacto en que se realizó.
+\vspace{-16pt}
+\begin{center}
+    \includegraphics[width=.8\linewidth]{history1}
+\end{center}
+\subsection{Cerrar la sesión}
+Por último, la opción \textit{Logout} del menú de cuenta de usuario (\autoref{fig:fig10}) termina la sesión del usuario activo.
+\newpage
 \section{Implementación}
+El sitio web está desarrollado siguiendo los siguientes criterios de implementación:
+\begin{itemize}
+    \item Se ha empleado un diseño modular, de manera que la vista principal \texttt{index.php} incluye la cabecera, la barra lateral y el pie de la página, mientras que en la zona de contenidos se cargan otros archivos PHP mediante peticiones AJAX según la interacción del usuario. El contador de usuarios también se actualiza automáticamente cada 3 segundos mediante AJAX.
+    \item Todo el modelado visual de la página, así como algunos de los efectos utilizados, están codificados en una única hoja de estilo CSS \texttt{theme.css}, logrando así código HTML más independiente.
+    \item Los datos estáticos y semi-estáticos del sitio web se almacenan en el servidor como archivos de texto \texttt{.dat} y XML, estos últimos son administrados en memoria mediante la librería SimpleXML. Todos los demás datos se manejan en forma de variables PHP, con uso exhaustivo de \textit{arrays} asociativos. El flujo de datos PHP cliente-servidor se lleva a cabo a través de métodos GET y POST de formularios, así como sesiones PHP (carrito de apuestas) y \textit{cookies} de navegación (precargado de \textit{User name}).
+    \item Se utilizan funciones JavaScript en conjunto con AJAX y jQuery para gran parte de las interacciones del usuario (validación de formularios, fortaleza de la contraseña, despliegue de detalles en el historial de apuestas, etc.). El archivo \texttt{functions.js} proporciona la mayoría de estas funcionalidades.
+    \item También se han configurado los campos de los formularios con los atributos HTML5 correspondientes para que el navegador notifique al usuario cuando introduce datos incorrectos.
+    \item Se ha implementado un sistema de \textit{tokens} con el fin de denegar el acceso directo a los archivos PHP que se cargan dinámicamente mediante AJAX, ya que esto podría causar errores de estilo y vulnerabilidades en el sistema (por ejemplo, al escribir la ruta de \texttt{matches.php} en la barra de direcciones).
+\end{itemize}
 \section{Referencias}
+Durante el desarrollo de esta práctica, se han seguido las siguientes referencias:
+\begin{ldescription}
+    \item[$\bullet$ Moodle UAM \url{https://moodle.uam.es/}]
+        Enunciado y normativa de la práctica.
+    \item[$\bullet$ W3Schools \url{http://www.w3schools.com/}]
+        Referencias HTML, CSS, JavaScript y jQuery.
+    \item[$\bullet$ PHP Manual \url{http://php.net/manual/}]
+        Referencias PHP.
+    \item[$\bullet$ Stack Overflow \url{http://stackoverflow.com/}]
+        Consulta de dudas particulares.
+    \item[$\bullet$ LaTeX \url{https://en.wikibooks.org/wiki/LaTeX}]
+        Referencias LaTeX para la redacción de esta memoria.
+\end{ldescription}
 \end{document}
