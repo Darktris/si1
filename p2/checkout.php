@@ -10,7 +10,6 @@ if(!isset($_POST["index_token"]) || strcmp($_POST["index_token"], $_SESSION["ind
     Checkout
 </div>
 <?php
-if(isset($_SESSION["user"])) {
     if(isset($_SESSION["bag"]) && !empty($_SESSION["bag"])) {
         if(isset($_GET["remove"]) && array_key_exists(strval($_GET["remove"]), $_SESSION["bag"])) {
             $bet = $_SESSION["bag"][strval($_GET["remove"])];
@@ -50,51 +49,55 @@ if(isset($_SESSION["user"])) {
             return $carry;
         }, 0);
         if(isset($_GET["confirm"]) && strcmp($_GET["confirm"], "true") == 0) {
-            $user_path = "users/".$_SESSION["user"];
-            if(file_exists($user_path) && is_dir($user_path)) {
-                $data = file($user_path."/data.dat");
-                if(!$data) {
-                    $chckt_error = "Corrupt user.";
-                } elseif($total <= $data[5]) {
-                    $data[5] -= $total;
-                    $fdata = fopen($user_path."/data.dat", "w");
-                    foreach($data as $line) {
-                        fwrite($fdata, $line);
+            if(isset($_SESSION["user"])) {
+                $user_path = "users/".$_SESSION["user"];
+                if(file_exists($user_path) && is_dir($user_path)) {
+                    $data = file($user_path."/data.dat");
+                    if(!$data) {
+                        $chckt_error = "Corrupt user.";
+                    } elseif($total <= $data[5]) {
+                        $data[5] -= $total;
+                        $fdata = fopen($user_path."/data.dat", "w");
+                        foreach($data as $line) {
+                            fwrite($fdata, $line);
+                        }
+                        fclose($fdata);
+                        unset($fdata);
+                        unset($data);
+                        unset($total);
+                        $his = simplexml_load_file($user_path.'/history.xml');
+                        foreach($_SESSION["bag"] as $id => $bet) {
+                            $newbet = $his->addChild("bet");
+                            $newbet->addAttribute("id", $id);
+                            $newbet->addChild("game", $bet["game"]);
+                            $newbet->addChild("winner", $bet["winner"]);
+                            $newbet->addChild("amount", $bet["amount"]);
+                            $newbet->addChild("time", time());
+                            unset($newbet);
+                        }
+                        $his->asXML($user_path.'/history.xml');
+                        unset($_SESSION["bag"]);
+                        unset($his);
+                        unset($user_path);
+                        unset($chckt_error);
+                        echo '<div class="text">';
+                        echo '  Your shopping bag has been successfully processed.';
+                        echo '</div>';
+                        echo '<form method="post">';
+                        echo '  <button type="submit">Back</button>';
+                        echo '</form>';
+                        return;
+                    } else {
+                        $chckt_error = "Not enough credit to checkout.";
                     }
-                    fclose($fdata);
-                    unset($fdata);
                     unset($data);
-                    unset($total);
-                    $his = simplexml_load_file($user_path.'/history.xml');
-                    foreach($_SESSION["bag"] as $id => $bet) {
-                        $newbet = $his->addChild("bet");
-                        $newbet->addAttribute("id", $id);
-                        $newbet->addChild("game", $bet["game"]);
-                        $newbet->addChild("winner", $bet["winner"]);
-                        $newbet->addChild("amount", $bet["amount"]);
-                        $newbet->addChild("time", time());
-                        unset($newbet);
-                    }
-                    $his->asXML($user_path.'/history.xml');
-                    unset($_SESSION["bag"]);
-                    unset($his);
-                    unset($user_path);
-                    unset($chckt_error);
-                    echo '<div class="text">';
-                    echo '  Your shopping bag has been successfully processed.';
-                    echo '</div>';
-                    echo '<form method="post">';
-                    echo '  <button type="submit">Back</button>';
-                    echo '</form>';
-                    return;
                 } else {
-                    $chckt_error = "Not enough credit to checkout.";
+                    $chckt_error = "Corrupt user.";
                 }
-                unset($data);
+                unset($user_path);
             } else {
-                $chckt_error = "Corrupt user.";
+                $chckt_error = "You must login to checkout.";
             }
-            unset($user_path);
         }
         $xml = simplexml_load_file("db.xml");
         foreach($_SESSION["bag"] as $id => $bet) {
@@ -141,12 +144,4 @@ if(isset($_SESSION["user"])) {
         echo '  <button type="submit">Back</button>';
         echo '</form>';
     }
-} else {
-    echo '<div class="text">';
-    echo '  You must login before proceeding to checkout.';
-    echo '</div>';
-    echo '<form method="post">';
-    echo '  <button type="submit">Back</button>';
-    echo '</form>';
-}
 ?>

@@ -21,22 +21,24 @@
 
 \documentclass{article}
 
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
 \usepackage{fancyhdr} % Required for custom headers
 \usepackage{lastpage} % Required to determine the last page for the footer
 \usepackage{graphicx} % Required to insert images
-\usepackage{multicol}
 \usepackage{enumitem}
 \usepackage{environ}
+\usepackage{multicol}
 \usepackage{hyperref}
-\usepackage{marvosym}
 \usepackage[font=small]{caption}
-\usepackage{calc}
-\usepackage[utf8]{inputenc}
-\usepackage[spanish]{babel}
+\usepackage{pifont}
 \selectlanguage{spanish}
 \addto\extrasspanish{%
     \def\figureautorefname{Figura}%
 }
+\newcommand{\myarrow}{\ding{223}}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
 
 % Margins
 \topmargin=-0.45in
@@ -60,6 +62,7 @@
 \renewcommand\footrulewidth{0.4pt} % Size of the footer rule
 
 \setlength\parindent{0pt} % Removes all indentation from paragraphs
+\setlength{\multicolsep}{6.0pt plus 2.0pt minus 1.5pt} % 50% of original values
 
 \newlength\widest
 \makeatletter
@@ -68,11 +71,11 @@
         \global\setlength\widest{0pt}%
         \def\item[##1]{%
             \settowidth\@tempdima{\textbf{##1}}%
-            \ifdim\@tempdima>\widest\global\setlength\widest{\@tempdima}\fi%
+            \ifdim \@tempdima>\widest \global\setlength\widest{\@tempdima} \fi%
         }%
         \setbox0=\hbox{\BODY}%
     }
-    \begin{description}[leftmargin=\dimexpr\widest+0.5em\relax,labelindent=16pt,labelwidth=\widest]
+    \begin{description}[leftmargin=\dimexpr\widest+0.5em\relax,labelindent=0pt, labelwidth=\widest]
         \BODY
 \end{description}%
 }
@@ -120,36 +123,36 @@
 \section{Archivos}
 La entrega final de la práctica está compuesta por los siguientes archivos:
 \begin{ldescription}
-\item[$\bullet$ \texttt{index.php}]
-    Página principal del sitio web ({\small\autoref{fig:fig1}}).
-\item[$\bullet$ \texttt{matches.php}]
-    Listado de partidos disponibles para apostar ({\small\autoref{fig:fig1}, \autoref{fig:fig2}, \autoref{fig:fig3}}).
-\item[$\bullet$ \texttt{register.php}]
-    Formulario de registro de un nuevo usuario.
-\item[$\bullet$ \texttt{bet.php}]
-    Formulario de realización de una apuesta.
-\item[$\bullet$ \texttt{checkout.php}]
-    Administración del carrito de apuestas.
-\item[$\bullet$ \texttt{credit.php}]
-    Administración de saldo del usuario.
-\item[$\bullet$ \texttt{history.php}]
-    Historial de apuestas del usuario.
-\item[$\bullet$ \texttt{usercount.php}]
-    Banner con número de usuarios conectados.
-\item[$\bullet$ \texttt{theme.css}]
-    Hoja de estilo CSS del sitio web.
-\item[$\bullet$ \texttt{functions.js}]
-    Librería de funciones JavaScript.
-\item[$\bullet$ \texttt{db.xml}]
-    Conjunto de apuestas disponibles en XML.
-\item[$\bullet$ \texttt{users/}]
-    Directorio de datos de los usuarios.
-\item[$\bullet$ \texttt{games/}]
-    Directorio de recursos gráficos para las apuestas.
-\item[$\bullet$ \texttt{images/}]
-    Directorio de recursos gráficos de propósito general.
-\item[$\bullet$ \texttt{Memoria-P2.pdf}]
-    Memoria del trabajo realizado (este archivo).
+    \item[$\bullet$ \texttt{index.php}]
+        Página principal del sitio web ({\small\autoref{fig:fig1}}).
+    \item[$\bullet$ \texttt{matches.php}]
+        Listado de partidos disponibles para apostar ({\small\autoref{fig:fig1}, \autoref{fig:fig2}, \autoref{fig:fig3}}).
+    \item[$\bullet$ \texttt{register.php}]
+        Formulario de registro de un nuevo usuario.
+    \item[$\bullet$ \texttt{bet.php}]
+        Formulario de realización de una apuesta.
+    \item[$\bullet$ \texttt{checkout.php}]
+        Administración del carrito de apuestas.
+    \item[$\bullet$ \texttt{credit.php}]
+        Administración de saldo del usuario.
+    \item[$\bullet$ \texttt{history.php}]
+        Historial de apuestas del usuario.
+    \item[$\bullet$ \texttt{usercount.php}]
+        Banner con número de usuarios conectados.
+    \item[$\bullet$ \texttt{theme.css}]
+        Hoja de estilo CSS del sitio web.
+    \item[$\bullet$ \texttt{functions.js}]
+        Librería de funciones JavaScript.
+    \item[$\bullet$ \texttt{db.xml}]
+        Conjunto de apuestas disponibles en XML.
+    \item[$\bullet$ \texttt{users/}]
+        Directorio de datos de los usuarios.
+    \item[$\bullet$ \texttt{games/}]
+        Directorio de recursos gráficos para las apuestas.
+    \item[$\bullet$ \texttt{images/}]
+        Directorio de recursos gráficos de propósito general.
+    \item[$\bullet$ \texttt{Memoria-P2.pdf}]
+        Memoria del trabajo realizado (este archivo).
 \end{ldescription}
 \newpage
 \section{Instrucciones de uso}
@@ -240,14 +243,51 @@ Cuando se confirma una apuesta válida, se muestra una confirmación y posterior
     \caption{Confirmación de apuesta}
     \label{fig:fig6}
 \end{minipage}
+\smallskip\newline
+Nota: Los botones \textit{Back} (\autoref{fig:fig5}) y \textit{Confirm} (\autoref{fig:fig6}) llevan al usuario de vuelta a la página principal.
 \newpage
 \subsection{Confirmar el carrito}
 Si el carrito contiene una o más apuestas, aparece un botón en la esquina superior izquierda de la página indicando la cantidad total de dinero apostado. Al situar el puntero sobre este botón el texto cambia a \textit{Checkout}, y al pulsarlo se accede a la página de administración del carrito de apuestas.
 \begin{center}
-    $\vcenter{\hbox{\includegraphics[width=.25\linewidth]{checkout1}}}$
-    $\vcenter{\hbox{\scalebox{2}{\MVRightarrow}}}$
-    $\vcenter{\hbox{\includegraphics[width=.25\linewidth]{checkout2}}}$
+    \raisebox{-.5\height}{\includegraphics[width=.2\linewidth]{checkout1}}
+    \raisebox{-.6\height}{\scalebox{2}{\myarrow}}
+    \raisebox{-.5\height}{\includegraphics[width=.2\linewidth]{checkout2}}
 \end{center}
+Esta página muestra todas las apuestas incluidas en el carrito junto con el dinero total que será apostado.
+\smallskip\newline
+\begin{minipage}{\linewidth}
+    \centering
+    \captionsetup{type=figure}
+    \includegraphics[width=\linewidth]{fig7}
+    \caption{Carrito de apuestas}
+    \label{fig:fig7}
+\end{minipage}
+\smallskip\newline
+Situando el cursor sobre una apuesta del carrito, aparecen botones para modificar o eliminar dicha apuesta.
+\begin{center}
+    \includegraphics[width=.8\linewidth]{checkout3}
+\end{center}
+La opción \textit{Edit} conduce al usuario a una página similar a \autoref{fig:fig5} que permite modificar apuesta inicial, mientras que \textit{Remove} muestra una confirmación equivalente a \autoref{fig:fig6} para eliminar la apuesta del carrito.
+\smallskip\newline
+Nota: Los botones \textit{Back} (\autoref{fig:fig5}) y \textit{Confirm} (\autoref{fig:fig6}) correspondientes en este caso vuelven a \textit{Checkout}.
+\bigskip\newline
+Una vez confirmado el carrito de apuestas, se comprueba que el usuario haya iniciado sesión y que tenga suficiente saldo en su cuenta. En caso contrario, se muestran los avisos pertinentes en el formulario.
+\begin{multicols}{3}
+    \begin{center}
+        \includegraphics[width=.975\linewidth]{checkout4}
+        \cmark\,Confirmación exitosa del carrito
+    \end{center}
+    \columnbreak
+    \begin{center}
+        \includegraphics[width=.975\linewidth]{checkout5}
+        \xmark\,El usuario no ha iniciado sesión
+    \end{center}
+    \columnbreak
+    \begin{center}
+        \includegraphics[width=.975\linewidth]{checkout6}
+        \xmark\,Saldo insuficiente en la cuenta
+    \end{center}
+\end{multicols}
 \subsection{Registrar un nuevo usuario}
 \subsection{Iniciar sesión con un usuario}
 \subsection{Consultar saldo de la cuenta}
@@ -255,5 +295,4 @@ Si el carrito contiene una o más apuestas, aparece un botón en la esquina supe
 \subsection{Consultar el historial de apuestas}
 \section{Implementación}
 \section{Referencias}
-
 \end{document}
