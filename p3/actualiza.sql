@@ -2,12 +2,6 @@
 --
 --		Restricciones
 --
--- alter table bets
--- add constraint fk_
--- foreign key ()
--- references other_table (pkey)
--- on delete cascade
-
 
 -- clientorders customerid no es fkey, orderid no es pkey
 alter table clientorders
@@ -25,7 +19,12 @@ alter table clientorders
 add column totaloutcome numeric 
 check (totaloutcome >= 0);
 
--- bets Cumple restricciones
+-- bets winneropt no es foreign key
+alter table bets
+add constraint fk_winoptid
+foreign key (winneropt)
+references options(optionid);
+
 -- clientbets orderid no es foreign key. Customer id es redundante
 alter table clientbets
 add constraint fk_orderid
@@ -44,6 +43,8 @@ check (
 	and (email ~* '^[A-Za-z0-9._%-]+@[A-Za-z0-9.-]+[.][A-Za-z]+$')
 	and (age > 0));
 
+alter table optionbet
+drop column	optiondesc;
 
 --			APARTADO B
 --
