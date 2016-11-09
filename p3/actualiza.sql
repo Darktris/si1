@@ -21,6 +21,10 @@ references customers(customerid)
 on delete cascade; -- Si se borra un usuario, 
                    -- se borran los carritos
 
+alter table clientorders
+add column totaloutcome numeric 
+check (totaloutcome >= 0);
+
 -- bets Cumple restricciones
 -- clientbets orderid no es foreign key. Customer id es redundante
 alter table clientbets
