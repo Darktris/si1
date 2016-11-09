@@ -1,0 +1,293 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Structured General Purpose Assignment
+% LaTeX Template
+%
+% This template has been downloaded from:
+% http://www.latextemplates.com
+%
+% Original author:
+% Ted Pavlic (http://www.tedpavlic.com)
+%
+% Note:
+% The \lipsum[#] commands throughout this template generate dummy text
+% to fill the template out. These commands should all be removed when
+% writing assignment content.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------
+%   PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------
+
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{lastpage} % Required to determine the last page for the footer
+\usepackage{graphicx} % Required to insert images
+\usepackage{tikz}
+\usepackage[export]{adjustbox}
+\usepackage{enumitem}
+\usepackage{environ}
+\usepackage{multicol}
+\usepackage{hyperref}
+\usepackage[font=small]{caption}
+\usepackage{pifont}
+\selectlanguage{spanish}
+\addto\extrasspanish{%
+    \def\figureautorefname{Figura}%
+}
+\newcommand{\myarrow}{\ding{223}}
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{\small \hmwkClass: \hmwkTitle} % Top left header
+\chead{} % Top center header
+\rhead{\small \hmwkAuthorName} % Top right header
+\lfoot{} % Bottom left footer
+\cfoot{} % Bottom center footer
+\rfoot{Página\ \thepage\ de\ \pageref{LastPage}} % Bottom right footer
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+\setlength{\multicolsep}{6.0pt plus 2.0pt minus 1.5pt} % 50% of original values
+
+\newlength\widest
+\makeatletter
+\NewEnviron{ldescription}{%
+    \vbox{%
+        \global\setlength\widest{0pt}%
+        \def\item[##1]{%
+            \settowidth\@tempdima{\textbf{##1}}%
+            \ifdim \@tempdima>\widest \global\setlength\widest{\@tempdima} \fi%
+        }%
+        \setbox0=\hbox{\BODY}%
+    }
+    \begin{description}[leftmargin=\dimexpr\widest+0.5em\relax,labelindent=0pt, labelwidth=\widest]
+        \BODY
+\end{description}%
+}
+\makeatother
+
+%----------------------------------------------------------------------------------
+%   NAME AND CLASS SECTION
+%----------------------------------------------------------------------------------
+
+\newcommand{\hmwkTitle}{Práctica\ 3} % Assignment title
+\newcommand{\hmwkClass}{Sistemas Informáticos I} % Course/class
+\newcommand{\hmwkClassTime}{10:30am} % Class/lecture time
+\newcommand{\hmwkAuthorName}{\small Sergio Fuentes de Uña | Daniel Perdices Burrero} % Your name
+
+%----------------------------------------------------------------------------------
+%   TITLE PAGE
+%----------------------------------------------------------------------------------
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
+    \vspace{0.1in}
+    \begin{center}
+        \begin{tikzpicture}
+            \begin{scope}
+                \clip [rounded corners=12pt] (0,0) rectangle coordinate (centerpoint) (160pt,40pt);
+                \node [inner sep=0pt] at (centerpoint) {\includegraphics[width=160pt]{betabet}};
+            \end{scope}
+        \end{tikzpicture}
+    \end{center}
+    \vspace{3in}
+}
+
+\author{\textbf{\hmwkAuthorName}}
+
+%----------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle
+
+%----------------------------------------------------------------------------------
+%   TABLE OF CONTENTS
+%----------------------------------------------------------------------------------
+
+%\setcounter{tocdepth}{1} % Uncomment this line if you don't want subsections listed in the ToC
+
+\newpage
+\tableofcontents
+\newpage
+\section{Análisis de la base de datos proporcionada}
+
+\subsection{Esquema de las tablas}
+Leyenda: \texttt{*}:\textit{primary key}, \texttt{+}:\textit{foreign key}
+
+\begin{multicols}{2}
+\begin{itemize}
+    \item\texttt{customers}
+        \begin{itemize}
+            \item\texttt{customerid*} 
+            \item\texttt{firstname}
+            \item\texttt{lastname}
+            \item\texttt{address1}
+            \item\texttt{address2}
+            \item\texttt{city}
+            \item\texttt{state}
+            \item\texttt{zip}
+            \item\texttt{country}
+            \item\texttt{region}
+            \item\texttt{email}
+            \item\texttt{phone}
+            \item\texttt{creditcardtype}
+            \item\texttt{creditcard}
+            \item\texttt{creditcardexpiration}
+            \item\texttt{username}
+            \item\texttt{password}
+            \item\texttt{age}
+            \item\texttt{credit}
+            \item\texttt{gender}
+        \end{itemize}
+    \item\texttt{clientorders}
+        \begin{itemize}
+            \item\texttt{customerid}
+            \item\texttt{date}
+            \item\texttt{orderid}
+        \end{itemize}
+    \columnbreak
+    \item\texttt{clientbets}
+        \begin{itemize}
+            \item\texttt{customerid+}
+            \item\texttt{optionid+}
+            \item\texttt{betid+}
+            \item\texttt{orderid}
+            \item\texttt{bet}
+            \item\texttt{ratio}
+            \item\texttt{outcome}
+        \end{itemize}
+    \item\texttt{bets}
+        \begin{itemize}
+            \item\texttt{betid*}
+            \item\texttt{betcloses}
+            \item\texttt{category}
+            \item\texttt{betdesc}
+            \item\texttt{winneropt}
+        \end{itemize}
+    \item\texttt{options}
+        \begin{itemize}
+            \item\texttt{optionid*}
+            \item\texttt{optiondesc}
+            \item\texttt{categoria}
+            \item\texttt{cuota}
+        \end{itemize}
+    \item\texttt{optionbet}
+        \begin{itemize}
+            \item\texttt{optionid+}
+            \item\texttt{betid+}
+            \item\texttt{ratio}
+            \item\texttt{optiondesc}
+        \end{itemize}
+\end{itemize}
+\end{multicols}
+\newpage
+\subsection{Organización de las tablas}
+La base de datos consta de las siguientes tablas:
+\begin{ldescription}
+    \item[$\bullet$ \texttt{customers}]
+        Clientes de la página de apuestas.
+    \item[$\bullet$ \texttt{clientorders}]
+        Carritos de los clientes.
+    \item[$\bullet$ \texttt{clientbets}]
+        Apuestas realizadas por los clientes.
+    \item[$\bullet$ \texttt{bets}]
+        Apuestas disponibles.
+    \item[$\bullet$ \texttt{options}]
+        Entidades deportivas.
+    \item[$\bullet$ \texttt{optionbet}]
+        Entidades concretas que se involucran en cada apuesta
+\end{ldescription}
+Estas tablas se encuentran relacionadas a traves del siguiente diagrama Entidad-Relación
+\smallbreak
+\begin{minipage}{\linewidth}
+    \centering
+    \captionsetup{type=figure}
+    \includegraphics[width=\linewidth]{img/db_old.png}
+    \caption{Diagrama E-R de la base de datos proporcionada}
+    \label{fig:fig1}
+\end{minipage}
+\subsection{Diseño inicial de las tablas}
+Con lo proporcionado, se pueden ver varias claras decisiones de diseño tomadas a la hora de elaborar la base de datos que se ha proporcionado:
+\begin{enumerate}
+    \item El atributo \texttt{customerid} de la tabla \texttt{clientbets} es redundante con el atributo de igual nombre de la tabla \texttt{clientorders}.
+    \item El atributo \texttt{category} de la tabla \texttt{bets} y el atributo \texttt{categoria} de la tabla \texttt{options} son redundantes de igual manera, además, en la tabla las categorías se suelen repetir, por tanto se gasta mucho espacio de almacenamiento en guardar la misma cadena varias ocasiones.
+    \item El atributo \texttt{optiondesc} del mismo modo aparece en dos tablas, \texttt{options} y \texttt{optionbet}, aunque se podría ver como el mismo.
+\end{enumerate}
+Muchas de estas repeticiones, especialmente la del \texttt{customerid} son bastante discutibles pues la repetición del dato mejora el rendimiento de la base de datos.
+\subsection{Propuesta de diseño de las tablas}
+Se han realizado los siguientes cambios en las tablas para normalizar la base de datos evitando futuras incosistencias. Se han añadido restricciones para evitar registros erroneos.
+\begin{itemize}
+    \item\texttt{customers:}
+        \begin{itemize}
+            \item Se agrega la restricción de email válido.
+            \item Se agrega la restricción de edad válida.
+            \item Se agrega la restricción de código postal válida.
+            \item Se agrega la restricción de tarjeta de crédito válida.
+            \item Se agrega la restricción de teléfono válido.
+        \end{itemize}
+    \item\texttt{clientorders:}
+        \begin{itemize}
+            \item Se agrega la restricción de orderid como primary key.
+            \item Se agrega la restricción de customerid como foreign key.
+            \item Se activa el borrado en cascada si se elimina el cliente (customerid).
+        \end{itemize}
+    \item\texttt{clientbets:}
+        \begin{itemize}
+            \item Se agrega la restricción de orderid como foreign key.
+            \item Se elimina la columna customerid.
+            \item Se activa el borrado en cascada si se elimina el carrito (orderid).
+        \end{itemize}
+    \item\texttt{bets}:
+        \begin{itemize}
+            \item Se elimina el campo category.
+            \item Se agrega el campo categoryid como foreign key.
+            \item Se agrega la restricción de winneropt como foreign key.
+        \end{itemize}
+    \item\texttt{options}
+        \begin{itemize}
+            \item Se elimina el campo categoria.
+            \item Se agrega el campo categoryid como foreign key.
+        \end{itemize}
+    \item\texttt{optionbet}
+        \begin{itemize}
+            \item Se elimina la columna optiondesc.
+        \end{itemize}
+    \item\texttt{categories}
+        \begin{itemize}
+            \item Se agrega la tabla.
+            \item Se agrega el campo categoryid como primary key.
+            \item Se agrega el campo categorystring.
+        \end{itemize}
+\end{itemize}
+\newpage
+A continuación se muestra el diagrama E-R (sin atributos por legibilidad) del estado final.
+\smallbreak
+\begin{minipage}{\linewidth}
+    \centering
+    \captionsetup{type=figure}
+    \includegraphics[width=\linewidth]{img/db_new.png}
+    \caption{Diagrama E-R de la base de datos final}
+    \label{fig:fig2}
+\end{minipage}
+
+Todos estos cambios los realiza el fichero \texttt{actualiza.sql}
+\end{document}
