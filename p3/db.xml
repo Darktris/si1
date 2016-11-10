@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<db>
+    <category id="moba" name="MOBA">
+        <game id="lol" name="League of Legends">
+            <icon>games/lol/icon.png</icon>
+            <matches>
+                <match id="1">
+                    <date>2016-10-08 22:15</date>
+                    <team name="Samsung Galaxy">
+                        <icon>games/lol/teams/sg.png</icon>
+                        <score>1</score>
+                    </team>
+                    <team name="Team SoloMid">
+                        <icon>games/lol/teams/tsm.png</icon>
+                        <score>0</score>
+                    </team>
+                    <result>0</result>
+                </match>
+                <match id="2">
+                    <date>2016-10-08 03:20</date>
+                    <team name="Edward Gaming">
+                        <icon>games/lol/teams/eg.png</icon>
+                        <score>0</score>
+                    </team>
+                    <team name="H2K Gaming">
+                        <icon>games/lol/teams/h2k.png</icon>
+                        <score>1</score>
+                    </team>
+                    <result>1</result>
+                </match>
+                <match id="3">
+                    <date>2016-10-09 23:20</date>
+                    <team name="SK Telecom T1">
+                        <icon>games/lol/teams/skt.png</icon>
+                    </team>
+                    <team name="Cloud9">
+                        <icon>games/lol/teams/c9.png</icon>
+                    </team>
+                </match>
+            </matches>
+        </game>
+        <game id="d2" name="DOTA 2">
+            <icon>games/d2/icon.png</icon>
+            <matches>
+                <match id="4">
+                    <date>2016-10-08 12:25</date>
+                    <team name="iG Vitality">
+                        <icon>games/d2/teams/igv.png</icon>
+                        <score>2</score>
+                    </team>
+                    <team name="FTD Club C">
+                        <icon>games/d2/teams/ftdc.png</icon>
+                        <score>0</score>
+                    </team>
+                    <result>0</result>
+                </match>
+                <match id="5">
+                    <date>2016-10-08 10:00</date>
+                    <team name="Wings Gaming">
+                        <icon>games/d2/teams/wg.png</icon>
+                        <score>1</score>
+                    </team>
+                    <team name="LGD">
+                        <icon>games/d2/teams/lgd.png</icon>
+                        <score>1</score>
+                    </team>
+                    <result>tie</result>
+                </match>
+                <match id="6">
+                    <date>2016-10-09 14:35</date>
+                    <team name="EHOME">
+                        <icon>games/d2/teams/eh.png</icon>
+                    </team>
+                    <team name="Invictus Gaming">
+                        <icon>games/d2/teams/ig.png</icon>
+                    </team>
+                </match>
+            </matches>
+        </game>
+    </category>
+    <category id="fps" name="FPS">
+        <game id="csgo" name="CS:GO">
+            <icon>games/csgo/icon.png</icon>
+            <matches>
+                <match id="7">
+                    <date>2016-10-08 23:40</date>
+                    <team name="Cloud9">
+                        <icon>games/csgo/teams/c9.png</icon>
+                        <score>1</score>
+                    </team>
+                    <team name="Immortals">
+                        <icon>games/csgo/teams/imm.png</icon>
+                        <score>0</score>
+                    </team>
+                    <result>0</result>
+                </match>
+                <match id="8">
+                    <date>2016-10-08 14:35</date>
+                    <team name="SK Gaming">
+                        <icon>games/csgo/teams/sk.png</icon>
+                        <score>1</score>
+                    </team>
+                    <team name="Counter Logic Gaming">
+                        <icon>games/csgo/teams/clg.png</icon>
+                        <score>0</score>
+                    </team>
+                    <result>0</result>
+                </match>
+                <match id="9">
+                    <date>2016-10-09 21:15</date>
+                    <team name="Immortals">
+                        <icon>games/csgo/teams/imm.png</icon>
+                    </team>
+                    <team name="Counter Logic Gaming">
+                        <icon>games/csgo/teams/clg.png</icon>
+                    </team>
+                </match>
+            </matches>
+        </game>
+        <game id="ow" name="Overwatch">
+            <icon>games/ow/icon.png</icon>
+            <matches>
+                <match id="10">
+                    <date>2016-10-08 07:15</date>
+                    <team name="Cloud9">
+                        <icon>games/ow/teams/c9.png</icon>
+                        <score>3</score>
+                    </team>
+                    <team name="compLexity Gaming">
+                        <icon>games/ow/teams/cg.png</icon>
+                        <score>1</score>
+                    </team>
+                    <result>0</result>
+                </match>
+                <match id="11">
+                    <date>2016-10-08 00:00</date>
+                    <team name="compLexity Gaming">
+                        <icon>games/ow/teams/cg.png</icon>
+                        <score>2</score>
+                    </team>
+                    <team name="Team Liquid">
+                        <icon>games/ow/teams/tl.png</icon>
+                        <score>3</score>
+                    </team>
+                    <result>1</result>
+                </match>
+                <match id="12">
+                    <date>2016-10-09 12:15</date>
+                    <team name="Invictus Gaming Fire">
+                        <icon>games/ow/teams/igf.png</icon>
+                    </team>
+                    <team name="Snake Esports">
+                        <icon>games/ow/teams/se.png</icon>
+                    </team>
+                </match>
+            </matches>
+        </game>
+    </category>
+    <category id="strat" name="Strategy">
+        <game id="sc" name="Starcraft">
+            <icon>games/sc/icon.png</icon>
+            <matches>
+                <match id="13">
+                    <date>2016-10-08 15:50</date>
+                    <team name="MarineLorD">
+                        <icon>games/sc/teams/ml.png</icon>
+                        <score>3</score>
+                    </team>
+                    <team name="Kas">
+                        <icon>games/sc/teams/kas.png</icon>
+                        <score>0</score>
+                    </team>
+                    <result>0</result>
+                </match>
+                <match id="14">
+                    <date>2016-10-08 13:00</date>
+                    <team name="DeMusliM">
+                        <icon>games/sc/teams/dm.png</icon>
+                        <score>3</score>
+                    </team>
+                    <team name="Nightend">
+                        <icon>games/sc/teams/ne.png</icon>
+                        <score>1</score>
+                    </team>
+                    <result>0</result>
+                </match>
+                <match id="15">
+                    <date>2016-10-09 18:00</date>
+                    <team name="Elazer">
+                        <icon>games/sc/teams/el.png</icon>
+                    </team>
+                    <team name="Namshar">
+                        <icon>games/sc/teams/ns.png</icon>
+                    </team>
+                </match>
+            </matches>
+        </game>
+        <game id="hs" name="Hearthstone">
+            <icon>games/hs/icon.png</icon>
+            <matches>
+                <match id="16">
+                    <date>2016-10-08 19:40</date>
+                    <team name="Rdu">
+                        <icon>games/hs/teams/rdu.png</icon>
+                        <score>4</score>
+                    </team>
+                    <team name="Bunnyhoppor">
+                        <icon>games/hs/teams/bh.png</icon>
+                        <score>2</score>
+                    </team>
+                    <result>0</result>
+                </match>
+                <match id="17">
+                    <date>2016-10-08 14:00</date>
+                    <team name="Rdu">
+                        <icon>games/hs/teams/rdu.png</icon>
+                        <score>4</score>
+                    </team>
+                    <team name="Shtan Udachi">
+                        <icon>games/hs/teams/su.png</icon>
+                        <score>2</score>
+                    </team>
+                    <result>0</result>
+                </match>
+                <match id="18">
+                    <date>2016-10-09 10:15</date>
+                    <team name="Bunnyhoppor">
+                        <icon>games/hs/teams/bh.png</icon>
+                    </team>
+                    <team name="Fluffy">
+                        <icon>games/hs/teams/fl.png</icon>
+                    </team>
+                </match>
+            </matches>
+        </game>
+    </category>
+</db>

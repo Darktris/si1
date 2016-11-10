@@ -17,6 +17,7 @@ begin
 	where clientbets.betid = new.betid 
 		and new.winneropt is not null
 		and new.winneropt != optionid;
+    return new;
 end; $$
 language plpgsql;
 

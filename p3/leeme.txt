@@ -1,0 +1,8 @@
+Grupo 1401 (Antonio Calleja)
+
+Autores:
+- Sergio Fuentes de Uña
+- Daniel Perdices Burrero
+
+Notas:
+- Se puede utilizar como número de tarjeta de crédito "4000000000000000".

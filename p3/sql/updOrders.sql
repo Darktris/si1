@@ -16,7 +16,8 @@ begin
 	) as aux
 	where clientorders.orderid = new.orderid;
 
-	select setOrderTotaloutcome(new.orderid);		
+	perform setOrderTotaloutcome(new.orderid);		
+    return new;
 end; $$
 language plpgsql;
 
