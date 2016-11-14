@@ -56,6 +56,24 @@ if(isset($_POST["login"])) {
                 echo 'xhttp.send("index_token='.$_SESSION["index_token"].'" + data);';
                 ?>
             }
+            function loadMoreMatches(more, last, query) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        var section = more + "_more";
+                        $("button[id=" + section + "]").remove();
+                        var div = $("." + section);
+                        div.html(this.responseText);
+                        div.removeClass(section);
+                        div.addClass(section + "_expanded");
+                    }
+                };
+                xhttp.open("POST", "matches.php", true);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                <?php
+                echo 'xhttp.send("index_token='.$_SESSION["index_token"].'&more=" + more + "&last=" + last + (query || ""));';
+                ?>
+            }
             function updateUserCount() {
                 var previous = document.getElementById("usercount").innerHTML;
                 previous = previous? parseInt(previous.split(">").pop()) : "";
@@ -148,18 +166,11 @@ if(isset($_POST["login"])) {
         <div id="sidebar">
             <input type="search" id="search" placeholder="Search..." autocomplete="off" oninput="loadContent('matches.php',['#search'])">
             <?php
-            $xml = simplexml_load_file("db.xml");
-            foreach($xml->category as $category) {
-                echo '<div class="dropdown2">';
-                echo '    <button class="button1"><img src="images/category.png" alt="">'.$category["name"].'</button>';
-                echo '    <div class="dropdown2-content">';
-                foreach($category->game as $game) {
-                    echo '        <button class="button3" onclick="loadContent(\'matches.php?game='.$game["id"].'\')">'.'<img src="'.$game->icon.'" alt="">'.$game["name"].'</button>';
-                }
-                echo '    </div>';
-                echo '</div>';
+            $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+            foreach($db->query("select * from categories") as $row) {
+                echo '<button class="button1" onclick="loadContent(\'matches.php?category='.$row["categoryid"].'\')"><img src="images/category.png" alt="">'.$row["categorystring"].'</button>';
             }
-            unset($xml);
+            unset($db);
             if(!isset($_SESSION["user"])) {
             ?>
             <div class="links">

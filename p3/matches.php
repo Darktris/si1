@@ -12,19 +12,19 @@ function showmatch($db, $bet, $set) {
         $winner = $db->query("select optiondesc from options where optionid = ".$bet["winneropt"]." limit 1")->fetch()["optiondesc"];
         if(strcmp($teams[0], $winner) == 0) {
             $c0 = "g";
-            $s0 = "WIN";
+            $s0 = "Won";
             $c1 = "r";
-            $s1 = "LOSE";
+            $s1 = "Lost";
         } elseif(strcmp($teams[1], $winner) == 0) {
             $c0 = "r";
-            $s0 = "LOSE";
+            $s0 = "Lost";
             $c1 = "g";
-            $s1 = "WIN";
+            $s1 = "Won";
         } else {
             $c0 = "";
-            $s0 = "TIE";
+            $s0 = "Tied";
             $c1 = "";
-            $s1 = "TIE";
+            $s1 = "Tied";
         }
         echo '<div class="match">';
         echo '  <div class="side0'.$c0.'">'.$s0.'</div><div class="arrow0'.$c0.'"></div>';
@@ -44,20 +44,60 @@ function showmatch($db, $bet, $set) {
     echo '</div>';
 }
 $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
-echo '<div class="category">Upcoming Matches</div>';
 if(isset($_POST["1"]) && !empty($_POST["1"])) {
     $filter = "betdesc like '%".$_POST["1"]."%' and ";
-} elseif(isset($_GET["game"])) {
-
+    $query = "&1=".$_POST["1"];
+} elseif(isset($_REQUEST["game"])) {
+    $query = "&game=".$_POST["game"];
 } else {
     $filter = "";
+    $query = "";
 }
-foreach ($db->query("select * from bets where ".$filter."winneropt is null order by betcloses asc") as $row) {
-    showmatch($db, $row, false);
+$count = 0;
+if(isset($_POST["more"]) && isset($_POST["last"])) {
+    if(strcmp($_POST["more"], "upcoming") == 0) {
+        foreach($db->query("select * from bets where ".$filter."winneropt is null order by betcloses asc offset ".$_POST["last"]." limit 10") as $row) {
+            showmatch($db, $row, false);
+            $count++;
+        }
+        if($count == 10) {
+            echo '<div class="upcoming_more"></div>';
+            echo '<button id="upcoming_more" onclick="loadMoreMatches(\'upcoming\',\''.(intval($_POST["last"])+10).'\',\''.$query.'\')"><span>➕</span></button>';
+        }
+    } elseif(strcmp($_POST["more"], "latest") == 0) {
+        foreach($db->query("select * from bets where ".$filter."winneropt is not null order by betcloses desc offset ".$_POST["last"]." limit 10") as $row) {
+            showmatch($db, $row, true);
+            $count++;
+        }
+        if($count == 10) {
+            echo '<div class="latest_more"></div>';
+            echo '<button id="latest_more" onclick="loadMoreMatches(\'latest\',\''.(intval($_POST["last"])+10).'\',\''.$query.'\')"><span>➕</span></button>';
+        }
+    }
+} else {
+    echo '<div class="category">Upcoming Matches</div>';
+    foreach($db->query("select * from bets where ".$filter."winneropt is null order by betcloses asc, betid asc limit 10") as $row) {
+        showmatch($db, $row, false);
+        $count++;
+    }
+    if($count == 10) {
+        echo '<div class="upcoming_more"></div>';
+        echo '<button id="upcoming_more" onclick="loadMoreMatches(\'upcoming\',\''.$count.'\',\''.$query.'\')"><span>➕</span></button>';
+    }
+    echo '<br>';
+    echo '<div class="category">Latest Matches</div>';
+    $count = 0;
+    foreach($db->query("select * from bets where ".$filter."winneropt is not null order by betcloses desc, betid asc limit 10") as $row) {
+        showmatch($db, $row, true);
+        $count++;
+    }
+    if($count == 10) {
+        echo '<div class="latest_more"></div>';
+        echo '<button id="latest_more" onclick="loadMoreMatches(\'latest\',\''.$count.'\',\''.$query.'\')"><span>➕</span></button>';
+    }
 }
-echo '<br>';
-echo '<div class="category">Latest Matches</div>';
-foreach ($db->query("select * from bets where ".$filter."winneropt is not null order by betcloses desc") as $row) {
-    showmatch($db, $row, true);
-}
+unset($count);
+unset($db);
+unset($filter);
+unset($query);
 ?>

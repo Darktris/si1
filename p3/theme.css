@@ -189,64 +189,6 @@ header img {
     background: #36454f;
 }
 
-/* The container <div> - needed to position the dropdown content */
-.dropdown2 {
-    position: relative;
-    display: inline-block;
-}
-
-/* Dropdown Content (Hidden by Default) */
-.dropdown2-content {
-    float: left;
-    display: none;
-    position: absolute;
-    width: 200px;
-    left: 190px;
-    top: 10px;
-    font-size: 10pt;
-    background: #536878;
-    box-shadow: 8px 0px 16px 0px rgba(0,0,0,0.2);
-    z-index: 100;
-}
-
-/* Links inside the dropdown */
-.dropdown2-content .button3 {
-    width: 200px;
-    height: 50px;
-    line-height: 50px;
-    padding-left: 24px;
-    border: none;
-    text-align: left;
-    vertical-align: middle;
-    font-size: 10pt;
-    color: white;
-    background: #536878;
-    cursor: pointer;
-}
-
-.dropdown2-content .button3 img {
-    vertical-align: middle;
-    width: 32px;
-    margin-right: 8px;
-}
-
-/* Change color of dropdown links on hover */
-.dropdown2-content .button3:hover {
-    background: #708090;
-}
-
-/* Show the dropdown menu on hover */
-.dropdown2:hover .dropdown2-content {
-    display: block;
-}
-
-/* Change the background color of the dropdown button when the dropdown content is shown */
-.dropdown2:hover .button1 {
-    padding-right: 20px;
-    width: 200px;
-    background: #536878;
-}
-
 #sidebar {
     float: left;
     position: fixed;
@@ -408,14 +350,19 @@ footer #usercount img {
     line-height: 50px;
     text-align: left;
     vertical-align: middle;
-    padding-left: 32px;
+    padding-left: 8px;
     margin-top: 10px;
     border: none;
-    font-size: 14pt;
+    font-size: 12pt;
     background: #708090;
     color: white;
     text-decoration: none;
     display: inline-block;
+    cursor: pointer;
+}
+
+.button1:hover {
+    background: #536878;
 }
 
 .button1 img {
@@ -610,6 +557,55 @@ input[type="search"] {
     background: #36454f;
     color: white;
     overflow: hidden;
+}
+
+button[id=upcoming_more], button[id=latest_more] {
+    width: 100%;
+    height: 40px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    line-height: 40px;
+    border: none;
+    border-radius: 20px;
+    text-align: center;
+    font-size: 16pt;
+    font-weight: bold;
+    color: white;
+    background: #536878;
+    cursor: pointer;
+    overflow: hidden;
+    transition: 0.5s;
+}
+
+button[id=upcoming_more]:hover, button[id=latest_more]:hover {
+    background: #36454f;
+}
+
+button[id=upcoming_more] span, button[id=latest_more] span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+button[id=upcoming_more] span:after, button[id=latest_more] span:after {
+    content: 'More';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -60px;
+    font-weight: normal;
+    transition: 0.5s;
+    vertical-align: middle;
+}
+
+button[id=upcoming_more]:hover span, button[id=latest_more]:hover span {
+  padding-right: 60px;
+}
+
+button[id=upcoming_more]:hover span:after, button[id=latest_more]:hover span:after {
+  opacity: 1;
+  right: 0;
 }
 
 .error {
