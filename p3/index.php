@@ -167,7 +167,7 @@ if(isset($_POST["login"])) {
             <input type="search" id="search" placeholder="Search..." autocomplete="off" oninput="loadContent('matches.php',['#search'])">
             <?php
             $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
-            foreach($db->query("select * from categories") as $row) {
+            foreach($db->query("select * from categories where categorystring not like 'k1'") as $row) {
                 echo '<button class="button1" onclick="loadContent(\'matches.php?category='.$row["categoryid"].'\')"><img src="images/category.png" alt="">'.$row["categorystring"].'</button>';
             }
             unset($db);

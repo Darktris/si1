@@ -29,13 +29,11 @@ function showmatch($db, $bet, $set) {
         echo '<div class="match">';
         echo '  <div class="side0'.$c0.'">'.$s0.'</div><div class="arrow0'.$c0.'"></div>';
     } else {
-        echo '<div class="match" onclick="loadContent(\'bet.php?game='."TODO".'&match='."TODO".'\')">';
+        echo '<div class="match" onclick="loadContent(\'bet.php?betid='.$bet["betid"].'\')">';
     }
     echo '  <div class="matchinfo">';
     echo '      <div class="matchdetail">'.$bet["betcloses"].'</div>';
-    #echo '      <img src="'.$match->team[0]->icon.'" alt=""/>';
     echo '      '.$teams[0].' vs. '.$teams[1];
-    #echo '      <img src="'.$match->team[1]->icon.'" alt=""/>';
     echo '      <div class="matchdetail">'.$category.'</div>';
     echo '  </div>';
     if($set) {
@@ -47,8 +45,9 @@ $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
 if(isset($_POST["1"]) && !empty($_POST["1"])) {
     $filter = "betdesc like '%".$_POST["1"]."%' and ";
     $query = "&1=".$_POST["1"];
-} elseif(isset($_REQUEST["game"])) {
-    $query = "&game=".$_POST["game"];
+} elseif(isset($_REQUEST["category"])) {
+    $filter = "categoryid = ".$_REQUEST["category"]." and ";
+    $query = "&category=".$_REQUEST["category"];
 } else {
     $filter = "";
     $query = "";
@@ -96,8 +95,8 @@ if(isset($_POST["more"]) && isset($_POST["last"])) {
         echo '<button id="latest_more" onclick="loadMoreMatches(\'latest\',\''.$count.'\',\''.$query.'\')"><span>➕</span></button>';
     }
 }
-unset($count);
 unset($db);
+unset($count);
 unset($filter);
 unset($query);
 ?>

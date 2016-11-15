@@ -65,7 +65,7 @@ function validateCredit(option) {
     }
 }
 
-function validateBet(game, match, edit) {
+function validateBet(betid, edit) {
     var min = parseInt(document.getElementById("amount").getAttribute("min"));
     var max = parseInt(document.getElementById("amount").getAttribute("max"));
     var step = parseInt(document.getElementById("amount").getAttribute("step"));
@@ -80,7 +80,7 @@ function validateBet(game, match, edit) {
         document.getElementById("amount_error").innerHTML = "No loose change below " + step + " €.";
     } else {
         document.getElementById("amount_error").innerHTML = "";
-        loadContent("bet.php?game=" + game + "&match=" + match + "&edit=" + (edit || "false"), ['input[name=team]:checked','#amount']);
+        loadContent("bet.php?betid=" + betid + "&edit=" + (edit || "false"), ['input[name=team]:checked','#amount']);
     }
 }
 
