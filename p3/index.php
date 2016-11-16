@@ -3,23 +3,16 @@
 session_start();
 $_SESSION["index_token"] = uniqid("", true);
 if(isset($_POST["login"])) {
-    $user_path = "users/".$_POST["user"];
-    if(file_exists($user_path) && is_dir($user_path)) {
-        $data = file($user_path."/data.dat");
-        if(!$data) {
-            $login_error = "Corrupt user.";
-        } elseif(strncmp(md5($_POST["pass"]), $data[1], 32) == 0) {
-            $_SESSION["user"] = $_POST["user"];
-            setcookie("user", $_POST["user"], time() + (2 * 60 * 60));
-            unset($login_error);
-        } else {
-            $login_error = "Invalid user or password.";
-        }
-        unset($data);
+    $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+    $user = $db->query("select * from customers where username like '".$_POST["user"]."' and password like '".$_POST["pass"]."' limit 1");
+    if($user->rowCount() == 1) {
+        $_SESSION["user"] = $user->fetch()["customerid"];
+        setcookie("user", $_POST["user"], time() + (2 * 60 * 60));
+        unset($login_error);
     } else {
         $login_error = "Invalid user or password.";
     }
-    unset($user_path);
+    unset($db);
 } elseif(isset($_GET["logout"])) {
     session_unset();
     session_destroy();
@@ -129,7 +122,10 @@ if(isset($_POST["login"])) {
             <button id="account">
                 <img src="images/account.png" alt=""/>
             <?php
-                echo substr($_SESSION["user"], 0, 10);
+                $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+                $username = $db->query("select username from customers where customerid = '".$_SESSION["user"]."' limit 1")->fetch()["username"];
+                echo substr($username, 0, 10);
+                unset($username);
             ?>
             </button>
             <div class="dropdown-content">

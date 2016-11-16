@@ -246,7 +246,7 @@ header img {
 
 #scrollable form button {
     left: 50%;
-    margin-left: 100px;
+    margin-left: 90px;
 }
 
 #scrollable form {
@@ -566,7 +566,7 @@ button[id=upcoming_more], button[id=latest_more] {
     margin-bottom: 10px;
     line-height: 40px;
     border: none;
-    border-radius: 20px;
+    border-radius: 0 0 30px 30px;
     text-align: center;
     font-size: 16pt;
     font-weight: bold;
