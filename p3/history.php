@@ -32,17 +32,18 @@ if(isset($_SESSION["user"])) {
     $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
     $user = $db->query("select * from customers where customerid = ".$_SESSION["user"]);
     if($user->rowCount() == 1) {
-        $count = 0;
         if(isset($_POST["more"]) && isset($_POST["last"])) {
+            $count = intval($_POST["last"]);
             foreach($db->query("select * from clientorders as co, clientbets as cb, bets as b where co.customerid = ".$_SESSION["user"]." and cb.orderid = co.orderid and b.betid = cb.betid order by co.date desc offset ".$_POST["last"]." limit 20") as $bet) {
                 showmatch($db, $bet, $count);
                 $count++;
             }
-            if($count == 20) {
+            if($count == intval($_POST["last"]) + 20) {
                 echo '<div class="history_more"></div>';
-                echo '<button id="history_more" onclick="loadMoreMatches(\'history\',\''.(intval($_POST["last"])+20).'\')"><span>➕</span></button>';
+                echo '<button id="history_more" onclick="loadMoreMatches(\'history\',\''.$count.'\')"><span>➕</span></button>';
             }
         } else {
+            $count = 0;
             echo '<div class="title">';
             echo '  Bet History';
             echo '</div>';
