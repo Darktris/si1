@@ -26,7 +26,7 @@ if(!isset($_POST["index_token"]) || strcmp($_POST["index_token"], $_SESSION["ind
                 echo '  <div class="side0">'.$bag_bet["amount"].' €</div><div class="arrow0"></div>';
             }
             echo '  <div class="matchinfo">';
-            echo '      <div class="matchdetail">'.$bet["betcloses"].'</div>';
+            echo '      <div class="matchdetail">'.date('D, jS F Y',strtotime($bet["betcloses"])).'</div>';
             echo '      '.$teams[0].' vs. '.$teams[1];
             echo '      <div class="matchdetail">'.$category.'</div>';
             echo '  </div>';
@@ -49,37 +49,29 @@ if(!isset($_POST["index_token"]) || strcmp($_POST["index_token"], $_SESSION["ind
             $carry += $item["amount"];
             return $carry;
         }, 0);
+        $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
         if(isset($_GET["confirm"]) && strcmp($_GET["confirm"], "true") == 0) {
             if(isset($_SESSION["user"])) {
-                $user_path = "users/".$_SESSION["user"];
-                if(file_exists($user_path) && is_dir($user_path)) {
-                    $data = file($user_path."/data.dat");
-                    if(!$data) {
-                        $chckt_error = "Corrupt user.";
-                    } elseif($total <= $data[5]) {
-                        $data[5] -= $total;
-                        $fdata = fopen($user_path."/data.dat", "w");
-                        foreach($data as $line) {
-                            fwrite($fdata, $line);
+                $user = $db->query("select * from customers where customerid = ".$_SESSION["user"]);
+                if($user->rowCount() == 1) {
+                    if($total <= $user->fetch()["credit"]) {
+                        $db->query("update customers set credit = credit - ".$total." where customerid = ".$_SESSION["user"]);
+                        $order = $db->query("select max(orderid) from clientorders")->fetch()["max"] + 1;
+                        $db->query("insert into clientorders (customerid, date, orderid, totalamount) values (".$_SESSION["user"].", now(), ".$order.", ".$total.")");
+                        foreach($_SESSION["bag"] as $id => $choices) {
+                            $bet = $db->query("select * from bets where winneropt is null and betid = ".$id." limit 1")->fetch();
+                            $winner = explode("-", $bet["betdesc"])[$choices["winner"]];
+                            $option = $db->query("select optionid from options where optiondesc like ".$db->quote($winner))->fetch()["optionid"];
+                            $ratio = $db->query("select ratio from optionbet where optionid = ".$option." and betid = ".$bet["betid"])->fetch()["ratio"];
+                            $db->query("insert into clientbets (optionid, bet, ratio, betid, orderid) values (".$option.", ".$choices["amount"].", ".$ratio.", ".$id.", ".$order.")");
+                            unset($bet);
+                            unset($winner);
+                            unset($option);
+                            unset($ratio);
                         }
-                        fclose($fdata);
-                        unset($fdata);
-                        unset($data);
-                        unset($total);
-                        $his = simplexml_load_file($user_path.'/history.xml');
-                        foreach($_SESSION["bag"] as $id => $bet) {
-                            $newbet = $his->addChild("bet");
-                            $newbet->addAttribute("id", $id);
-                            $newbet->addChild("game", $bet["game"]);
-                            $newbet->addChild("winner", $bet["winner"]);
-                            $newbet->addChild("amount", $bet["amount"]);
-                            $newbet->addChild("time", time());
-                            unset($newbet);
-                        }
-                        $his->asXML($user_path.'/history.xml');
                         unset($_SESSION["bag"]);
-                        unset($his);
-                        unset($user_path);
+                        unset($total);
+                        unset($order);
                         unset($chckt_error);
                         echo '<div class="text">';
                         echo '  Your shopping bag has been successfully processed.';
@@ -91,16 +83,14 @@ if(!isset($_POST["index_token"]) || strcmp($_POST["index_token"], $_SESSION["ind
                     } else {
                         $chckt_error = "Not enough credit to checkout.";
                     }
-                    unset($data);
                 } else {
                     $chckt_error = "Corrupt user.";
                 }
-                unset($user_path);
+                unset($user);
             } else {
                 $chckt_error = "You must login to checkout.";
             }
         }
-        $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
         foreach($_SESSION["bag"] as $id => $bag_bet) {
             $bet = $db->query("select * from bets where winneropt is null and betid = ".$id." limit 1")->fetch();
             $category = $db->query("select categorystring from categories where categoryid = ".$bet["categoryid"]." limit 1")->fetch()["categorystring"];
@@ -111,7 +101,7 @@ if(!isset($_POST["index_token"]) || strcmp($_POST["index_token"], $_SESSION["ind
             }
             echo '  <div class="edit" onclick="loadContent(\'bet.php?betid='.$id.'&edit=true\')"><div class="side0g">Edit</div><div class="arrow0g"></div></div>';
             echo '  <div class="matchinfo">';
-            echo '      <div class="matchdetail">'.$bet["betcloses"].'</div>';
+            echo '      <div class="matchdetail">'.date('D, jS F Y',strtotime($bet["betcloses"])).'</div>';
             echo '      '.$teams[0].' vs. '.$teams[1];
             echo '      <div class="matchdetail">'.$category.'</div>';
             echo '  </div>';

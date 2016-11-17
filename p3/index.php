@@ -4,7 +4,7 @@ session_start();
 $_SESSION["index_token"] = uniqid("", true);
 if(isset($_POST["login"])) {
     $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
-    $user = $db->query("select * from customers where username like '".$_POST["user"]."' and password like '".$_POST["pass"]."' limit 1");
+    $user = $db->query("select * from customers where username like ".$db->quote($_POST["user"])." and password like ".$db->quote($_POST["pass"])." limit 1");
     if($user->rowCount() == 1) {
         $_SESSION["user"] = $user->fetch()["customerid"];
         setcookie("user", $_POST["user"], time() + (2 * 60 * 60));
@@ -61,7 +61,7 @@ if(isset($_POST["login"])) {
                         div.addClass(section + "_expanded");
                     }
                 };
-                xhttp.open("POST", "matches.php", true);
+                xhttp.open("POST", more == "history"? "history.php" : "matches.php", true);
                 xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 <?php
                 echo 'xhttp.send("index_token='.$_SESSION["index_token"].'&more=" + more + "&last=" + last + (query || ""));';

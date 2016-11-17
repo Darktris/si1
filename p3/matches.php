@@ -32,7 +32,7 @@ function showmatch($db, $bet, $set) {
         echo '<div class="match" onclick="loadContent(\'bet.php?betid='.$bet["betid"].'\')">';
     }
     echo '  <div class="matchinfo">';
-    echo '      <div class="matchdetail">'.$bet["betcloses"].'</div>';
+    echo '      <div class="matchdetail">'.date('D, jS F Y',strtotime($bet["betcloses"])).'</div>';
     echo '      '.$teams[0].' vs. '.$teams[1];
     echo '      <div class="matchdetail">'.$category.'</div>';
     echo '  </div>';
@@ -43,7 +43,7 @@ function showmatch($db, $bet, $set) {
 }
 $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
 if(isset($_POST["1"]) && !empty($_POST["1"])) {
-    $filter = "betdesc like '%".$_POST["1"]."%' and ";
+    $filter = "betdesc like concat('%',".$db->quote($_POST["1"]).",'%') and ";
     $query = "&1=".$_POST["1"];
 } elseif(isset($_REQUEST["category"])) {
     $filter = "categoryid = ".$_REQUEST["category"]." and ";
@@ -81,7 +81,7 @@ if(isset($_POST["more"]) && isset($_POST["last"])) {
     }
     if($count == 10) {
         echo '<div class="upcoming_more"></div>';
-        echo '<button id="upcoming_more" onclick="loadMoreMatches(\'upcoming\',\''.$count.'\',\''.$query.'\')"><span>➕</span></button>';
+        echo '<button id="upcoming_more" onclick="loadMoreMatches(\'upcoming\',\'10\',\''.$query.'\')"><span>➕</span></button>';
     }
     echo '<br>';
     echo '<div class="category">Latest Matches</div>';
@@ -92,7 +92,7 @@ if(isset($_POST["more"]) && isset($_POST["last"])) {
     }
     if($count == 10) {
         echo '<div class="latest_more"></div>';
-        echo '<button id="latest_more" onclick="loadMoreMatches(\'latest\',\''.$count.'\',\''.$query.'\')"><span>➕</span></button>';
+        echo '<button id="latest_more" onclick="loadMoreMatches(\'latest\',\'10\',\''.$query.'\')"><span>➕</span></button>';
     }
 }
 unset($db);

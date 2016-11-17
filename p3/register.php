@@ -14,7 +14,7 @@ if(!isset($_SESSION["user"])) {
     if(isset($_POST["1"]) && isset($_POST["2"]) && isset($_POST["3"]) && isset($_POST["4"]) && isset($_POST["5"])) {
         /* "1" is user, "2" is pass, "3" is mail, "4" is card, "5" is expiry */
         $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
-        if($db->query("select * from customers where username like '".$_POST["1"]."'")->rowCount() == 0) {
+        if($db->query("select * from customers where username like ".$db->quote($_POST["1"]))->rowCount() == 0) {
             $db->query("insert into customers (username, password, email, creditcard, creditcardexpiration, credit) values ('".$_POST["1"]."', '".$_POST["2"]."', '".$_POST["3"]."', '".$_POST["4"]."', '".$_POST["5"]."', 0)");
             setcookie("user", $_POST["1"], time() + (2 * 60 * 60));
             echo '<div class="text">';

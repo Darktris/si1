@@ -6,42 +6,57 @@ if(!isset($_POST["index_token"]) || strcmp($_POST["index_token"], $_SESSION["ind
     die;
 }
 date_default_timezone_set('Europe/Madrid');
-if(isset($_SESSION["user"])) {
-    echo '<div class="title">';
-    echo '  Bet History';
+function showmatch($db, $bet, $count) {
+    $category = $db->query("select categorystring from categories where categoryid = ".$bet["categoryid"]." limit 1")->fetch()["categorystring"];
+    $teams = explode("-", $bet["betdesc"]);
+    $option0 = $db->query("select optionid from options where optiondesc like ".$db->quote($teams[0]))->fetch()["optionid"];
+    $winner = ($bet["optionid"] == $option0? 0 : 1);
+    echo '<div class="match" onclick="showBetDetails(\''.$count.'\')">';
+    if($winner == 0) {
+        echo '  <div class="side0">'.$bet["bet"].' €</div><div class="arrow0"></div>';
+    }
+    echo '  <div class="matchinfo">';
+    echo '      <div class="matchdetail">'.date('D, jS F Y',strtotime($bet["betcloses"])).'</div>';
+    echo '      '.$teams[0].' vs. '.$teams[1];
+    echo '      <div class="matchdetail">'.$category.'</div>';
+    echo '  </div>';
+    if($winner == 1) {
+        echo '  <div class="side1">'.$bet["bet"].' €</div><div class="arrow1"></div>';
+    }
     echo '</div>';
-    $xml = simplexml_load_file('db.xml');
-    $his = simplexml_load_file('users/'.$_SESSION["user"].'/history.xml');
-    $bets = array();
-    foreach($his->bet as $bet) {
-        $bets[] = $bet;
-    }
-    unset($his);
-    foreach(array_reverse($bets) as $i => $bet) {
-        $game = $xml->xpath('/db/category[@*]/game[@id = "'.$bet->game.'"]')[0];
-        $match = $xml->xpath('/db/category[@*]/game[@id = "'.$bet->game.'"]/matches/match[@id = "'.$bet["id"].'"]')[0];
-        echo '<div class="match" onclick="showBetDetails(\''.$i.'\')">';
-        if(strcmp($bet->winner, "0") == 0) {
-            echo '  <div class="side0">'.$bet->amount.' €</div><div class="arrow0"></div>';
+    echo '<div class="betdetails" id="details'.$count.'">';
+    echo '  Bet made on '.date('D, jS F Y \a\t H:i',strtotime($bet["date"]));
+    echo '</div>';
+}
+if(isset($_SESSION["user"])) {
+    $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
+    $user = $db->query("select * from customers where customerid = ".$_SESSION["user"]);
+    if($user->rowCount() == 1) {
+        $count = 0;
+        if(isset($_POST["more"]) && isset($_POST["last"])) {
+            foreach($db->query("select * from clientorders as co, clientbets as cb, bets as b where co.customerid = ".$_SESSION["user"]." and cb.orderid = co.orderid and b.betid = cb.betid order by co.date desc offset ".$_POST["last"]." limit 20") as $bet) {
+                showmatch($db, $bet, $count);
+                $count++;
+            }
+            if($count == 20) {
+                echo '<div class="history_more"></div>';
+                echo '<button id="history_more" onclick="loadMoreMatches(\'history\',\''.(intval($_POST["last"])+20).'\')"><span>➕</span></button>';
+            }
+        } else {
+            echo '<div class="title">';
+            echo '  Bet History';
+            echo '</div>';
+            foreach($db->query("select * from clientorders as co, clientbets as cb, bets as b where co.customerid = ".$_SESSION["user"]." and cb.orderid = co.orderid and b.betid = cb.betid order by co.date desc limit 20") as $bet) {
+                showmatch($db, $bet, $count);
+                $count++;
+            }
+            if($count == 20) {
+                echo '<div class="history_more"></div>';
+                echo '<button id="history_more" onclick="loadMoreMatches(\'history\',\'20\')"><span>➕</span></button>';
+            }
         }
-        echo '  <div class="matchinfo">';
-        echo '      <div class="matchdetail">'.date('D, jS F Y @ H:i',strtotime($match->date)).'</div>';
-        echo '      <img src="'.$match->team[0]->icon.'" alt=""/>';
-        echo '      '.$match->team[0]["name"].' vs. '.$match->team[1]["name"];
-        echo '      <img src="'.$match->team[1]->icon.'" alt=""/>';
-        echo '      <div class="matchdetail">'.$game["name"].'</div>';
-        echo '  </div>';
-        if(strcmp($bet->winner, "1") == 0) {
-            echo '  <div class="side1">'.$bet->amount.' €</div><div class="arrow1"></div>';
-        }
-        echo '</div>';
-        echo '<div class="betdetails" id="details'.$i.'">';
-        echo '  Bet made on '.date('D, jS F Y \a\t H:i', intval($bet->time));
-        echo '</div>';
-        unset($game);
-        unset($match);
+        unset($db);
+        unset($count);
     }
-    unset($bets);
-    unset($xml);
 }
 ?>

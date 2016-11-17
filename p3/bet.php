@@ -22,7 +22,6 @@ if(isset($_GET["betid"])) {
             $_SESSION["bag"] = array();
         }
         $_SESSION["bag"][strval($bet["betid"])] = array(
-            "category" => strval($game["id"]),
             "winner" => $_POST["1"],
             "amount" => $_POST["2"]
         );
@@ -34,7 +33,7 @@ if(isset($_GET["betid"])) {
             echo '  <div class="side0">'.$_POST["2"].' €</div><div class="arrow0"></div>';
         }
         echo '  <div class="matchinfo">';
-        echo '      <div class="matchdetail">'.$bet["betcloses"].'</div>';
+        echo '      <div class="matchdetail">'.date('D, jS F Y',strtotime($bet["betcloses"])).'</div>';
         echo '      '.$teams[0].' vs. '.$teams[1];
         echo '      <div class="matchdetail">'.$category.'</div>';
         echo '  </div>';
@@ -65,11 +64,11 @@ if(isset($_GET["betid"])) {
             echo '<div class="side0" id="wnnrside">10 €</div><div class="arrow0" id="wnnrarrow"></div>';
         }
         echo '  <div class="matchinfo">';
-        echo '      <div class="matchdetail">'.$bet["betcloses"].'</div>';
+        echo '      <div class="matchdetail">'.date('D, jS F Y',strtotime($bet["betcloses"])).'</div>';
         echo '      <input type="radio" name="team" value="0" '.(!isset($old_bet) || strcmp($old_bet["winner"], "0") == 0? "checked " : "").'onclick="updateBet(\'0\')">';
         echo '      '.$teams[0].' vs. '.$teams[1];
         echo '      <input type="radio" name="team" value="1" '.(isset($old_bet) && strcmp($old_bet["winner"], "1") == 0? "checked " : "").'onclick="updateBet(\'1\')">';
-        echo '      <div class="matchdetail">'.$game["name"].'</div>';
+        echo '      <div class="matchdetail">'.$category.'</div>';
         echo '  </div>';
         if(isset($old_bet) && strcmp($old_bet["winner"], "1") == 0) {
             echo '<div class="side1" id="wnnrside">'.$old_bet["amount"].' €</div><div class="arrow1" id="wnnrarrow"></div>';
