@@ -16,71 +16,102 @@ if(isset($_GET["betid"])) {
     $category = $db->query("select categorystring from categories where categoryid = ".$bet["categoryid"]." limit 1")->fetch()["categorystring"];
     $teams = explode("-", $bet["betdesc"]);
     $edit = isset($_GET["edit"]) && (strcmp($_GET["edit"], "true") == 0);
-    if(isset($_POST["1"]) && isset($_POST["2"])) {
-        /* "1" is left/right team, "2" is amount */
-        if(!isset($_SESSION["bag"])) {
-            $_SESSION["bag"] = array();
+    if(isset($_SESSION["user"])) {
+        $user = $db->query("select * from customers where customerid = ".$_SESSION["user"]);
+        if($user->rowCount() == 1) {
+            $order = $db->query("select * from clientorders where customerid = ".$_SESSION["user"]." and date is null order by orderid desc limit 1");
+            if(isset($_POST["1"]) && isset($_POST["2"])) {
+                /* "1" is left/right team, "2" is amount */
+                if($order->rowCount() == 0) {
+                    $db->query("insert into clientorders (customerid, totalamount) values (".$_SESSION["user"].", 0)");
+                    $oid = $db->lastInsertId();
+                } else {
+                    $oid = $order->fetch()["orderid"];
+                }
+                $option = $db->query("select optionid from options where optiondesc like ".$db->quote($teams[$_POST["1"]]))->fetch()["optionid"];
+                $ratio = $db->query("select ratio from optionbet where optionid = ".$option." and betid = ".$bet["betid"])->fetch()["ratio"];
+                $db->query("insert into clientbets (optionid, bet, ratio, betid, orderid) values (".$option.", ".$_POST["2"].", ".$ratio.", ".$bet["betid"].", ".$oid.")");
+                unset($oid);
+                unset($option);
+                unset($ratio);
+                echo '<div class="text">';
+                echo '  The bet below will be placed in your shopping bag.';
+                echo '</div>';
+                echo '<div class="match">';
+                if(strcmp($_POST["1"], "0") == 0) {
+                    echo '  <div class="side0">'.$_POST["2"].' €</div><div class="arrow0"></div>';
+                }
+                echo '  <div class="matchinfo">';
+                echo '      <div class="matchdetail">'.date('D, jS F Y',strtotime($bet["betcloses"])).'</div>';
+                echo '      '.$teams[0].' vs. '.$teams[1];
+                echo '      <div class="matchdetail">'.$category.'</div>';
+                echo '  </div>';
+                if(strcmp($_POST["1"], "1") == 0) {
+                    echo '  <div class="side1">'.$_POST["2"].' €</div><div class="arrow1"></div>';
+                }
+                echo '</div>';
+                echo '<form method="post">';
+                if($edit) {
+                    echo '  <input type="hidden" name="content" value="checkout.php">';
+                }
+                echo '  <button type="submit">Confirm</button>';
+                echo '</form>';
+            } else {
+                $winner = 0;
+                $amount = 10;
+                if($edit) {
+                    $oid = $order->fetch()["orderid"];
+                    $old_bet = $db->query("select * from clientbets where betid = ".$bet["betid"]." and orderid = ".$oid." limit 1")->fetch();
+                    $option0 = $db->query("select optionid from options where optiondesc like ".$db->quote($teams[0]))->fetch()["optionid"];
+                    $winner = ($old_bet["optionid"] == $option0? 0 : 1);
+                    $amount = $old_bet["bet"];
+                    unset($oid);
+                    unset($old_bet);
+                    unset($option0);
+                }
+                echo '<div class="text">';
+                echo '  Please choose a winner and the amount to bet.';
+                echo '</div>';
+                echo '<div class="match" id="match">';
+                if($winner == 0) {
+                    echo '<div class="side0" id="wnnrside">'.$amount.' €</div><div class="arrow0" id="wnnrarrow"></div>';
+                }
+                echo '  <div class="matchinfo">';
+                echo '      <div class="matchdetail">'.date('D, jS F Y',strtotime($bet["betcloses"])).'</div>';
+                echo '      <input type="radio" name="team" value="0" '.($winner == 0? "checked " : "").'onclick="updateBet(\'0\')">';
+                echo '      '.$teams[0].' vs. '.$teams[1];
+                echo '      <input type="radio" name="team" value="1" '.($winner == 1? "checked " : "").'onclick="updateBet(\'1\')">';
+                echo '      <div class="matchdetail">'.$category.'</div>';
+                echo '  </div>';
+                if($winner == 1) {
+                    echo '<div class="side1" id="wnnrside">'.$amount.' €</div><div class="arrow1" id="wnnrarrow"></div>';
+                }
+                echo '</div>';
+                echo '<form method="post" name="betform" onsubmit="return false">';
+                echo '  Amount: <span class="input-euro"><input id="amount" type="number" min="10" max="1000" step="1" value="'.$amount.'" oninput=updateBet()></span><br>';
+                echo '  <div class="error" id="amount_error"></div>';
+                echo '  <input type="reset" value="Back" onclick="loadContent()">';
+                echo '  <input type="submit" value="Confirm" onclick="validateBet(\''.$bet["betid"].'\',\''.($edit? "true" : "false").'\')">';
+                echo '</div><br>';
+                unset($winner);
+                unset($amount);
+            }
+            unset($order);
+        } else {
+            echo '<div class="text">';
+            echo '  Corrupt user, please relog.';
+            echo '</div>';
+            echo '<form method="post">';
+            echo '  <button type="submit">Back</button>';
+            echo '</form>';
         }
-        $_SESSION["bag"][strval($bet["betid"])] = array(
-            "winner" => $_POST["1"],
-            "amount" => $_POST["2"]
-        );
+    } else {
         echo '<div class="text">';
-        echo '  The bet below will be placed in your shopping bag.';
-        echo '</div>';
-        echo '<div class="match">';
-        if(strcmp($_POST["1"], "0") == 0) {
-            echo '  <div class="side0">'.$_POST["2"].' €</div><div class="arrow0"></div>';
-        }
-        echo '  <div class="matchinfo">';
-        echo '      <div class="matchdetail">'.date('D, jS F Y',strtotime($bet["betcloses"])).'</div>';
-        echo '      '.$teams[0].' vs. '.$teams[1];
-        echo '      <div class="matchdetail">'.$category.'</div>';
-        echo '  </div>';
-        if(strcmp($_POST["1"], "1") == 0) {
-            echo '  <div class="side1">'.$_POST["2"].' €</div><div class="arrow1"></div>';
-        }
+        echo '  You must log in to bet.';
         echo '</div>';
         echo '<form method="post">';
-        if($edit) {
-            echo '  <input type="hidden" name="content" value="checkout.php">';
-        }
-        echo '  <button type="submit">Confirm</button>';
+        echo '  <button type="submit">Back</button>';
         echo '</form>';
-    } else {
-        if($edit && isset($_SESSION["bag"]) &&
-            array_key_exists(strval($bet["betid"]), $_SESSION["bag"])) {
-            $old_bet = $_SESSION["bag"][strval($bet["betid"])];
-        }
-        echo '<div class="text">';
-        echo '  Please choose a winner and the amount to bet.';
-        echo '</div>';
-        echo '<div class="match" id="match">';
-        if(isset($old_bet)) {
-            if(strcmp($old_bet["winner"], "0") == 0) {
-                echo '<div class="side0" id="wnnrside">'.$old_bet["amount"].' €</div><div class="arrow0" id="wnnrarrow"></div>';
-            }
-        } else {
-            echo '<div class="side0" id="wnnrside">10 €</div><div class="arrow0" id="wnnrarrow"></div>';
-        }
-        echo '  <div class="matchinfo">';
-        echo '      <div class="matchdetail">'.date('D, jS F Y',strtotime($bet["betcloses"])).'</div>';
-        echo '      <input type="radio" name="team" value="0" '.(!isset($old_bet) || strcmp($old_bet["winner"], "0") == 0? "checked " : "").'onclick="updateBet(\'0\')">';
-        echo '      '.$teams[0].' vs. '.$teams[1];
-        echo '      <input type="radio" name="team" value="1" '.(isset($old_bet) && strcmp($old_bet["winner"], "1") == 0? "checked " : "").'onclick="updateBet(\'1\')">';
-        echo '      <div class="matchdetail">'.$category.'</div>';
-        echo '  </div>';
-        if(isset($old_bet) && strcmp($old_bet["winner"], "1") == 0) {
-            echo '<div class="side1" id="wnnrside">'.$old_bet["amount"].' €</div><div class="arrow1" id="wnnrarrow"></div>';
-        }
-        echo '</div>';
-        echo '<form method="post" name="betform" onsubmit="return false">';
-        echo '  Amount: <span class="input-euro"><input id="amount" type="number" min="10" max="1000" step="1" value="'.(isset($old_bet)? $old_bet["amount"] : "10").'" oninput=updateBet()></span><br>';
-        echo '  <div class="error" id="amount_error"></div>';
-        echo '  <input type="reset" value="Back" onclick="loadContent()">';
-        echo '  <input type="submit" value="Confirm" onclick="validateBet(\''.$bet["betid"].'\',\''.($edit? "true" : "false").'\')">';
-        echo '</div><br>';
-        unset($old_bet);
     }
     unset($db);
     unset($bet);

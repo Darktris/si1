@@ -2,8 +2,8 @@
 <?php
 session_start();
 $_SESSION["index_token"] = uniqid("", true);
+$db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
 if(isset($_POST["login"])) {
-    $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
     $user = $db->query("select * from customers where username like ".$db->quote($_POST["user"])." and password like ".$db->quote($_POST["pass"])." limit 1");
     if($user->rowCount() == 1) {
         $_SESSION["user"] = $user->fetch()["customerid"];
@@ -12,7 +12,6 @@ if(isset($_POST["login"])) {
     } else {
         $login_error = "Invalid user or password.";
     }
-    unset($db);
 } elseif(isset($_GET["logout"])) {
     session_unset();
     session_destroy();
@@ -99,20 +98,23 @@ if(isset($_POST["login"])) {
             <img src="images/logo.png" alt="">etaBet
         </header>
         <?php
-        if(isset($_SESSION["bag"]) && !empty($_SESSION["bag"])) {
-            $total = array_reduce($_SESSION["bag"], function($carry, $item) {
-                $carry += $item["amount"];
-                return $carry;
-            }, 0);
-            echo '<div id=\'bag\' onclick="loadContent(\'checkout.php\')">';
-            echo '  <span id="baginfo">';
-            echo '      <img src="images/bag.png" alt="">Total: '.$total.' €';
-            echo '  </span>';
-            echo '  <span id="checkout">';
-            echo '      Checkout';
-            echo '  </span>';
-            echo '</div>';
-            unset($total);
+        if(isset($_SESSION["user"])) {
+            if($db->query("select * from customers where customerid = ".$_SESSION["user"])->rowCount() == 1) {
+                $order = $db->query("select * from clientorders where customerid = ".$_SESSION["user"]." and date is null order by orderid desc limit 1");
+                if($order->rowCount() == 1) {
+                    $total = $order->fetch()["totalamount"];
+                    echo '<div id=\'bag\' onclick="loadContent(\'checkout.php\')">';
+                    echo '  <span id="baginfo">';
+                    echo '      <img src="images/bag.png" alt="">Total: '.$total.' €';
+                    echo '  </span>';
+                    echo '  <span id="checkout">';
+                    echo '      Checkout';
+                    echo '  </span>';
+                    echo '</div>';
+                    unset($total);
+                }
+                unset($order);
+            }
         }
         ?>
         <div class="dropdown">
@@ -122,7 +124,6 @@ if(isset($_POST["login"])) {
             <button id="account">
                 <img src="images/account.png" alt=""/>
             <?php
-                $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
                 $username = $db->query("select username from customers where customerid = '".$_SESSION["user"]."' limit 1")->fetch()["username"];
                 echo substr($username, 0, 10);
                 unset($username);
@@ -162,11 +163,9 @@ if(isset($_POST["login"])) {
         <div id="sidebar">
             <input type="search" id="search" placeholder="Search..." autocomplete="off" oninput="loadContent('matches.php',['#search'])">
             <?php
-            $db = new PDO("pgsql:dbname=si1; host=localhost", "alumnodb", "alumnodb");
             foreach($db->query("select * from categories where categorystring not like 'k1'") as $row) {
                 echo '<button class="button1" onclick="loadContent(\'matches.php?category='.$row["categoryid"].'\')"><img src="images/category.png" alt="">'.$row["categorystring"].'</button>';
             }
-            unset($db);
             if(!isset($_SESSION["user"])) {
             ?>
             <div class="links">
