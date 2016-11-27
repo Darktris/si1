@@ -33,6 +33,10 @@
 \usepackage{multicol}
 \usepackage{hyperref}
 \usepackage[font=small]{caption}
+
+\usepackage{listings}
+
+
 %\usepackage{pifont}
 \selectlanguage{spanish}
 \addto\extrasspanish{%
@@ -114,7 +118,9 @@
 \author{\textbf{\hmwkAuthorName}}
 
 %----------------------------------------------------------------------------------
-
+\lstdefinestyle{sql}
+{language=sql,
+}
 \begin{document}
 
 \maketitle
@@ -291,6 +297,78 @@ A continuación se muestra el diagrama E-R (sin atributos por legibilidad) del e
 
 Todos estos cambios los realiza el fichero \texttt{actualiza.sql}
 
+\section{Consultas SQL}
+El objetivo de esta práctica ha sido implementar un conjunto de funciones y \textit{triggers} que faciliten el mantenimiento y manejo de la base de datos y de la aplicación web.
+\subsection{Análisis de las consultas realizadas}
+\subsubsection{setTotalAmount}
+Para optimizar esta consulta, que pese a no tardar un tiempo excesivo, se detectan lecturas secuenciales, se crean índices.
+
+El rendimiento original de la consulta
+\lstset{basicstyle=\small,style=sql}
+\begin{lstlisting}[style=sql]
+ Update on clientorders  (cost=97847.15..112110.70 rows=118766 width=146)
+   ->  Hash Join  (cost=97847.15..112110.70 rows=118766 width=146)
+         Hash Cond: (aux.id = clientorders.orderid)
+         ->  Subquery Scan on aux  (cost=90991.97..98686.49 rows=118766 
+         width=96)
+               ->  GroupAggregate  (cost=90991.97..97498.83 rows=118766 
+               width=10)
+                     Group Key: clientbets.orderid
+                     ->  Sort  (cost=90991.97..92666.07 rows=669638 width=10)
+                           Sort Key: clientbets.orderid
+                           ->  Seq Scan on clientbets  (cost=0.00..14749.38 
+                           rows=669638 width=10)
+         ->  Hash  (cost=3536.30..3536.30 rows=149030 width=54)
+               ->  Seq Scan on clientorders  (cost=0.00..3536.30 rows=149030 
+               width=54)
+
+\end{lstlisting}
+
+Rendimiento tras la creación del índice sobre \texttt{clientbets(orderid)}
+\begin{lstlisting}[style=sql]
+ Update on clientorders  (cost=6855.60..69056.69 rows=118766 width=146)
+   ->  Hash Join  (cost=6855.60..69056.69 rows=118766 width=146)
+         Hash Cond: (aux.id = clientorders.orderid)
+         ->  Subquery Scan on aux  (cost=0.42..55632.49 rows=118766 width=96)
+               ->  GroupAggregate  (cost=0.42..54444.83 rows=118766 width=10)
+                     Group Key: clientbets.orderid
+                     ->  Index Scan using clbets_oid_idx on clientbets  (
+                     cost=0.42..49612.05 rows=669640 width=10)
+         ->  Hash  (cost=3536.30..3536.30 rows=149030 width=54)
+               ->  Seq Scan on clientorders  (cost=0.00..3536.30 rows=149030
+                width=54)
+\end{lstlisting}
+
+Rendimiento tras la creación del índice sobre \texttt{clientorders(orderid)}
+\begin{lstlisting}[style=sql]
+ Update on clientorders  (cost=0.84..69557.52 rows=118766 width=146)
+   ->  Merge Join  (cost=0.84..69557.52 rows=118766 width=146)
+         Merge Cond: (aux.id = clientorders.orderid)
+         ->  Subquery Scan on aux  (cost=0.42..55632.49 rows=118766 width=96)
+               ->  GroupAggregate  (cost=0.42..54444.83 rows=118766 width=10)
+                     Group Key: clientbets.orderid
+                     ->  Index Scan using clbets_oid_idx on clientbets  (
+                     cost=0.42..49612.05 rows=669640 width=10)
+         ->  Index Scan using clo_oid_idx on clientorders  (cost=0.42..12067.88 
+         rows=149031 width=54)
+
+\end{lstlisting}
+
+Se observa una mejoría en el coste % Coste minimo y maximo
+
+\subsubsection{setOutcomeBets}
+
+En este caso la única lectura secuencial de las tablas es necesaria para la actualización de todos los valores. Se observa otra lectura secuencial pero de coste mínimo.
+
+\begin{lstlisting}[style=sql]
+ Update on clientbets  (cost=333.20..20155.54 rows=4051 width=36)
+   ->  Hash Join  (cost=333.20..20155.54 rows=4051 width=36)
+         Hash Cond: ((clientbets.optionid = bets.winneropt) AND (
+         clientbets.betid = bets.betid))
+         ->  Seq Scan on clientbets  (cost=0.00..14749.40 rows=669640 width=30)
+         ->  Hash  (cost=220.88..220.88 rows=7488 width=14)
+               ->  Seq Scan on bets  (cost=0.00..220.88 rows=7488 width=14)
+\end{lstlisting}
 \section{Adaptación a la aplicación Web}
 Para esta tarea se ha realizado un fichero SQL llamado \texttt{adapta.sql} que realiza ciertas adaptaciones sobre la base de datos proporcionada para dar menos relevancia a los atributos de la base de datos que no tienen relación con la aplicación o una función dentro de la misma.
 

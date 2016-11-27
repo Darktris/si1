@@ -22,10 +22,7 @@ end; $$
 language plpgsql;
 
 drop trigger t_bets on bets;
-drop trigger t_updbets on bets;
 
-create trigger t_bets after insert on bets
+create trigger t_bets after insert or update on bets
 for each row execute procedure updbets();
 
-create trigger t_updbets after update on bets
-for each row execute procedure updbets();
