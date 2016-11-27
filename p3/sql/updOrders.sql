@@ -9,6 +9,7 @@ begin
 	if TG_OP = 'DELETE' then
 		new := old;
 	end if;
+	
 	update clientorders
 	set totalamount = amount,
 		totaloutcome = out

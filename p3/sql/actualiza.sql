@@ -88,10 +88,10 @@ drop column categoria;
 
 ---- INDICES
 create index bets_wopt_idx on bets(winneropt);
-create index bets_wopt_idx on bets(categoryid);
+create index bets_catid_idx on bets(categoryid);
 
 create index clbets_oid_idx on clientbets(orderid);
-create index clbts_betid_idx on clientbets(betid); -- No ha funcionado muy bien
+create index clbts_betid_idx on clientbets(betid); 
 
 create index clo_oid_idx on clientorders(orderid);
 create index clo_cid_idx on clientorders(customerid);

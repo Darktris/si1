@@ -6,7 +6,14 @@
 create or replace function updbets() 
 returns trigger as $$
 begin
+	--- Caso en el que no es necesario actualizar nada.
+	if TG_OP = 'UPDATE' then
+		if new.winneropt = old.winneropt then
+			return new;
+		end if;
+	end if;
 
+	
 	update clientbets
 	set outcome = bet*ratio
 	where new.winneropt = optionid 

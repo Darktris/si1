@@ -228,7 +228,7 @@ Estas tablas se encuentran relacionadas a traves del siguiente diagrama Entidad-
     \centering
     \captionsetup{type=figure}
     \includegraphics[width=\linewidth]{img/db_old.png}
-    \caption{Diagrama E-R de la base de datos proporcionada}
+    \caption{Diagrama E-R (sin atributos) de la base de datos proporcionada}
     \label{fig:fig1}
 \end{minipage}
 \subsection{Diseño inicial de las tablas}
@@ -369,6 +369,34 @@ En este caso la única lectura secuencial de las tablas es necesaria para la act
          ->  Hash  (cost=220.88..220.88 rows=7488 width=14)
                ->  Seq Scan on bets  (cost=0.00..220.88 rows=7488 width=14)
 \end{lstlisting}
+
+\subsubsection{setOrderTotalOutcome}
+
+Se muestra ya el coste tras construir los índices oportunos.
+\begin{lstlisting}[style=sql]
+ Update on clientbets  (cost=333.20..20155.54 rows=4051 width=36)
+   ->  Hash Join  (cost=333.20..20155.54 rows=4051 width=36)
+         Hash Cond: ((clientbets.optionid = bets.winneropt) AND (
+         clientbets.betid = bets.betid))
+         ->  Seq Scan on clientbets  (cost=0.00..14749.40 rows=669640 width=30)
+         ->  Hash  (cost=220.88..220.88 rows=7488 width=14)
+               ->  Seq Scan on bets  (cost=0.00..220.88 rows=7488 width=14)
+\end{lstlisting}
+
+\subsection{\textit{Triggers}}
+Se incluyen los tres triggers solicitados:
+\begin{enumerate}
+    \item updBets: actualiza el campo outcome de las apuestas realizadas por un cliente una vez se ha designado un ganador.
+    \item updOrders: actualiza el campo totalamount y totaloutcome del carrito cuando se modifica por el \textit{trigger} anterior.
+    \item updCredit: actualiza el campo credit del cliente cuando un carrito se cierra o se modifica uno cerrado (asignación de ganadores).
+\end{enumerate}
+
+El correcto funcionamiento de estos \textit{triggers} se puede observar mediante el fichero \texttt{tests.sql}.
+
+Parte del código se ha reutilizado del apartado anterior.
+
+\textbf{Nota:} Debido a que parte de la funcionalidad de los apartados anteriores es realizada por los \textit{triggers}, no es nada recomendable ejecutar de nuevo las actualizaciones, pues de hacerlo se actualizarán todas las filas de las tablas generando tantas ejecuciones de los \textit{triggers} como filas tienen las tablas.
+
 \section{Adaptación a la aplicación Web}
 Para esta tarea se ha realizado un fichero SQL llamado \texttt{adapta.sql} que realiza ciertas adaptaciones sobre la base de datos proporcionada para dar menos relevancia a los atributos de la base de datos que no tienen relación con la aplicación o una función dentro de la misma.
 
@@ -393,5 +421,9 @@ Se ha implementado una interacción de la web con la base de datos casi completa
 \item Se ha integrado con la parte de gestión y creación de usuarios
 \item Se ha integrado con la parte de visualización de las apuestas y el sistema creación y apuestas.
 \item Se ha integrado la gestión del carrito con la base de datos, de manera que el carrito se guarda en la base de datos.
+\item Se ha implementado un sistema de carga incremental mediante AJAX para evitar el envío de un gran volumen de datos en la carga de la página principal.
 \end{itemize}
+
+El objetiva final logrado ha sido integrar totalmente la página desarrollada con la base de datos, de tal manera que la página es totalmente funcional y todo el manejo se realiza usando la base de datos.
+
 \end{document}
