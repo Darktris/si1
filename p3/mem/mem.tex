@@ -33,7 +33,7 @@
 \usepackage{multicol}
 \usepackage{hyperref}
 \usepackage[font=small]{caption}
-\usepackage{pifont}
+%\usepackage{pifont}
 \selectlanguage{spanish}
 \addto\extrasspanish{%
     \def\figureautorefname{Figura}%
@@ -104,7 +104,7 @@
         \begin{tikzpicture}
             \begin{scope}
                 \clip [rounded corners=12pt] (0,0) rectangle coordinate (centerpoint) (160pt,40pt);
-                \node [inner sep=0pt] at (centerpoint) {\includegraphics[width=160pt]{betabet}};
+                \node [inner sep=0pt] at (centerpoint) {\includegraphics[width=160pt]{img/betabet}};
             \end{scope}
         \end{tikzpicture}
     \end{center}
@@ -290,4 +290,30 @@ A continuación se muestra el diagrama E-R (sin atributos por legibilidad) del e
 \end{minipage}
 
 Todos estos cambios los realiza el fichero \texttt{actualiza.sql}
+
+\section{Adaptación a la aplicación Web}
+Para esta tarea se ha realizado un fichero SQL llamado \texttt{adapta.sql} que realiza ciertas adaptaciones sobre la base de datos proporcionada para dar menos relevancia a los atributos de la base de datos que no tienen relación con la aplicación o una función dentro de la misma.
+
+\subsection{Cambios realizados}
+Los cambios realizados son:
+
+\begin{itemize}
+\item Quitar restricción \texttt{not null} en atributo \texttt{firstname} de la tabla \texttt{customers} 
+\item Quitar restricción \texttt{not null} en atributo \texttt{lastname} de la tabla \texttt{customers} 
+\item Quitar restricción \texttt{not null} en atributo \texttt{address1} de la tabla \texttt{customers} 
+\item Quitar restricción \texttt{not null} en atributo \texttt{city} de la tabla \texttt{customers} 
+\item Quitar restricción \texttt{not null} en atributo \texttt{country} de la tabla \texttt{customers} 
+\item Quitar restricción \texttt{not null} en atributo \texttt{region} de la tabla \texttt{customers} 
+\item Quitar restricción \texttt{not null} en atributo \texttt{creditcardtype} de la tabla \texttt{customers} 
+\item Cambiar los atributos de actualización secuencial de las ids de todas las tablas, de manera que al insertan se inserten automáticamente con id = max (ids)
+\end{itemize}
+
+\subsection{Funcionalidad de la página web implementada}
+
+Se ha implementado una interacción de la web con la base de datos casi completa:
+\begin{itemize}
+\item Se ha integrado con la parte de gestión y creación de usuarios
+\item Se ha integrado con la parte de visualización de las apuestas y el sistema creación y apuestas.
+\item Se ha integrado la gestión del carrito con la base de datos, de manera que el carrito se guarda en la base de datos.
+\end{itemize}
 \end{document}
