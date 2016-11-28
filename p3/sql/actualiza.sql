@@ -84,3 +84,20 @@ drop column category;
 
 alter table options
 drop column categoria;
+
+
+---- INDICES
+create index bets_wopt_idx on bets(winneropt);
+create index bets_catid_idx on bets(categoryid);
+
+create index clbets_oid_idx on clientbets(orderid);
+create index clbts_betid_idx on clientbets(betid); 
+
+create index clo_oid_idx on clientorders(orderid);
+create index clo_cid_idx on clientorders(customerid);
+
+create index obet_betid_idx on optionbet(betid);
+create index obet_optid_idx on optionbet(optionid);
+
+create index opt_catid_idx on options(categoryid)
+

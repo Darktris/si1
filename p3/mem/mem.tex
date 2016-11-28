@@ -33,7 +33,11 @@
 \usepackage{multicol}
 \usepackage{hyperref}
 \usepackage[font=small]{caption}
-\usepackage{pifont}
+
+\usepackage{listings}
+
+
+%\usepackage{pifont}
 \selectlanguage{spanish}
 \addto\extrasspanish{%
     \def\figureautorefname{Figura}%
@@ -104,7 +108,7 @@
         \begin{tikzpicture}
             \begin{scope}
                 \clip [rounded corners=12pt] (0,0) rectangle coordinate (centerpoint) (160pt,40pt);
-                \node [inner sep=0pt] at (centerpoint) {\includegraphics[width=160pt]{betabet}};
+                \node [inner sep=0pt] at (centerpoint) {\includegraphics[width=160pt]{img/betabet}};
             \end{scope}
         \end{tikzpicture}
     \end{center}
@@ -114,7 +118,9 @@
 \author{\textbf{\hmwkAuthorName}}
 
 %----------------------------------------------------------------------------------
-
+\lstdefinestyle{sql}
+{language=sql,
+}
 \begin{document}
 
 \maketitle
@@ -222,7 +228,7 @@ Estas tablas se encuentran relacionadas a traves del siguiente diagrama Entidad-
     \centering
     \captionsetup{type=figure}
     \includegraphics[width=\linewidth]{img/db_old.png}
-    \caption{Diagrama E-R de la base de datos proporcionada}
+    \caption{Diagrama E-R (sin atributos) de la base de datos proporcionada}
     \label{fig:fig1}
 \end{minipage}
 \subsection{Diseño inicial de las tablas}
@@ -290,4 +296,134 @@ A continuación se muestra el diagrama E-R (sin atributos por legibilidad) del e
 \end{minipage}
 
 Todos estos cambios los realiza el fichero \texttt{actualiza.sql}
+
+\section{Consultas SQL}
+El objetivo de esta práctica ha sido implementar un conjunto de funciones y \textit{triggers} que faciliten el mantenimiento y manejo de la base de datos y de la aplicación web.
+\subsection{Análisis de las consultas realizadas}
+\subsubsection{setTotalAmount}
+Para optimizar esta consulta, que pese a no tardar un tiempo excesivo, se detectan lecturas secuenciales, se crean índices.
+
+El rendimiento original de la consulta
+\lstset{basicstyle=\small,style=sql}
+\begin{lstlisting}[style=sql]
+ Update on clientorders  (cost=97847.15..112110.70 rows=118766 width=146)
+   ->  Hash Join  (cost=97847.15..112110.70 rows=118766 width=146)
+         Hash Cond: (aux.id = clientorders.orderid)
+         ->  Subquery Scan on aux  (cost=90991.97..98686.49 rows=118766 
+         width=96)
+               ->  GroupAggregate  (cost=90991.97..97498.83 rows=118766 
+               width=10)
+                     Group Key: clientbets.orderid
+                     ->  Sort  (cost=90991.97..92666.07 rows=669638 width=10)
+                           Sort Key: clientbets.orderid
+                           ->  Seq Scan on clientbets  (cost=0.00..14749.38 
+                           rows=669638 width=10)
+         ->  Hash  (cost=3536.30..3536.30 rows=149030 width=54)
+               ->  Seq Scan on clientorders  (cost=0.00..3536.30 rows=149030 
+               width=54)
+
+\end{lstlisting}
+
+Rendimiento tras la creación del índice sobre \texttt{clientbets(orderid)}
+\begin{lstlisting}[style=sql]
+ Update on clientorders  (cost=6855.60..69056.69 rows=118766 width=146)
+   ->  Hash Join  (cost=6855.60..69056.69 rows=118766 width=146)
+         Hash Cond: (aux.id = clientorders.orderid)
+         ->  Subquery Scan on aux  (cost=0.42..55632.49 rows=118766 width=96)
+               ->  GroupAggregate  (cost=0.42..54444.83 rows=118766 width=10)
+                     Group Key: clientbets.orderid
+                     ->  Index Scan using clbets_oid_idx on clientbets  (
+                     cost=0.42..49612.05 rows=669640 width=10)
+         ->  Hash  (cost=3536.30..3536.30 rows=149030 width=54)
+               ->  Seq Scan on clientorders  (cost=0.00..3536.30 rows=149030
+                width=54)
+\end{lstlisting}
+
+Rendimiento tras la creación del índice sobre \texttt{clientorders(orderid)}
+\begin{lstlisting}[style=sql]
+ Update on clientorders  (cost=0.84..69557.52 rows=118766 width=146)
+   ->  Merge Join  (cost=0.84..69557.52 rows=118766 width=146)
+         Merge Cond: (aux.id = clientorders.orderid)
+         ->  Subquery Scan on aux  (cost=0.42..55632.49 rows=118766 width=96)
+               ->  GroupAggregate  (cost=0.42..54444.83 rows=118766 width=10)
+                     Group Key: clientbets.orderid
+                     ->  Index Scan using clbets_oid_idx on clientbets  (
+                     cost=0.42..49612.05 rows=669640 width=10)
+         ->  Index Scan using clo_oid_idx on clientorders  (cost=0.42..12067.88 
+         rows=149031 width=54)
+
+\end{lstlisting}
+
+Se observa una mejoría en el coste % Coste minimo y maximo
+
+\subsubsection{setOutcomeBets}
+
+En este caso la única lectura secuencial de las tablas es necesaria para la actualización de todos los valores. Se observa otra lectura secuencial pero de coste mínimo.
+
+\begin{lstlisting}[style=sql]
+ Update on clientbets  (cost=333.20..20155.54 rows=4051 width=36)
+   ->  Hash Join  (cost=333.20..20155.54 rows=4051 width=36)
+         Hash Cond: ((clientbets.optionid = bets.winneropt) AND (
+         clientbets.betid = bets.betid))
+         ->  Seq Scan on clientbets  (cost=0.00..14749.40 rows=669640 width=30)
+         ->  Hash  (cost=220.88..220.88 rows=7488 width=14)
+               ->  Seq Scan on bets  (cost=0.00..220.88 rows=7488 width=14)
+\end{lstlisting}
+
+\subsubsection{setOrderTotalOutcome}
+
+Se muestra ya el coste tras construir los índices oportunos.
+\begin{lstlisting}[style=sql]
+ Update on clientbets  (cost=333.20..20155.54 rows=4051 width=36)
+   ->  Hash Join  (cost=333.20..20155.54 rows=4051 width=36)
+         Hash Cond: ((clientbets.optionid = bets.winneropt) AND (
+         clientbets.betid = bets.betid))
+         ->  Seq Scan on clientbets  (cost=0.00..14749.40 rows=669640 width=30)
+         ->  Hash  (cost=220.88..220.88 rows=7488 width=14)
+               ->  Seq Scan on bets  (cost=0.00..220.88 rows=7488 width=14)
+\end{lstlisting}
+
+\subsection{\textit{Triggers}}
+Se incluyen los tres triggers solicitados:
+\begin{enumerate}
+    \item updBets: actualiza el campo outcome de las apuestas realizadas por un cliente una vez se ha designado un ganador.
+    \item updOrders: actualiza el campo totalamount y totaloutcome del carrito cuando se modifica por el \textit{trigger} anterior.
+    \item updCredit: actualiza el campo credit del cliente cuando un carrito se cierra o se modifica uno cerrado (asignación de ganadores).
+\end{enumerate}
+
+El correcto funcionamiento de estos \textit{triggers} se puede observar mediante el fichero \texttt{tests.sql}.
+
+Parte del código se ha reutilizado del apartado anterior.
+
+\textbf{Nota:} Debido a que parte de la funcionalidad de los apartados anteriores es realizada por los \textit{triggers}, no es nada recomendable ejecutar de nuevo las actualizaciones, pues de hacerlo se actualizarán todas las filas de las tablas generando tantas ejecuciones de los \textit{triggers} como filas tienen las tablas.
+
+\section{Adaptación a la aplicación Web}
+Para esta tarea se ha realizado un fichero SQL llamado \texttt{adapta.sql} que realiza ciertas adaptaciones sobre la base de datos proporcionada para dar menos relevancia a los atributos de la base de datos que no tienen relación con la aplicación o una función dentro de la misma.
+
+\subsection{Cambios realizados}
+Los cambios realizados son:
+
+\begin{itemize}
+\item Quitar restricción \texttt{not null} en atributo \texttt{firstname} de la tabla \texttt{customers} 
+\item Quitar restricción \texttt{not null} en atributo \texttt{lastname} de la tabla \texttt{customers} 
+\item Quitar restricción \texttt{not null} en atributo \texttt{address1} de la tabla \texttt{customers} 
+\item Quitar restricción \texttt{not null} en atributo \texttt{city} de la tabla \texttt{customers} 
+\item Quitar restricción \texttt{not null} en atributo \texttt{country} de la tabla \texttt{customers} 
+\item Quitar restricción \texttt{not null} en atributo \texttt{region} de la tabla \texttt{customers} 
+\item Quitar restricción \texttt{not null} en atributo \texttt{creditcardtype} de la tabla \texttt{customers} 
+\item Cambiar los atributos de actualización secuencial de las ids de todas las tablas, de manera que al insertan se inserten automáticamente con id = max (ids)
+\end{itemize}
+
+\subsection{Funcionalidad de la página web implementada}
+
+Se ha implementado una interacción de la web con la base de datos casi completa:
+\begin{itemize}
+\item Se ha integrado con la parte de gestión y creación de usuarios
+\item Se ha integrado con la parte de visualización de las apuestas y el sistema creación y apuestas.
+\item Se ha integrado la gestión del carrito con la base de datos, de manera que el carrito se guarda en la base de datos.
+\item Se ha implementado un sistema de carga incremental mediante AJAX para evitar el envío de un gran volumen de datos en la carga de la página principal.
+\end{itemize}
+
+El objetiva final logrado ha sido integrar totalmente la página desarrollada con la base de datos, de tal manera que la página es totalmente funcional y todo el manejo se realiza usando la base de datos.
+
 \end{document}
