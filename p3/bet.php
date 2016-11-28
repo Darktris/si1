@@ -15,22 +15,26 @@ if(isset($_GET["betid"])) {
     $bet = $db->query("select * from bets where winneropt is null and betid = ".$_GET["betid"]." limit 1")->fetch();
     $category = $db->query("select categorystring from categories where categoryid = ".$bet["categoryid"]." limit 1")->fetch()["categorystring"];
     $teams = explode("-", $bet["betdesc"]);
-    $edit = isset($_GET["edit"]) && (strcmp($_GET["edit"], "true") == 0);
     if(isset($_SESSION["user"])) {
         $user = $db->query("select * from customers where customerid = ".$_SESSION["user"]);
         if($user->rowCount() == 1) {
             $order = $db->query("select * from clientorders where customerid = ".$_SESSION["user"]." and date is null order by orderid desc limit 1");
             if(isset($_POST["1"]) && isset($_POST["2"])) {
+                $edit = isset($_GET["edit"]) && (strcmp($_GET["edit"], "true") == 0);
                 /* "1" is left/right team, "2" is amount */
                 if($order->rowCount() == 0) {
-                    $db->query("insert into clientorders (customerid, totalamount) values (".$_SESSION["user"].", 0)");
+                    $db->exec("insert into clientorders (customerid, totalamount) values (".$_SESSION["user"].", 0)");
                     $oid = $db->lastInsertId();
                 } else {
                     $oid = $order->fetch()["orderid"];
                 }
                 $option = $db->query("select optionid from options where optiondesc like ".$db->quote($teams[$_POST["1"]]))->fetch()["optionid"];
                 $ratio = $db->query("select ratio from optionbet where optionid = ".$option." and betid = ".$bet["betid"])->fetch()["ratio"];
-                $db->query("insert into clientbets (optionid, bet, ratio, betid, orderid) values (".$option.", ".$_POST["2"].", ".$ratio.", ".$bet["betid"].", ".$oid.")");
+                if($edit) {
+                    $db->exec("update clientbets set optionid = ".$option.", bet = ".$_POST["2"]." where betid = ".$bet["betid"]." and orderid = ".$oid);
+                } else {
+                    $db->exec("insert into clientbets (optionid, bet, ratio, betid, orderid) values (".$option.", ".$_POST["2"].", ".$ratio.", ".$bet["betid"].", ".$oid.")");
+                }
                 unset($oid);
                 unset($option);
                 unset($ratio);
@@ -57,17 +61,23 @@ if(isset($_GET["betid"])) {
                 echo '  <button type="submit">Confirm</button>';
                 echo '</form>';
             } else {
+                $edit = false;
                 $winner = 0;
                 $amount = 10;
-                if($edit) {
+                if($order->rowCount() == 1) {
                     $oid = $order->fetch()["orderid"];
-                    $old_bet = $db->query("select * from clientbets where betid = ".$bet["betid"]." and orderid = ".$oid." limit 1")->fetch();
-                    $option0 = $db->query("select optionid from options where optiondesc like ".$db->quote($teams[0]))->fetch()["optionid"];
-                    $winner = ($old_bet["optionid"] == $option0? 0 : 1);
-                    $amount = $old_bet["bet"];
+                    $qbet = $db->query("select * from clientbets where betid = ".$bet["betid"]." and orderid = ".$oid." limit 1");
+                    if($qbet->rowCount() == 1) {
+                        $edit = true;
+                        $old_bet = $qbet->fetch();
+                        $option0 = $db->query("select optionid from options where optiondesc like ".$db->quote($teams[0]))->fetch()["optionid"];
+                        $winner = ($old_bet["optionid"] == $option0? 0 : 1);
+                        $amount = $old_bet["bet"];
+                        unset($old_bet);
+                        unset($option0);
+                    }
                     unset($oid);
-                    unset($old_bet);
-                    unset($option0);
+                    unset($qbet);
                 }
                 echo '<div class="text">';
                 echo '  Please choose a winner and the amount to bet.';
