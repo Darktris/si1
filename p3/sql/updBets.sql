@@ -13,6 +13,9 @@ begin
 		end if;
 	end if;
 
+    if new.winneropt is null then
+        return new;
+    end if;
 	
 	update clientbets
 	set outcome = bet*ratio
@@ -21,8 +24,7 @@ begin
 	
 	update clientbets
 	set outcome = 0
-	where clientbets.betid = new.betid 
-		and new.winneropt is not null
+	where betid = new.betid 
 		and new.winneropt != optionid;
     return new;
 end; $$

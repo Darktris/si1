@@ -9,7 +9,12 @@ begin
 	if TG_OP = 'DELETE' then
 		new := old;
 	end if;
+    raise notice 'ue: %', new;
 	
+    update clientorders
+    set totalamount = 0, totaloutcome = 0
+    where clientorders.orderid = new.orderid;
+
 	update clientorders
 	set totalamount = amount,
 		totaloutcome = out

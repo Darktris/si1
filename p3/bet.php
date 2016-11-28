@@ -20,15 +20,16 @@ if(isset($_GET["betid"])) {
         if($user->rowCount() == 1) {
             $order = $db->query("select * from clientorders where customerid = ".$_SESSION["user"]." and date is null order by orderid desc limit 1");
             if(isset($_POST["1"]) && isset($_POST["2"])) {
-                $edit = isset($_GET["edit"]) && (strcmp($_GET["edit"], "true") == 0);
+                $edit = false;
                 /* "1" is left/right team, "2" is amount */
                 if($order->rowCount() == 0) {
                     $db->exec("insert into clientorders (customerid, totalamount) values (".$_SESSION["user"].", 0)");
                     $oid = $db->lastInsertId();
                 } else {
                     $oid = $order->fetch()["orderid"];
+                    $edit = true;
                 }
-                $option = $db->query("select optionid from options where optiondesc like ".$db->quote($teams[$_POST["1"]]))->fetch()["optionid"];
+                $option = $db->query("select optionid from options where optiondesc like concat('%',".$db->quote($teams[$_POST["1"]]).",'%')")->fetch()["optionid"];
                 $ratio = $db->query("select ratio from optionbet where optionid = ".$option." and betid = ".$bet["betid"])->fetch()["ratio"];
                 if($edit) {
                     $db->exec("update clientbets set optionid = ".$option.", bet = ".$_POST["2"]." where betid = ".$bet["betid"]." and orderid = ".$oid);
@@ -55,7 +56,7 @@ if(isset($_GET["betid"])) {
                 }
                 echo '</div>';
                 echo '<form method="post">';
-                if($edit) {
+                if(isset($_GET["edit"]) && (strcmp($_GET["edit"], "true") == 0)) {
                     echo '  <input type="hidden" name="content" value="checkout.php">';
                 }
                 echo '  <button type="submit">Confirm</button>';
@@ -70,7 +71,7 @@ if(isset($_GET["betid"])) {
                     if($qbet->rowCount() == 1) {
                         $edit = true;
                         $old_bet = $qbet->fetch();
-                        $option0 = $db->query("select optionid from options where optiondesc like ".$db->quote($teams[0]))->fetch()["optionid"];
+                        $option0 = $db->query("select optionid from options where optiondesc like concat('%',".$db->quote($teams[0]).",'%')")->fetch()["optionid"];
                         $winner = ($old_bet["optionid"] == $option0? 0 : 1);
                         $amount = $old_bet["bet"];
                         unset($old_bet);
@@ -101,7 +102,7 @@ if(isset($_GET["betid"])) {
                 echo '  Amount: <span class="input-euro"><input id="amount" type="number" min="10" max="1000" step="1" value="'.$amount.'" oninput=updateBet()></span><br>';
                 echo '  <div class="error" id="amount_error"></div>';
                 echo '  <input type="reset" value="Back" onclick="loadContent()">';
-                echo '  <input type="submit" value="Confirm" onclick="validateBet(\''.$bet["betid"].'\',\''.($edit? "true" : "false").'\')">';
+                echo '  <input type="submit" value="Confirm" onclick="validateBet(\''.$bet["betid"].'\',\''.(isset($_GET["edit"]) && (strcmp($_GET["edit"], "true") == 0)? "true" : "false").'\')">';
                 echo '</div><br>';
                 unset($winner);
                 unset($amount);

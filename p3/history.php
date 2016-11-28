@@ -9,7 +9,7 @@ date_default_timezone_set('Europe/Madrid');
 function showmatch($db, $bet, $count) {
     $category = $db->query("select categorystring from categories where categoryid = ".$bet["categoryid"]." limit 1")->fetch()["categorystring"];
     $teams = explode("-", $bet["betdesc"]);
-    $option0 = $db->query("select optionid from options where optiondesc like ".$db->quote($teams[0]))->fetch()["optionid"];
+    $option0 = $db->query("select optionid from options where optiondesc like concat('%',".$db->quote($teams[0]).",'%')")->fetch()["optionid"];
     $winner = ($bet["optionid"] == $option0? 0 : 1);
     echo '<div class="match" onclick="showBetDetails(\''.$count.'\')">';
     if($winner == 0) {
