@@ -17,6 +17,7 @@ if(isset($_SESSION["user"])) {
         $order = $db->query("select * from clientorders where customerid = ".$_SESSION["user"]." and date is null order by orderid desc limit 1");
         if($order->rowCount() == 1) {
             $oid = $order->fetch()["orderid"];
+            $total = $order->fetch()["totalamount"];
             if(isset($_GET["remove"])) {
                 $qbet = $db->query("select * from clientbets where betid = ".$_GET["remove"]." and orderid = ".$oid." limit 1");
                 if($qbet->rowCount() == 1) {
@@ -62,10 +63,9 @@ if(isset($_SESSION["user"])) {
                 }
                 unset($qbet);
             }
-            $total = $order->fetch()["totalamount"];
             if(isset($_GET["confirm"]) && strcmp($_GET["confirm"], "true") == 0) {
                 if($total <= $user->fetch()["credit"]) {
-                    $db->exec("update clientorders set date = now() where customerid = ".$_SESSION["user"]." and orderid = ".$order);
+                    $db->exec("update clientorders set date = now() where customerid = ".$_SESSION["user"]." and orderid = ".$oid);
                     echo '<div class="text">';
                     echo '  Your shopping bag has been successfully processed.';
                     echo '</div>';
