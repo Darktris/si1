@@ -426,8 +426,12 @@ En este caso la única lectura secuencial de las tablas es necesaria para la act
 \end{lstlisting}
 
 \subsubsection{setOrderTotalOutcome}
-
-\textbf{Comrprobación de los resultados}
+Como no se sabía si se quería un procedimiento almacenado que dado un orderid, calcule el outcome de ese carrito o se quería un procedimiento que lo calculase sobre todos los carritos, se dan ambas soluciones:
+\begin{enumerate}
+\item setOrderTotalOutcome(orderid\_arg integer)
+\item setTotalOutcome()
+\end{enumerate}
+\textbf{Comprobación de los resultados}
 De nuevo se observa el primer pedido sin outcome y simplemente hace falta fijarse en los outcome del ejercicio anterior y sumarlos para saber el resultado.
 \begin{lstlisting}[style=sql]
 
@@ -465,7 +469,7 @@ Se incluyen los tres triggers solicitados:
     \item updCredit: actualiza el campo credit del cliente cuando un carrito se cierra o se modifica uno cerrado (asignación de ganadores).
 \end{enumerate}
 
-El correcto funcionamiento de estos \textit{triggers} se puede observar mediante el fichero \texttt{tests.sql}.
+El correcto funcionamiento de estos \textit{triggers} se puede observar mediante el fichero \texttt{tests.sql}. Este fichero no incluye el borrado del carrito de ya existir luego se recomienda encarecidamente borrar el carrito que se crea durante el test en caso de querer ejecutarlo varias veces. El test muestra varias inserciones o borrados de un carrito y como el credit se va actualizando según cambia el estado del carrito.
 
 Parte del código se ha reutilizado del apartado anterior.
 
