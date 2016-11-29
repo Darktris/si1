@@ -9,7 +9,10 @@ begin
 	if TG_OP = 'DELETE' then
 		new := old;
 	end if;
-	
+	-- Se podria utilizar new para calcular
+	-- de nuevo el amount/outcome, sin embargo
+	-- para evitar inconsistencias, se recalcula
+	-- para ese order
 	update clientorders
 	set totalamount = amount,
 		totaloutcome = out

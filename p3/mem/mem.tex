@@ -134,16 +134,16 @@
 \newpage
 \tableofcontents
 \newpage
-\section{Análisis de la base de datos proporcionada}
+\section{Análisis y resultados de la base de datos proporcionada}
 
-\subsection{Esquema de las tablas}
-Leyenda: \texttt{*}:\textit{primary key}, \texttt{+}:\textit{foreign key}
+\subsection{Esquema de las tablas proporcionadas}
+Leyenda: \textit{\underline{primary key}} \texttt{$\Uparrow$}:\textit{foreign key}
 
 \begin{multicols}{2}
 \begin{itemize}
     \item\texttt{customers}
         \begin{itemize}
-            \item\texttt{customerid*} 
+            \item\texttt{\underline{customerid}} 
             \item\texttt{firstname}
             \item\texttt{lastname}
             \item\texttt{address1}
@@ -173,9 +173,9 @@ Leyenda: \texttt{*}:\textit{primary key}, \texttt{+}:\textit{foreign key}
     \columnbreak
     \item\texttt{clientbets}
         \begin{itemize}
-            \item\texttt{customerid+}
-            \item\texttt{optionid+}
-            \item\texttt{betid+}
+            \item\texttt{customerid$\Uparrow$}
+            \item\texttt{optionid}$\Uparrow$
+            \item\texttt{betid}$\Uparrow$
             \item\texttt{orderid}
             \item\texttt{bet}
             \item\texttt{ratio}
@@ -183,7 +183,7 @@ Leyenda: \texttt{*}:\textit{primary key}, \texttt{+}:\textit{foreign key}
         \end{itemize}
     \item\texttt{bets}
         \begin{itemize}
-            \item\texttt{betid*}
+            \item\texttt{\underline{betid}}
             \item\texttt{betcloses}
             \item\texttt{category}
             \item\texttt{betdesc}
@@ -191,15 +191,15 @@ Leyenda: \texttt{*}:\textit{primary key}, \texttt{+}:\textit{foreign key}
         \end{itemize}
     \item\texttt{options}
         \begin{itemize}
-            \item\texttt{optionid*}
+            \item\texttt{\underline{optionid}}
             \item\texttt{optiondesc}
             \item\texttt{categoria}
             \item\texttt{cuota}
         \end{itemize}
     \item\texttt{optionbet}
         \begin{itemize}
-            \item\texttt{optionid+}
-            \item\texttt{betid+}
+            \item\texttt{optionid}$\Uparrow$
+            \item\texttt{betid}$\Uparrow$
             \item\texttt{ratio}
             \item\texttt{optiondesc}
         \end{itemize}
@@ -300,8 +300,37 @@ Todos estos cambios los realiza el fichero \texttt{actualiza.sql}
 \section{Consultas SQL}
 El objetivo de esta práctica ha sido implementar un conjunto de funciones y \textit{triggers} que faciliten el mantenimiento y manejo de la base de datos y de la aplicación web.
 \subsection{Análisis de las consultas realizadas}
+A continuación se relatan los resultados obtenidos así como un resumen del rendimiento de las consultas.
 \subsubsection{setTotalAmount}
-Para optimizar esta consulta, que pese a no tardar un tiempo excesivo, se detectan lecturas secuenciales, se crean índices.
+
+\textbf{Comprobación de los resultados}
+
+Se muestra el primer pedido previa la ejecución del ejercicio
+\lstset{basicstyle=\small,style=sql}
+\begin{lstlisting}[style=sql]
+ customerid |          date          | orderid | totalamount
+------------+------------------------+---------+-------------
+        693 | 2012-12-02 17:23:39+01 |       1 |
+\end{lstlisting}
+\begin{lstlisting}[style=sql]
+ optionid |  bet  | ratio | outcome  | betid | orderid
+----------+-------+-------+----------+-------+---------
+      117 | 79.71 |  9.01 |          |   164 |       1
+       47 | 23.30 |  8.42 |          |  2372 |       1
+       51 | 74.58 |  5.92 |          |  2418 |       1
+       86 | 94.57 |  9.69 |          |  2438 |       1
+\end{lstlisting} 
+Tras ejecutar el ejercicio resulta:
+\begin{lstlisting}[style=sql]
+
+ customerid |          date          | orderid | totalamount
+------------+------------------------+---------+-------------
+        693 | 2012-12-02 17:23:39+01 |       1 |      272.16
+\end{lstlisting}
+Por lo que se observa que la consulta se realiza correctamente
+$$\;$$
+
+\textbf{Rendimiento y optimización}
 
 El rendimiento original de la consulta
 \lstset{basicstyle=\small,style=sql}
@@ -323,6 +352,7 @@ El rendimiento original de la consulta
                width=54)
 
 \end{lstlisting}
+Para optimizar esta consulta, que pese a no tardar un tiempo excesivo, se detectan lecturas secuenciales, se crean índices.
 
 Rendimiento tras la creación del índice sobre \texttt{clientbets(orderid)}
 \begin{lstlisting}[style=sql]
@@ -358,6 +388,31 @@ Se observa una mejoría en el coste % Coste minimo y maximo
 
 \subsubsection{setOutcomeBets}
 
+\textbf{Comprobación de los resultados}
+
+Miramos de nuevo el mismo pedido y los winneropt
+\begin{lstlisting}[style=sql]
+  bet  | outcome | winneropt | optionid
+-------+---------+-----------+----------
+ 79.71 |         |       120 |      117
+ 23.30 |         |        47 |       47
+ 74.58 |         |        51 |       51
+ 94.57 |         |        86 |       86
+ \end{lstlisting}
+Tras ejecutar el ejercicio debería resultar que si winneropt=optionid, entonces el outcome debería ser ratio·bet, en caso de que no sea null pero sean distintos los valores, el outcome debería ser 0
+\begin{lstlisting}[style=sql]
+  bet  | ratio | outcome  | winneropt | optionid
+-------+-------+----------+-----------+----------
+ 79.71 |  9.01 |        0 |       120 |      117
+ 23.30 |  8.42 | 196.1860 |        47 |       47
+ 74.58 |  5.92 | 441.5136 |        51 |       51
+ 94.57 |  9.69 | 916.3833 |        86 |       86
+ \end{lstlisting}
+
+$$\;$$
+
+\textbf{Rendimiento y optimización}
+
 En este caso la única lectura secuencial de las tablas es necesaria para la actualización de todos los valores. Se observa otra lectura secuencial pero de coste mínimo.
 
 \begin{lstlisting}[style=sql]
@@ -372,6 +427,25 @@ En este caso la única lectura secuencial de las tablas es necesaria para la act
 
 \subsubsection{setOrderTotalOutcome}
 
+\textbf{Comrprobación de los resultados}
+De nuevo se observa el primer pedido sin outcome y simplemente hace falta fijarse en los outcome del ejercicio anterior y sumarlos para saber el resultado.
+\begin{lstlisting}[style=sql]
+
+ customerid |          date          | orderid | totalamount | totaloutcome
+------------+------------------------+---------+-------------+--------------
+        693 | 2012-12-02 17:23:39+01 |       1 |      272.16 |
+\end{lstlisting}
+Se comprueba que efectivamente el resultado coincide.
+\begin{lstlisting}[style=sql]
+
+ customerid |          date          | orderid | totalamount | totaloutcome
+------------+------------------------+---------+-------------+--------------
+        693 | 2012-12-02 17:23:39+01 |       1 |      272.16 |    1554.0829
+\end{lstlisting}
+
+$$\;$$
+
+\textbf{Rendimiento y optimización}
 Se muestra ya el coste tras construir los índices oportunos.
 \begin{lstlisting}[style=sql]
  Update on clientbets  (cost=333.20..20155.54 rows=4051 width=36)

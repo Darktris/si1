@@ -3,7 +3,7 @@
 --		La suma del total outcome para cada pedido en clientorders.totaloutcome
 --
 
-create or replace function setOrderTotaloutcome(orderid_arg integer)
+create or replace function setOrderTotalOutcome(orderid_arg integer)
 returns void as $$
 begin 
 	update clientorders
