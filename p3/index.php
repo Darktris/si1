@@ -102,16 +102,19 @@ if(isset($_POST["login"])) {
             if($db->query("select * from customers where customerid = ".$_SESSION["user"])->rowCount() == 1) {
                 $order = $db->query("select * from clientorders where customerid = ".$_SESSION["user"]." and date is null order by orderid desc limit 1");
                 if($order->rowCount() == 1) {
-                    $total = $order->fetch()["totalamount"];
-                    echo '<div id=\'bag\' onclick="loadContent(\'checkout.php\')">';
-                    echo '  <span id="baginfo">';
-                    echo '      <img src="images/bag.png" alt="">Total: '.$total.' €';
-                    echo '  </span>';
-                    echo '  <span id="checkout">';
-                    echo '      Checkout';
-                    echo '  </span>';
-                    echo '</div>';
-                    unset($total);
+                    $order = $order->fetch();
+                    if($db->query("select * from clientbets where orderid = ".$order["orderid"])->rowCount() > 0) {
+                        $total = $order["totalamount"];
+                        echo '<div id=\'bag\' onclick="loadContent(\'checkout.php\')">';
+                        echo '  <span id="baginfo">';
+                        echo '      <img src="images/bag.png" alt="">Total: '.$total.' €';
+                        echo '  </span>';
+                        echo '  <span id="checkout">';
+                        echo '      Checkout';
+                        echo '  </span>';
+                        echo '</div>';
+                        unset($total);
+                    }
                 }
                 unset($order);
             }

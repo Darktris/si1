@@ -13,6 +13,12 @@ begin
 	-- de nuevo el amount/outcome, sin embargo
 	-- para evitar inconsistencias, se recalcula
 	-- para ese order
+	
+	
+    update clientorders
+    set totalamount = 0, totaloutcome = 0
+    where clientorders.orderid = new.orderid;
+
 	update clientorders
 	set totalamount = amount,
 		totaloutcome = out
