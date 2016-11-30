@@ -1,31 +1,31 @@
--- 			APARTADO G
+--          APARTADO G
 --
---		Actualizacion automatica del outcome
+--      Actualizacion automatica del outcome
 --
 --
-create or replace function updbets() 
+create or replace function updbets()
 returns trigger as $$
 begin
-	--- Caso en el que no es necesario actualizar nada.
-	if TG_OP = 'UPDATE' then
-		if new.winneropt = old.winneropt then
-			return new;
-		end if;
-	end if;
-
+    --- Caso en el que no es necesario actualizar nada.
     if new.winneropt is null then
         return new;
     end if;
-	
-	update clientbets
-	set outcome = bet*ratio
-	where new.winneropt = optionid 
-		and new.betid = clientbets.betid;
-	
-	update clientbets
-	set outcome = 0
-	where betid = new.betid 
-		and new.winneropt != optionid;
+    if TG_OP = 'UPDATE' then
+        if new.winneropt = old.winneropt then
+            return new;
+        end if;
+    end if;
+
+    update clientbets
+    set outcome = bet*ratio
+    where new.winneropt = optionid
+        and new.betid = clientbets.betid;
+
+    update clientbets
+    set outcome = 0
+    where betid = new.betid
+        and new.winneropt != optionid;
+
     return new;
 end; $$
 language plpgsql;

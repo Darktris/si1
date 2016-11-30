@@ -5,7 +5,7 @@
 
 create or replace function setOrderTotalOutcome(orderid_arg integer)
 returns void as $$
-begin 
+begin
 	update clientorders
 	set totaloutcome = aux.sum
 	from (

@@ -1,34 +1,33 @@
--- 			APARTADO H
+--          APARTADO H
 --
---		Actualiza clientorders 
+--      Actualiza clientorders
 --
 
-create or replace function updorders() 
+create or replace function updorders()
 returns trigger as $$
 begin
-	if TG_OP = 'DELETE' then
-		new := old;
-	end if;
-	-- Se podria utilizar new para calcular
-	-- de nuevo el amount/outcome, sin embargo
-	-- para evitar inconsistencias, se recalcula
-	-- para ese order
-	
-	
+    if TG_OP = 'DELETE' then
+        new := old;
+    end if;
+    -- Se podria utilizar new para calcular
+    -- de nuevo el amount/outcome, sin embargo
+    -- para evitar inconsistencias, se recalcula
+    -- para ese order
+
     update clientorders
     set totalamount = 0, totaloutcome = 0
     where clientorders.orderid = new.orderid;
 
-	update clientorders
-	set totalamount = amount,
-		totaloutcome = out
-	from (
-		select clientbets.orderid as id, sum(bet) as amount, sum(outcome) as out
-		from clientbets
-		where clientbets.orderid = new.orderid
-		group by orderid
-	) as aux
-	where clientorders.orderid = new.orderid;
+    update clientorders
+    set totalamount = amount,
+        totaloutcome = out
+    from (
+        select clientbets.orderid as id, sum(bet) as amount, sum(outcome) as out
+        from clientbets
+        where clientbets.orderid = new.orderid
+        group by orderid
+    ) as aux
+    where clientorders.orderid = new.orderid;
 
     return new;
 end; $$

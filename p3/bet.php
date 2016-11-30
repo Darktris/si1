@@ -24,7 +24,7 @@ if(isset($_GET["betid"])) {
                 /* "1" is left/right team, "2" is amount */
                 if($order->rowCount() == 0) {
                     $db->exec("insert into clientorders (customerid, totalamount) values (".$_SESSION["user"].", 0)");
-                    $oid = $db->lastInsertId();
+                    $oid = $db->query("select max(orderid) from clientorders where customerid = ".$_SESSION["user"]." and date is null")->fetchColumn();
                 } else {
                     $oid = $order->fetch()["orderid"];
                     if($db->query("select * from clientbets where betid = ".$bet["betid"]." and orderid = ".$oid." limit 1")->rowCount() == 1) {

@@ -1,9 +1,9 @@
 select credit from customers where customerid = 693;
 
-insert into clientorders (customerid, date, orderid) 
+insert into clientorders (customerid, date, orderid)
 values (693, NULL, 999999999);
 
-insert into clientbets (optionid, bet, ratio, betid, orderid) 
+insert into clientbets (optionid, bet, ratio, betid, orderid)
 values (104, 1000, 6.66, 4526, 999999999);
 
 select * from clientorders where orderid = 999999999;
@@ -11,13 +11,13 @@ select credit from customers where customerid = 693;
 
 update clientorders set date = now() where orderid = 999999999;
 
-insert into clientbets (optionid, bet, ratio, betid, orderid) 
+insert into clientbets (optionid, bet, ratio, betid, orderid)
 values (103, 3000, 6.66, 4526, 999999999);
 
 select * from clientorders where orderid = 999999999;
 select credit from customers where customerid = 693;
 
-insert into clientbets (optionid, bet, ratio, betid, orderid) 
+insert into clientbets (optionid, bet, ratio, betid, orderid)
 values (105, 2000, 6.66, 4526, 999999999);
 
 select * from clientorders where orderid = 999999999;
