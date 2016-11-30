@@ -19,10 +19,9 @@ begin
     where clientorders.orderid = new.orderid;
 
     update clientorders
-    set totalamount = amount,
-        totaloutcome = outcome
+    set totalamount = aux.amount, totaloutcome = aux.outcome
     from (
-        select clientbets.orderid as id, sum(bet) as amount, sum(outcome) as outcome
+        select sum(bet) as amount, sum(outcome) as outcome
         from clientbets
         where clientbets.orderid = new.orderid
         group by orderid
