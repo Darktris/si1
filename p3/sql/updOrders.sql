@@ -6,19 +6,27 @@
 create or replace function updorders()
 returns trigger as $$
 begin
-    if TG_OP = 'INSERT' then
-        update clientorders
-        set totalamount = totalamount + new.bet, totaloutcome = totaloutcome + new.outcome
-        where clientorders.orderid = new.orderid;
-    elsif TG_OP = 'UPDATE' then
-        update clientorders
-        set totalamount = totalamount - old.bet + new.bet, totaloutcome = totaloutcome - old.outcome + new.outcome
-        where clientorders.orderid = old.orderid;
-    else -- DELETE
-        update clientorders
-        set totalamount = totalamount - old.bet, totaloutcome = totaloutcome - old.outcome
-        where clientorders.orderid = old.orderid;
+    if TG_OP = 'DELETE' then
+        new := old;
     end if;
+    -- Se podria utilizar new para calcular
+    -- de nuevo el amount/outcome, sin embargo
+    -- para evitar inconsistencias, se recalcula
+    -- para ese order
+
+    update clientorders
+    set totalamount = 0, totaloutcome = 0
+    where clientorders.orderid = new.orderid;
+
+    update clientorders
+    set totalamount = aux.amount, totaloutcome = aux.outcome
+    from (
+        select sum(coalesce(0,bet)) as amount, sum(coalesce(outcome,0)) as outcome
+        from clientbets
+        where clientbets.orderid = new.orderid
+        group by orderid
+    ) as aux
+    where clientorders.orderid = new.orderid;
 
     return new;
 end; $$
