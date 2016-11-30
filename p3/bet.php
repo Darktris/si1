@@ -27,7 +27,9 @@ if(isset($_GET["betid"])) {
                     $oid = $db->lastInsertId();
                 } else {
                     $oid = $order->fetch()["orderid"];
-                    $edit = true;
+                    if($db->query("select * from clientbets where betid = ".$bet["betid"]." and orderid = ".$oid." limit 1")->rowCount() == 1) {
+                        $edit = true;
+                    }
                 }
                 $option = $db->query("select optionid from options where optiondesc like concat('%',".$db->quote($teams[$_POST["1"]]).",'%')")->fetch()["optionid"];
                 $ratio = $db->query("select ratio from optionbet where optionid = ".$option." and betid = ".$bet["betid"])->fetch()["ratio"];
