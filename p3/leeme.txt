@@ -6,3 +6,8 @@ Autores:
 
 Notas:
 - Se puede utilizar como número de tarjeta de crédito "4000000000000000".
+- Todos los ficheros SQL se encuentran en la carpeta 'sql'.
+- El script bash 'reset_db.sh' reinicia la base de datos al estado original
+  (del dump, que se asume en la misma carpeta que este script).
+- El script bash 'restore.sh' ejecuta 'reset_db.sh' y además carga todos los
+  ficheros SQL implementados.

@@ -137,13 +137,17 @@
 \section{Análisis y resultados de la base de datos proporcionada}
 
 \subsection{Esquema de las tablas proporcionadas}
-Leyenda: \textit{\underline{primary key}} \texttt{$\Uparrow$}:\textit{foreign key}
+\textbf{Leyenda}:
+
+\textit{\underline{primary key}}
+
+\texttt{$\Uparrow$}:\textit{foreign key}
 
 \begin{multicols}{2}
 \begin{itemize}
     \item\texttt{customers}
         \begin{itemize}
-            \item\texttt{\underline{customerid}} 
+            \item\texttt{\underline{customerid}}
             \item\texttt{firstname}
             \item\texttt{lastname}
             \item\texttt{address1}
@@ -294,6 +298,7 @@ A continuación se muestra el diagrama E-R (sin atributos por legibilidad) del e
     \caption{Diagrama E-R de la base de datos final}
     \label{fig:fig2}
 \end{minipage}
+\medbreak
 Se muestra la nueva tabla \texttt{categories} así como algún detalle que se ha puntualizado. Un ejemplo claro es la entidad débil (\textit{weak entity}) de \texttt{clientbets}, las cuales solo pueden existir dentro de un \texttt{order}. Se podría decir de la misma manera que \texttt{order} es una entidad débil dependiente del \texttt{customer}, sin embargo, para aumentar la libertad de diseño del sistema web a la hora de gestionar el order, esta restricción no se impone.
 Todos estos cambios los realiza el fichero \texttt{actualiza.sql}
 
@@ -319,7 +324,8 @@ Se muestra el primer pedido previa la ejecución del ejercicio
        47 | 23.30 |  8.42 |          |  2372 |       1
        51 | 74.58 |  5.92 |          |  2418 |       1
        86 | 94.57 |  9.69 |          |  2438 |       1
-\end{lstlisting} 
+\end{lstlisting}
+\newpage
 Tras ejecutar el ejercicio resulta:
 \begin{lstlisting}[style=sql]
 
@@ -328,33 +334,33 @@ Tras ejecutar el ejercicio resulta:
         693 | 2012-12-02 17:23:39+01 |       1 |      272.16
 \end{lstlisting}
 Por lo que se observa que la consulta se realiza correctamente
-$$\;$$
+\bigbreak
 
 \textbf{Rendimiento y optimización}
 
-El rendimiento original de la consulta
+Rendimiento original de la consulta:
 \lstset{basicstyle=\small,style=sql}
 \begin{lstlisting}[style=sql]
  Update on clientorders  (cost=97847.15..112110.70 rows=118766 width=146)
    ->  Hash Join  (cost=97847.15..112110.70 rows=118766 width=146)
          Hash Cond: (aux.id = clientorders.orderid)
-         ->  Subquery Scan on aux  (cost=90991.97..98686.49 rows=118766 
+         ->  Subquery Scan on aux  (cost=90991.97..98686.49 rows=118766
          width=96)
-               ->  GroupAggregate  (cost=90991.97..97498.83 rows=118766 
+               ->  GroupAggregate  (cost=90991.97..97498.83 rows=118766
                width=10)
                      Group Key: clientbets.orderid
                      ->  Sort  (cost=90991.97..92666.07 rows=669638 width=10)
                            Sort Key: clientbets.orderid
-                           ->  Seq Scan on clientbets  (cost=0.00..14749.38 
+                           ->  Seq Scan on clientbets  (cost=0.00..14749.38
                            rows=669638 width=10)
          ->  Hash  (cost=3536.30..3536.30 rows=149030 width=54)
-               ->  Seq Scan on clientorders  (cost=0.00..3536.30 rows=149030 
+               ->  Seq Scan on clientorders  (cost=0.00..3536.30 rows=149030
                width=54)
 
 \end{lstlisting}
-Para optimizar esta consulta, que pese a no tardar un tiempo excesivo, se detectan lecturas secuenciales, se crean índices.
+Para optimizar esta consulta y evitar lecturas secuenciales, se crean índices.
 
-Rendimiento tras la creación del índice sobre \texttt{clientbets(orderid)}
+Rendimiento tras la creación del índice sobre \texttt{clientbets(orderid)}:
 \begin{lstlisting}[style=sql]
  Update on clientorders  (cost=6855.60..69056.69 rows=118766 width=146)
    ->  Hash Join  (cost=6855.60..69056.69 rows=118766 width=146)
@@ -379,18 +385,19 @@ Rendimiento tras la creación del índice sobre \texttt{clientorders(orderid)}
                      Group Key: clientbets.orderid
                      ->  Index Scan using clbets_oid_idx on clientbets  (
                      cost=0.42..49612.05 rows=669640 width=10)
-         ->  Index Scan using clo_oid_idx on clientorders  (cost=0.42..12067.88 
+         ->  Index Scan using clo_oid_idx on clientorders  (cost=0.42..12067.88
          rows=149031 width=54)
 
 \end{lstlisting}
 
 Se observa una mejoría en el coste respecto al valor original sin índices. Hace falta recordar que los índices pueden ralentizar las inserciones o actualizaciones por ser necesario actualizar los índices en estos casos.
+\newpage
 
 \subsubsection{setOutcomeBets}
 
 \textbf{Comprobación de los resultados}
 
-Miramos de nuevo el mismo pedido y los winneropt
+Miramos de nuevo el mismo pedido y los winneropt:
 \begin{lstlisting}[style=sql]
   bet  | outcome | winneropt | optionid
 -------+---------+-----------+----------
@@ -399,7 +406,7 @@ Miramos de nuevo el mismo pedido y los winneropt
  74.58 |         |        51 |       51
  94.57 |         |        86 |       86
  \end{lstlisting}
-Tras ejecutar el ejercicio debería resultar que si winneropt=optionid, entonces el outcome debería ser ratio·bet, en caso de que no sea null pero sean distintos los valores, el outcome debería ser 0
+Tras ejecutar el ejercicio debería resultar que si winneropt=optionid, entonces el outcome debería ser ratio·bet, en caso de que no sea null pero sean distintos los valores, el outcome debería ser 0:
 \begin{lstlisting}[style=sql]
   bet  | ratio | outcome  | winneropt | optionid
 -------+-------+----------+-----------+----------
@@ -408,12 +415,11 @@ Tras ejecutar el ejercicio debería resultar que si winneropt=optionid, entonces
  74.58 |  5.92 | 441.5136 |        51 |       51
  94.57 |  9.69 | 916.3833 |        86 |       86
  \end{lstlisting}
-
-$$\;$$
+\bigbreak
 
 \textbf{Rendimiento y optimización}
 
-En este caso la única lectura secuencial de las tablas es necesaria para la actualización de todos los valores. Se observa otra lectura secuencial pero de coste mínimo.
+En este caso la única lectura secuencial de las tablas es necesaria para la actualización de todos los valores. Se observa otra lectura secuencial pero de coste mínimo:
 
 \begin{lstlisting}[style=sql]
  Update on clientbets  (cost=333.20..20155.54 rows=4051 width=36)
@@ -431,26 +437,28 @@ Como no se sabía si se quería un procedimiento almacenado que dado un orderid,
 \item setOrderTotalOutcome(orderid\_arg integer)
 \item setTotalOutcome()
 \end{enumerate}
+
 \textbf{Comprobación de los resultados}
-De nuevo se observa el primer pedido sin outcome y simplemente hace falta fijarse en los outcome del ejercicio anterior y sumarlos para saber el resultado.
+
+De nuevo se observa el primer pedido sin outcome y simplemente hace falta fijarse en los outcome del ejercicio anterior y sumarlos para saber el resultado:
 \begin{lstlisting}[style=sql]
 
  customerid |          date          | orderid | totalamount | totaloutcome
 ------------+------------------------+---------+-------------+--------------
         693 | 2012-12-02 17:23:39+01 |       1 |      272.16 |
 \end{lstlisting}
-Se comprueba que efectivamente el resultado coincide.
+Se comprueba que efectivamente el resultado coincide:
 \begin{lstlisting}[style=sql]
 
  customerid |          date          | orderid | totalamount | totaloutcome
 ------------+------------------------+---------+-------------+--------------
         693 | 2012-12-02 17:23:39+01 |       1 |      272.16 |    1554.0829
 \end{lstlisting}
-
-$$\;$$
+\newpage
 
 \textbf{Rendimiento y optimización}
-Se muestra ya el coste tras construir los índices oportunos.
+
+Se muestra ya el coste tras construir los índices oportunos:
 \begin{lstlisting}[style=sql]
  Update on clientbets  (cost=333.20..20155.54 rows=4051 width=36)
    ->  Hash Join  (cost=333.20..20155.54 rows=4051 width=36)
@@ -463,15 +471,15 @@ Se muestra ya el coste tras construir los índices oportunos.
 
 \subsection{\textit{Triggers}}
 Se incluyen los tres triggers solicitados:
-\begin{enumerate}
-    \item updBets: actualiza el campo outcome de las apuestas realizadas por un cliente una vez se ha designado un ganador.
-    \item updOrders: actualiza el campo totalamount y totaloutcome del carrito cuando se modifica por el \textit{trigger} anterior.
-    \item updCredit: actualiza el campo credit del cliente cuando un carrito se cierra o se modifica uno cerrado (asignación de ganadores).
-\end{enumerate}
+\begin{description}
+    \item[updBets] actualiza el outcome de las apuestas realizadas por un cliente una vez se ha designado un ganador.
+    \item[updOrders] actualiza el totalamount y totaloutcome del carrito cuando se modifica por el \textit{trigger} anterior.
+    \item[updCredit] actualiza el campo credit del cliente cuando un carrito se cierra o se modifica uno cerrado.
+\end{description}
 
-El correcto funcionamiento de estos \textit{triggers} se puede observar mediante los ficheros \texttt{tests.sql} y \texttt{tests2   .sql}. Este fichero no incluye el borrado del carrito de ya existir luego se recomienda encarecidamente borrar el carrito que se crea durante el test en caso de querer ejecutarlo varias veces. El test muestra varias inserciones o borrados de un carrito y como el credit se va actualizando según cambia el estado del carrito.
+El correcto funcionamiento de estos \textit{triggers} se puede observar mediante los ficheros \texttt{tests.sql} y \texttt{tests2.sql}. Este fichero no incluye el borrado del carrito de ya existir luego se recomienda encarecidamente borrar el carrito que se crea durante el test en caso de querer ejecutarlo varias veces. El test muestra varias inserciones o borrados de un carrito y como el credit se va actualizando según cambia el estado del carrito.
 
-Parte del código se ha reutilizado del apartado anterior.
+Parte del código del apartado anterior se ha reutilizado.
 
 \textbf{Nota:} Debido a que parte de la funcionalidad de los apartados anteriores es realizada por los \textit{triggers}, no es nada recomendable ejecutar de nuevo las actualizaciones, pues de hacerlo se actualizarán todas las filas de las tablas generando tantas ejecuciones de los \textit{triggers} como filas tienen las tablas.
 
@@ -482,26 +490,31 @@ Para esta tarea se ha realizado un fichero SQL llamado \texttt{adapta.sql} que r
 Los cambios realizados son:
 
 \begin{itemize}
-\item Quitar restricción \texttt{not null} en atributo \texttt{firstname} de la tabla \texttt{customers} 
-\item Quitar restricción \texttt{not null} en atributo \texttt{lastname} de la tabla \texttt{customers} 
-\item Quitar restricción \texttt{not null} en atributo \texttt{address1} de la tabla \texttt{customers} 
-\item Quitar restricción \texttt{not null} en atributo \texttt{city} de la tabla \texttt{customers} 
-\item Quitar restricción \texttt{not null} en atributo \texttt{country} de la tabla \texttt{customers} 
-\item Quitar restricción \texttt{not null} en atributo \texttt{region} de la tabla \texttt{customers} 
-\item Quitar restricción \texttt{not null} en atributo \texttt{creditcardtype} de la tabla \texttt{customers} 
-\item Cambiar los atributos de actualización secuencial de las ids de todas las tablas, de manera que al insertan se inserten automáticamente con id = max (ids)
+\item Quitar restricción \texttt{not null} en atributo \texttt{firstname} de la tabla \texttt{customers}
+\item Quitar restricción \texttt{not null} en atributo \texttt{lastname} de la tabla \texttt{customers}
+\item Quitar restricción \texttt{not null} en atributo \texttt{address1} de la tabla \texttt{customers}
+\item Quitar restricción \texttt{not null} en atributo \texttt{city} de la tabla \texttt{customers}
+\item Quitar restricción \texttt{not null} en atributo \texttt{country} de la tabla \texttt{customers}
+\item Quitar restricción \texttt{not null} en atributo \texttt{region} de la tabla \texttt{customers}
+\item Quitar restricción \texttt{not null} en atributo \texttt{creditcardtype} de la tabla \texttt{customers}
+\item Cambiar los atributos de actualización secuencial de las ids de todas las tablas, de manera que al insertar se incremente automáticamente la id.
 \end{itemize}
+\newpage
 
 \subsection{Funcionalidad de la página web implementada}
 
-Se ha implementado una interacción de la web con la base de datos casi completa:
+Se ha implementado una interacción de la web con la base de datos completa:
 \begin{itemize}
 \item Se ha integrado con la parte de gestión y creación de usuarios
-\item Se ha integrado con la parte de visualización de las apuestas y el sistema creación y apuestas.
-\item Se ha integrado la gestión del carrito con la base de datos, de manera que el carrito se guarda en la base de datos.
-\item Se ha implementado un sistema de carga incremental mediante AJAX para evitar el envío de un gran volumen de datos en la carga de la página principal.
+\item Se ha integrado con la parte de visualización de las apuestas y el sistema creación de apuestas.
+\item Se ha integrado la gestión del carrito con la base de datos, guardando las apuestas en la base de datos.
+\item Se ha implementado un sistema de carga incremental de apuestas mediante AJAX para evitar el envío de un gran volumen de datos en la carga de la página principal.
+\item Se ha sustituido el sistema de categoría-subcategoría de la práctica anterior por las categorías de la base de datos. En consecuencia, los menús desplegables para filtrar por categoría son ahora botones en la barra lateral.
 \end{itemize}
 
-El objetiva final logrado ha sido integrar totalmente la página desarrollada con la base de datos, de tal manera que la página es totalmente funcional y todo el manejo se realiza usando la base de datos.
+El objetivo final logrado ha sido la integración completa de la página desarrollada con la base de datos, de tal manera que la página es totalmente funcional y todo el manejo se realiza usando la base de datos.
+
+\section{Conclusiones}
+En esta práctica está presente el proceso de trabajar con una base de datos en una aplicación (web) destinada al usuario final. Destaca la inestimable utilidad de los triggers a la hora de encadenar cambios en la base de datos y facilitar su administración.
 
 \end{document}

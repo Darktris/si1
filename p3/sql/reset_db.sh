@@ -1,5 +1,5 @@
 #!/bin/sh
-dropdb si1
-createdb si1
-cat dump-*.sql | psql si1
-createlang plpgsql si1
+dropdb -U alumnodb si1
+createdb -U alumnodb si1
+cat dump-*.sql | psql -U alumnodb si1
+createlang -U alumnodb plpgsql si1
