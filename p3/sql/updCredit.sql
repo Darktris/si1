@@ -24,7 +24,7 @@ begin
             where new.customerid = customers.customerid
                 and new.date is not null;
         else
-            if coalesce(new.totalamount,0) - coalesce(old.totalamount, 0) > credit then
+            if new.date is not null and coalesce(new.totalamount,0) - coalesce(old.totalamount, 0) > credit then
                 return null;
             end if;
             --- Actualizamos con la diferencia de una apuesta.
