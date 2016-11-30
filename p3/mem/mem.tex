@@ -290,11 +290,11 @@ A continuación se muestra el diagrama E-R (sin atributos por legibilidad) del e
 \begin{minipage}{\linewidth}
     \centering
     \captionsetup{type=figure}
-    \includegraphics[width=\linewidth]{img/db_new.png}
+    \includegraphics[width=\linewidth]{img/db_new_2}
     \caption{Diagrama E-R de la base de datos final}
     \label{fig:fig2}
 \end{minipage}
-
+Se muestra la nueva tabla \texttt{categories} así como algún detalle que se ha puntualizado. Un ejemplo claro es la entidad débil (\textit{weak entity}) de \texttt{clientbets}, las cuales solo pueden existir dentro de un \texttt{order}. Se podría decir de la misma manera que \texttt{order} es una entidad débil dependiente del \texttt{customer}, sin embargo, para aumentar la libertad de diseño del sistema web a la hora de gestionar el order, esta restricción no se impone.
 Todos estos cambios los realiza el fichero \texttt{actualiza.sql}
 
 \section{Consultas SQL}
@@ -384,7 +384,7 @@ Rendimiento tras la creación del índice sobre \texttt{clientorders(orderid)}
 
 \end{lstlisting}
 
-Se observa una mejoría en el coste % Coste minimo y maximo
+Se observa una mejoría en el coste respecto al valor original sin índices. Hace falta recordar que los índices pueden ralentizar las inserciones o actualizaciones por ser necesario actualizar los índices en estos casos.
 
 \subsubsection{setOutcomeBets}
 
@@ -469,7 +469,7 @@ Se incluyen los tres triggers solicitados:
     \item updCredit: actualiza el campo credit del cliente cuando un carrito se cierra o se modifica uno cerrado (asignación de ganadores).
 \end{enumerate}
 
-El correcto funcionamiento de estos \textit{triggers} se puede observar mediante el fichero \texttt{tests.sql}. Este fichero no incluye el borrado del carrito de ya existir luego se recomienda encarecidamente borrar el carrito que se crea durante el test en caso de querer ejecutarlo varias veces. El test muestra varias inserciones o borrados de un carrito y como el credit se va actualizando según cambia el estado del carrito.
+El correcto funcionamiento de estos \textit{triggers} se puede observar mediante los ficheros \texttt{tests.sql} y \texttt{tests2   .sql}. Este fichero no incluye el borrado del carrito de ya existir luego se recomienda encarecidamente borrar el carrito que se crea durante el test en caso de querer ejecutarlo varias veces. El test muestra varias inserciones o borrados de un carrito y como el credit se va actualizando según cambia el estado del carrito.
 
 Parte del código se ha reutilizado del apartado anterior.
 
