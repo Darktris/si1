@@ -92,6 +92,7 @@ define("DSN","pgsql:host=localhost;dbname=si1;options='--client_encoding=UTF8'")
           $break0      = isset($_REQUEST['break0']) ? true : false;
           if ($use_prepare) {
             $stmt = $db->prepare($consulta.':umbral');
+            $stmt->bindValue(':umbral', $umbral, PDO::PARAM_INT);
           }
 
           // Impresion de resultados en HTML
@@ -101,7 +102,6 @@ define("DSN","pgsql:host=localhost;dbname=si1;options='--client_encoding=UTF8'")
           $t0 = microtime(true);
           while($niter < $_REQUEST['iter']) {
             if ($use_prepare) {
-              $stmt->bindValue(':umbral', $umbral, PDO::PARAM_INT);
               $linea = $stmt->execute();
             }
             else {

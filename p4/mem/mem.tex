@@ -1,0 +1,177 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Structured General Purpose Assignment
+% LaTeX Template
+%
+% This template has been downloaded from:
+% http://www.latextemplates.com
+%
+% Original author:
+% Ted Pavlic (http://www.tedpavlic.com)
+%
+% Note:
+% The \lipsum[#] commands throughout this template generate dummy text
+% to fill the template out. These commands should all be removed when
+% writing assignment content.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------
+%   PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------
+
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{lastpage} % Required to determine the last page for the footer
+\usepackage{graphicx} % Required to insert images
+\usepackage{tikz}
+\usepackage[export]{adjustbox}
+\usepackage{enumitem}
+\usepackage{environ}
+\usepackage{multicol}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage[font=small]{caption}
+\selectlanguage{spanish}
+\addto\extrasspanish{%
+    \def\figureautorefname{Figura}%
+}
+\lstset{
+    basicstyle=\small\ttfamily,
+    columns=flexible,
+    breaklines=true
+}
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{\small \hmwkClass: \hmwkTitle} % Top left header
+\chead{} % Top center header
+\rhead{\small \hmwkAuthorName} % Top right header
+\lfoot{} % Bottom left footer
+\cfoot{} % Bottom center footer
+\rfoot{Página\ \thepage\ de\ \pageref{LastPage}} % Bottom right footer
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+\setlength{\multicolsep}{6.0pt plus 2.0pt minus 1.5pt} % 50% of original values
+
+\newlength\widest
+\makeatletter
+\NewEnviron{ldescription}{%
+    \vbox{%
+        \global\setlength\widest{0pt}%
+        \def\item[##1]{%
+            \settowidth\@tempdima{\textbf{##1}}%
+            \ifdim \@tempdima>\widest \global\setlength\widest{\@tempdima} \fi%
+        }%
+        \setbox0=\hbox{\BODY}%
+    }
+    \begin{description}[leftmargin=\dimexpr\widest+0.5em\relax,labelindent=0pt, labelwidth=\widest]
+        \BODY
+\end{description}%
+}
+\makeatother
+
+%----------------------------------------------------------------------------------
+%   NAME AND CLASS SECTION
+%----------------------------------------------------------------------------------
+
+\newcommand{\hmwkTitle}{Práctica\ 4} % Assignment title
+\newcommand{\hmwkClass}{Sistemas Informáticos I} % Course/class
+\newcommand{\hmwkAuthorName}{\small Sergio Fuentes de Uña | Daniel Perdices Burrero} % Your name
+
+%----------------------------------------------------------------------------------
+%   TITLE PAGE
+%----------------------------------------------------------------------------------
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
+    \vspace{3in}
+}
+
+\author{\textbf{\hmwkAuthorName}}
+
+%----------------------------------------------------------------------------------
+\begin{document}
+
+\maketitle
+
+%----------------------------------------------------------------------------------
+%   TABLE OF CONTENTS
+%----------------------------------------------------------------------------------
+
+%\setcounter{tocdepth}{1} % Uncomment this line if you don't want subsections listed in the ToC
+
+\newpage
+\tableofcontents
+\newpage
+\section{Optimización}
+\subsection{Ejercicio A: {\small Estudio del impacto de un índice}}
+\begin{lstlisting}
+ Aggregate  (cost=4583.49..4583.50 rows=1 width=8)
+   ->  Nested Loop  (cost=0.29..4583.49 rows=1 width=4)
+         ->  Seq Scan on clientorders  (cost=0.00..4575.17 rows=1 width=4)
+               Filter: ((totalamount > '100'::numeric) AND (date_part('month'::text, date) = '3'::double precision) AND (date_part('year'::text, date) = '2013'::double precision))
+         ->  Index Only Scan using customers_pkey on customers  (cost=0.29..8.30 rows=1 width=4)
+               Index Cond: (customerid = clientorders.customerid)
+\end{lstlisting}
+\begin{lstlisting}
+ Aggregate  (cost=3273.05..3273.06 rows=1 width=8)
+   ->  Nested Loop  (cost=925.28..3273.04 rows=1 width=4)
+         ->  Bitmap Heap Scan on clientorders  (cost=925.00..3264.73 rows=1 width=4)
+               Recheck Cond: (totalamount > '100'::numeric)
+               Filter: ((date_part('month'::text, date) = '3'::double precision) AND (date_part('year'::text, date) = '2013'::double precision))
+               ->  Bitmap Index Scan on idx1  (cost=0.00..925.00 rows=49677 width=0)
+                     Index Cond: (totalamount > '100'::numeric)
+         ->  Index Only Scan using customers_pkey on customers  (cost=0.29..8.30 rows=1 width=4)
+               Index Cond: (customerid = clientorders.customerid)
+\end{lstlisting}
+\subsection{Ejercicio B: {\small Estudio del impacto de preparar sentencias SQL}}
+\subsection{Ejercicio C: {\small Estudio del impacto de cambiar la forma de realizar una consulta}}
+\begin{lstlisting}
+ Seq Scan on customers  (cost=3209.07..3743.23 rows=7046 width=4)
+   Filter: (NOT (hashed SubPlan 1))
+   SubPlan 1
+     ->  Seq Scan on clientorders  (cost=0.00..3084.88 rows=49677 width=4)
+           Filter: (totaloutcome > '0'::numeric)
+\end{lstlisting}
+\begin{lstlisting}
+ HashAggregate  (cost=4399.43..4401.43 rows=200 width=4)
+   Group Key: customers.customerid
+   Filter: (count(*) = 1)
+   ->  Append  (cost=0.00..4080.57 rows=63770 width=4)
+         ->  Seq Scan on customers  (cost=0.00..498.93 rows=14093 width=4)
+         ->  Seq Scan on clientorders  (cost=0.00..3084.88 rows=49677 width=4)
+               Filter: (totaloutcome > '0'::numeric)
+\end{lstlisting}
+\begin{lstlisting}
+ HashSetOp Except  (cost=0.00..4380.93 rows=14093 width=8)
+   ->  Append  (cost=0.00..4221.51 rows=63770 width=8)
+         ->  Subquery Scan on "*SELECT* 1"  (cost=0.00..639.86 rows=14093 width=8)
+               ->  Seq Scan on customers  (cost=0.00..498.93 rows=14093 width=4)
+         ->  Subquery Scan on "*SELECT* 2"  (cost=0.00..3581.64 rows=49677 width=8)
+               ->  Seq Scan on clientorders  (cost=0.00..3084.88 rows=49677 width=4)
+                     Filter: (totaloutcome > '0'::numeric)
+\end{lstlisting}
+\subsection{Ejercicio D: {\small Estudio del impacto de la generación de estadísticas}}
+\section{Transacciones y \textit{deadlocks}}
+\subsection{Ejercicio E: {\small Realización de una página PHP \texttt{borraCliente.php}}}
+\subsection{Ejercicio F: {\small Estudio de bloqueos y deadlocks}}
+\section{Seguridad}
+\subsection{Ejercicio G: {\small Acceso indebido a un sitio web}}
+\subsection{Ejercicio H: {\small Acceso indebido a información}}
+\end{document}
