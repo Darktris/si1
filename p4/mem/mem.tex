@@ -168,6 +168,43 @@
                      Filter: (totaloutcome > '0'::numeric)
 \end{lstlisting}
 \subsection{Ejercicio D: {\small Estudio del impacto de la generación de estadísticas}}
+Sin índice:
+\begin{lstlisting}
+     Aggregate  (cost=11787.79..11787.80 rows=1 width=8)
+        ->  Seq Scan on clientbets  (cost=0.00..11779.52 rows=3308 width=0)
+             Filter: (outcome IS NULL)
+\end{lstlisting}
+\begin{lstlisting}
+     Aggregate  (cost=13441.92..13441.93 rows=1 width=8)
+        ->  Seq Scan on clientbets  (cost=0.00..13433.65 rows=3308 width=0)
+             Filter: (outcome = '0'::numeric)
+\end{lstlisting}
+Con índice:
+\begin{lstlisting}
+     Aggregate  (cost=4893.70..4893.71 rows=1 width=8)
+        ->  Bitmap Heap Scan on clientbets  (cost=66.06..4885.43 rows=3308 width=0)
+             Recheck Cond: (outcome IS NULL)
+                      ->  Bitmap Index Scan on idx2  (cost=0.00..65.23 rows=3308 width=0)
+                                     Index Cond: (outcome IS NULL)
+\end{lstlisting}
+\begin{lstlisting}
+     Aggregate  (cost=4901.97..4901.98 rows=1 width=8)
+        ->  Bitmap Heap Scan on clientbets  (cost=66.06..4893.70 rows=3308 width=0)
+             Recheck Cond: (outcome = '0'::numeric)
+                      ->  Bitmap Index Scan on idx2  (cost=0.00..65.23 rows=3308 width=0)
+                                     Index Cond: (outcome = '0'::numeric)
+\end{lstlisting}
+Con \texttt{ANALYZE}:
+\begin{lstlisting}
+      Aggregate  (cost=5.37..5.38 rows=1 width=8)
+         ->  Index Only Scan using idx2 on clientbets  (cost=0.42..5.37 rows=1 width=0)
+             Index Cond: (outcome IS NULL)
+\end{lstlisting}
+\begin{lstlisting}
+      Aggregate  (cost=14331.01..14331.02 rows=1 width=8)
+         ->  Seq Scan on clientbets  (cost=0.00..13433.65 rows=358946 width=0)
+             Filter: (outcome = '0'::numeric)
+\end{lstlisting}
 \section{Transacciones y \textit{deadlocks}}
 \subsection{Ejercicio E: {\small Realización de una página PHP \texttt{borraCliente.php}}}
 \subsection{Ejercicio F: {\small Estudio de bloqueos y deadlocks}}
