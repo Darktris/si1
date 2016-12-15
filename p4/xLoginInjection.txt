@@ -1,0 +1,2 @@
+user: loquesea
+passwd: a' or '1'='1

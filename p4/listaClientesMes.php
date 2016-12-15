@@ -80,7 +80,7 @@ define("DSN","pgsql:host=localhost;dbname=si1;options='--client_encoding=UTF8'")
         try {
           $db = new PDO(DSN,PGUSER,PGPASSWORD);
 
-          $consulta = 'select count(distinct customers.customerid) as cc from customers, clientorders where clientorders.customerid = customers.customerid and date_part(\'month\', clientorders.date) = '.$_REQUEST['mes'].' and date_part(\'year\', clientorders.date) = '.$_REQUEST['anio'].' and clientorders.totalamount > ';
+          $consulta = 'select count(distinct customers.customerid) as cc from customers, clientorders where clientorders.customerid = customers.customerid and date_part(\'month\', clientorders.date) = '.$_REQUEST['mes'].' and date_part(\'year\', clientorders.date) = '.$_REQUEST['anio'].' and clientorders.totalamount > :umbral;';
 
           // Impresion de resultados en HTML
           echo '<p>Número de clientes distintos con apuestas ';
@@ -91,7 +91,7 @@ define("DSN","pgsql:host=localhost;dbname=si1;options='--client_encoding=UTF8'")
           $use_prepare = isset($_REQUEST['prepare']) ? true : false;
           $break0      = isset($_REQUEST['break0']) ? true : false;
           if ($use_prepare) {
-            $stmt = $db->prepare($consulta.':umbral');
+            $stmt = $db->prepare($consulta);
             $stmt->bindValue(':umbral', $umbral, PDO::PARAM_INT);
           }
 
