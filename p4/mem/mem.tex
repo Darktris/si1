@@ -380,12 +380,12 @@ Lo que resulta en lo siguiente:
 
 \subsubsection{Solución y mejoras}
 
-Una combobox puede ser una solución aceptable para evitar al menos que un usuario ataque usando simplemente un navegador la página web, sin embargo, no sigue siendo una solución segura, pues herramientas como \texttt{curl} permiten fácilmente construir peticiones http de cualquier tipo con cualquier valor en los campos enviados, luego siguiendo dejando abierta la posibilidad de ataque mediante inyección de código.
+Una combobox puede ser una solución aceptable para evitar al menos que un usuario ataque usando simplemente un navegador, sin embargo, no sigue siendo una solución segura, pues herramientas como \texttt{curl} permiten fácilmente construir peticiones http de cualquier tipo con cualquier valor en los campos enviados, luego sigue dejando abierta la posibilidad de un ataque mediante inyección de código.
 
 La solución propuesta sigue pasando por dar una validación de las entradas recibidas en el servidor, usando \texttt{bindParam} o alguna validación propia. Esto evitaría estos ataques de manera completa.
 
-No hay ninguna diferencia entre GET y POST, es cierto que GET envía los datos en la URL, luego es más fácil de ver y modificar con un navegador, pero POST sigue siendo posible de ver mediante disectores de tráfico (e.g. los integrados en Wireshark) y perfectamente simulables mediante curl, por ejemplo. 
+No hay ninguna diferencia entre GET y POST, es cierto que GET envía los datos en la URL, luego es más fácil de ver y modificar con un navegador, pero lo enviado mediante POST sigue siendo visible mediante disectores de tráfico (e.g. los integrados en Wireshark) y perfectamente simulable mediante curl, por ejemplo. 
 
-Nótese que el ataque realizado es independiente de si se utiliza GET o POST, pues se ha utilizado únicamente el navegador para enviar datos, lo anterior solo aplica a casos en los cuales los campos incluyan validaciones y no dejen enviar desde el navegador ciertos valores.
+Nótese que el ataque realizado es independiente de si se utiliza GET o POST, pues se ha utilizado únicamente el navegador y el formulario para enviar datos, lo anterior solo aplica a casos en los cuales los campos incluyan validaciones y no dejen enviar desde el propio navegador ciertos valores.
 
 \end{document}
