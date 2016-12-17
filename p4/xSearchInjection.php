@@ -1,9 +1,9 @@
-<?php 
+<?php
 define("PGUSER", "alumnodb");
 define("PGPASSWORD", "alumnodb");
 define("DSN","pgsql:host=localhost;dbname=si1;options='--client_encoding=UTF8'");
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> 
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -19,8 +19,7 @@ define("DSN","pgsql:host=localhost;dbname=si1;options='--client_encoding=UTF8'")
       $cat=$_GET["i_cat"];
       if (isset($cat)) {
         try {
-            $consulta = "select betdesc from bets a, categorias b where a.categoriaid=b.categoriaid and b.categoria = '$cat'"; 
-
+            $consulta = "select betdesc from bets a, categorias b where a.categoriaid=b.categoriaid and b.categoria = '$cat'";
             $conn = new PDO(DSN,PGUSER,PGPASSWORD);
             $st = $conn->prepare($consulta);
             $st->execute();

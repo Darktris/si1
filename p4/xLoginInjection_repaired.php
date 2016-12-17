@@ -32,7 +32,7 @@ define("DSN","pgsql:host=localhost;dbname=si1;options='--client_encoding=UTF8'")
     if (isset($login) && isset($pswd)) {
       try {
         $conn = new PDO(DSN,PGUSER,PGPASSWORD);
-        $query="select * from customers where username='".$login."' and password='".$pswd."'";
+        $query="select * from customers where username=:user and password=:pass";
         // echo "<p> $query </p>";
         $st = $conn->prepare($query);
         if ($st === FALSE) {
