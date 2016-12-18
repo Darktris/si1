@@ -80,7 +80,7 @@ define("DSN","pgsql:host=localhost;dbname=si1;options='--client_encoding=UTF8'")
         try {
           $db = new PDO(DSN,PGUSER,PGPASSWORD);
 
-          $consulta = 'select count(distinct customers.customerid) as cc from customers, clientorders where clientorders.customerid = customers.customerid and date_part(\'month\', clientorders.date) = '.$_REQUEST['mes'].' and date_part(\'year\', clientorders.date) = '.$_REQUEST['anio'].' and clientorders.totalamount > :umbral;';
+          $consulta = 'select count(distinct customers.customerid) as cc from customers, clientorders where clientorders.customerid = customers.customerid and date_part(\'month\', clientorders.date) = '.$_REQUEST['mes'].' and date_part(\'year\', clientorders.date) = '.$_REQUEST['anio'].' and clientorders.totalamount > ';
 
           // Impresion de resultados en HTML
           echo '<p>Número de clientes distintos con apuestas ';
@@ -91,8 +91,8 @@ define("DSN","pgsql:host=localhost;dbname=si1;options='--client_encoding=UTF8'")
           $use_prepare = isset($_REQUEST['prepare']) ? true : false;
           $break0      = isset($_REQUEST['break0']) ? true : false;
           if ($use_prepare) {
-            $stmt = $db->prepare($consulta);
-            $stmt->bindValue(':umbral', $umbral, PDO::PARAM_INT);
+            $stmt = $db->prepare($consulta.':umbral ;');
+            $stmt->bindParam(':umbral', $umbral, PDO::PARAM_INT);
           }
 
           // Impresion de resultados en HTML
@@ -102,10 +102,15 @@ define("DSN","pgsql:host=localhost;dbname=si1;options='--client_encoding=UTF8'")
           $t0 = microtime(true);
           while($niter < $_REQUEST['iter']) {
             if ($use_prepare) {
-              $linea = $stmt->execute();
+              $rc = $stmt->execute();
+              if($rc)
+                $linea = $stmt->fetch();
+
             }
             else {
-              $linea = $db->query($consulta.$umbral)->fetch();
+              $linea = $db->query($consulta.$umbral);
+              if($linea) 
+                $linea = $linea->fetch();
             }
             echo '<tr><td>'.$umbral.'</td><td>'.$linea['cc'].'</td></tr>';
             if ($break0 && $linea['cc']==0) break;
