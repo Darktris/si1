@@ -91,7 +91,7 @@ define("DSN","pgsql:host=localhost;dbname=si1;options='--client_encoding=UTF8'")
           $use_prepare = isset($_REQUEST['prepare']) ? true : false;
           $break0      = isset($_REQUEST['break0']) ? true : false;
           if ($use_prepare) {
-            $stmt = $db->prepare($consulta.':umbral ;');
+            $stmt = $db->prepare($consulta.':umbral');
             $stmt->bindParam(':umbral', $umbral, PDO::PARAM_INT);
           }
 
@@ -105,9 +105,7 @@ define("DSN","pgsql:host=localhost;dbname=si1;options='--client_encoding=UTF8'")
               $rc = $stmt->execute();
               if($rc)
                 $linea = $stmt->fetch();
-
-            }
-            else {
+            } else {
               $linea = $db->query($consulta.$umbral);
               if($linea) 
                 $linea = $linea->fetch();
