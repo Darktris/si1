@@ -216,7 +216,7 @@ Para ambos casos basta con introducir en el campo Contraseña la siguiente caden
 \end{lstlisting}
 Con ello lo que hará será formarse la siguiente consulta:
 \begin{lstlisting}
-     select * from customers where username='gatsby' and password='a' or '1'='1' 
+     select * from customers where username='gatsby' and password='a' or '1'='1'
 \end{lstlisting}
 La cual siempre reporta la tabla entera de \texttt{customers}, validando el proceso de ingreso en la página.
 
@@ -231,7 +231,7 @@ La cual siempre reporta la tabla entera de \texttt{customers}, validando el proc
 Se propone para evitar el ataque de tipo \textit{SQLInjection} utilizar las función de PDO \texttt{bindParam} que ejecuta una validación (escapando carácteres especiales de SQL) y evita el poder realizar esto. Se encuentra la solución propuesta en el fichero \texttt{xLoginInjectionRepaired.php}
 \subsection{Ejercicio H: {\small Acceso indebido a información}}
 \subsubsection{Hallar el nombre de las tablas}
-Basta con introducir el siguiente texto: 
+Basta con introducir el siguiente texto:
 \begin{lstlisting}
 a' UNION SELECT relname from pg_class where '1'='1
 \end{lstlisting}
@@ -264,7 +264,7 @@ Y se recibe una salida similar a esta:
     pg_stat_archiver
     pg_extension_oid_index
     pg_largeobject
-\end{lstlisting}    
+\end{lstlisting}
 {\footnotesize Salida completa en \texttt{tablas.html}}
 
 Realmente de la consulta solo se ha utilizado que la variable sustituida está al final, luego podemos unir el resultado con otra consulta, en este caso sobre las tablas de administración
@@ -384,7 +384,7 @@ Una combobox puede ser una solución aceptable para evitar al menos que un usuar
 
 La solución propuesta sigue pasando por dar una validación de las entradas recibidas en el servidor, usando \texttt{bindParam} o alguna validación propia. Esto evitaría estos ataques de manera completa.
 
-No hay ninguna diferencia entre GET y POST, es cierto que GET envía los datos en la URL, luego es más fácil de ver y modificar con un navegador, pero lo enviado mediante POST sigue siendo visible mediante disectores de tráfico (e.g. los integrados en Wireshark) y perfectamente simulable mediante curl, por ejemplo. 
+No hay ninguna diferencia entre GET y POST, es cierto que GET envía los datos en la URL, luego es más fácil de ver y modificar con un navegador, pero lo enviado mediante POST sigue siendo visible mediante disectores de tráfico (e.g. los integrados en Wireshark) y perfectamente simulable mediante curl, por ejemplo.
 
 Nótese que el ataque realizado es independiente de si se utiliza GET o POST, pues se ha utilizado únicamente el navegador y el formulario para enviar datos, lo anterior solo aplica a casos en los cuales los campos incluyan validaciones y no dejen enviar desde el propio navegador ciertos valores.
 
