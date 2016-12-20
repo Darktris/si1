@@ -121,6 +121,9 @@
 \newpage
 \section{Optimización}
 \subsection{Ejercicio A: {\small Estudio del impacto de un índice}}
+En el \textit{script} \texttt{clientesDistintos.sql} se incluyen las sentencias necesarias para estudiar los planes de ejecución, tanto antes como después de la creación de un índice. Se ha comprobado que la columna \texttt{totalamount} de la tabla \texttt{clientorders} es la única indización que produce mejoras en la planificación de las consultas. Esto es así debido a que el filtrado exhaustivo de las consultas se realiza contra este campo \texttt{totalamount}.
+\medbreak
+\textbf{Sin índice}, se obtiene el siguiente resultado:
 \begin{lstlisting}
  Aggregate  (cost=4583.49..4583.50 rows=1 width=8)
    ->  Nested Loop  (cost=0.29..4583.49 rows=1 width=4)
@@ -129,6 +132,7 @@
          ->  Index Only Scan using customers_pkey on customers  (cost=0.29..8.30 rows=1 width=4)
                Index Cond: (customerid = clientorders.customerid)
 \end{lstlisting}
+\textbf{Con índice}, resulta lo siguiente:
 \begin{lstlisting}
  Aggregate  (cost=3273.05..3273.06 rows=1 width=8)
    ->  Nested Loop  (cost=925.28..3273.04 rows=1 width=4)
@@ -140,7 +144,49 @@
          ->  Index Only Scan using customers_pkey on customers  (cost=0.29..8.30 rows=1 width=4)
                Index Cond: (customerid = clientorders.customerid)
 \end{lstlisting}
+Puede apreciarse una notable mejora en la planificación indizada: \texttt{3273.06} frente a \texttt{4583.50} de coste total.
+\medbreak
+{\small Nota: Adicionalmente, podrían llegar a aparecer mejoras relacionada con el campo \texttt{date} si se creasen índices por mes y año, empleando éstos en lugar de la función \texttt{date\_part} para el filtrado. Sin embargo, este planteamiento supondría una reestructuración de las consultas y se omite por simplicidad.}
 \subsection{Ejercicio B: {\small Estudio del impacto de preparar sentencias SQL}}
+Se ha implementado la página PHP \texttt{listaClientesMes.php} con la funcionalidad solicitada y se ha ejecutado la consulta mediante los dos métodos sugeridos:
+\begin{itemize}
+    \item Empleando \texttt{query()} para realizar cada consulta y concatenando el umbral mediante PHP.
+    \item Empleando \texttt{prepare()} y \texttt{bindParam()} para crear sentencias preparadas con el parámetro umbral.
+\end{itemize}
+Los tiempos de ejecución resultantes son los siguientes:
+\begin{multicols}{2}
+    \begin{center}
+        Sin índice
+        \vspace{1mm}
+        \hrule
+    \end{center}
+    \columnbreak
+    \begin{center}
+        Con índice
+        \vspace{1mm}
+        \hrule
+    \end{center}
+\end{multicols}
+\vspace{-4mm}
+\begin{multicols}{4}
+    \begin{center}
+        \fbox{\includegraphics[scale=0.5]{img/php_noprepare}}
+    \end{center}
+    \columnbreak
+    \begin{center}
+        \fbox{\includegraphics[scale=0.5]{img/php_prepare}}
+    \end{center}
+    \columnbreak
+    \begin{center}
+        \fbox{\includegraphics[scale=0.5]{img/php_idx_noprepare}}
+    \end{center}
+    \columnbreak
+    \begin{center}
+        \fbox{\includegraphics[scale=0.5]{img/php_idx_prepare}}
+    \end{center}
+\end{multicols}
+En ambos casos se observa un ligero aumento del rendimiento al utilizar los \textit{prepared statements} de SQL.
+\newpage
 \subsection{Ejercicio C: {\small Estudio del impacto de cambiar la forma de realizar una consulta}}
 \begin{lstlisting}
  Seq Scan on customers  (cost=3209.07..3743.23 rows=7046 width=4)

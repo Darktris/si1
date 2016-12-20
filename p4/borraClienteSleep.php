@@ -114,7 +114,6 @@ function print_status($db, $customerid) {
 
           print_status($db, $_REQUEST['customerid']);
 
-          sleep(2);
           foreach($db->query("select orderid from clientorders where customerid = ".$_REQUEST['customerid']) as $order) {
             $result = $db->exec("delete from clientbets where orderid = ".$order['orderid']);
             if ($result === FALSE){
@@ -122,6 +121,7 @@ function print_status($db, $customerid) {
             } else {
               echo "<p>Borrando apuestas del pedido con ID ".$order['orderid']."... OK!</p>";
             }
+            sleep(5);
             $result = $db->exec("delete from clientorders where orderid = ".$order['orderid']);
             if ($result === FALSE){
               echo "<p>Borrando pedido con ID ".$order['orderid'].".... ERROR!</p>";
