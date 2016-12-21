@@ -121,7 +121,7 @@ function print_status($db, $customerid) {
             } else {
               echo "<p>Borrando apuestas del pedido con ID ".$order['orderid']."... OK!</p>";
             }
-            sleep(5);
+            sleep(2);
             $result = $db->exec("delete from clientorders where orderid = ".$order['orderid']);
             if ($result === FALSE){
               echo "<p>Borrando pedido con ID ".$order['orderid'].".... ERROR!</p>";
