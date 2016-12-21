@@ -10,7 +10,7 @@ begin
     where orderid in (
         select orderid
         from clientorders
-        where customerid = new.customerid and date is null
+        where customerid = new.customerid
     );
     return new;
 end; $$

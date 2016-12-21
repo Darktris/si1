@@ -27,3 +27,11 @@ where outcome is null;
 explain select count(*)
 from clientbets
 where outcome =0;
+
+explain select count(*)
+from clientbets
+where outcome > 0;
+
+explain select count(*)
+from clientbets
+where outcome > 200;

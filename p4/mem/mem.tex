@@ -188,33 +188,80 @@ Los tiempos de ejecución resultantes son los siguientes:
 En ambos casos se observa un ligero aumento del rendimiento al utilizar los \textit{prepared statements} de SQL.
 \newpage
 \subsection{Ejercicio C: {\small Estudio del impacto de cambiar la forma de realizar una consulta}}
+Se muestran a continuación las diferentes consultas alternativas propuestas y sus respectivas planificaciones:
+
+\medbreak
+\textbf{Primera consulta}
+\vspace{-1mm}
 \begin{lstlisting}
- Seq Scan on customers  (cost=3209.07..3743.23 rows=7046 width=4)
-   Filter: (NOT (hashed SubPlan 1))
-   SubPlan 1
-     ->  Seq Scan on clientorders  (cost=0.00..3084.88 rows=49677 width=4)
-           Filter: (totaloutcome > '0'::numeric)
+select customerid
+from customers
+where customerid not in (
+  select customerid
+  from clientorders
+  where totaloutcome>0
+);
+
+Seq Scan on customers  (cost=3209.07..3743.23 rows=7046 width=4)
+  Filter: (NOT (hashed SubPlan 1))
+  SubPlan 1
+    ->  Seq Scan on clientorders  (cost=0.00..3084.88 rows=49677 width=4)
+          Filter: (totaloutcome > '0'::numeric)
 \end{lstlisting}
+\textbf{Segunda consulta}
+\vspace{-1mm}
 \begin{lstlisting}
- HashAggregate  (cost=4399.43..4401.43 rows=200 width=4)
-   Group Key: customers.customerid
-   Filter: (count(*) = 1)
-   ->  Append  (cost=0.00..4080.57 rows=63770 width=4)
-         ->  Seq Scan on customers  (cost=0.00..498.93 rows=14093 width=4)
-         ->  Seq Scan on clientorders  (cost=0.00..3084.88 rows=49677 width=4)
-               Filter: (totaloutcome > '0'::numeric)
+select customerid
+from (
+  select customerid
+  from customers
+  union all
+  select customerid
+  from clientorders
+  where totaloutcome>0
+) as A
+group by customerid
+having count(*) =1;
+
+HashAggregate  (cost=4399.43..4401.43 rows=200 width=4)
+  Group Key: customers.customerid
+  Filter: (count(*) = 1)
+  ->  Append  (cost=0.00..4080.57 rows=63770 width=4)
+        ->  Seq Scan on customers  (cost=0.00..498.93 rows=14093 width=4)
+        ->  Seq Scan on clientorders  (cost=0.00..3084.88 rows=49677 width=4)
+              Filter: (totaloutcome > '0'::numeric)
 \end{lstlisting}
+\textbf{Tercera consulta}
+\vspace{-1mm}
 \begin{lstlisting}
- HashSetOp Except  (cost=0.00..4380.93 rows=14093 width=8)
-   ->  Append  (cost=0.00..4221.51 rows=63770 width=8)
-         ->  Subquery Scan on "*SELECT* 1"  (cost=0.00..639.86 rows=14093 width=8)
-               ->  Seq Scan on customers  (cost=0.00..498.93 rows=14093 width=4)
-         ->  Subquery Scan on "*SELECT* 2"  (cost=0.00..3581.64 rows=49677 width=8)
-               ->  Seq Scan on clientorders  (cost=0.00..3084.88 rows=49677 width=4)
-                     Filter: (totaloutcome > '0'::numeric)
+select customerid
+from customers
+except
+ select customerid
+ from clientorders
+ where totaloutcome>0;
+
+HashSetOp Except  (cost=0.00..4380.93 rows=14093 width=8)
+  ->  Append  (cost=0.00..4221.51 rows=63770 width=8)
+        ->  Subquery Scan on "*SELECT* 1"  (cost=0.00..639.86 rows=14093 width=8)
+              ->  Seq Scan on customers  (cost=0.00..498.93 rows=14093 width=4)
+        ->  Subquery Scan on "*SELECT* 2"  (cost=0.00..3581.64 rows=49677 width=8)
+              ->  Seq Scan on clientorders  (cost=0.00..3084.88 rows=49677 width=4)
+                    Filter: (totaloutcome > '0'::numeric)
 \end{lstlisting}
+\newpage
+\begin{itemize}
+    \item Se observa que la primera consulta tiene el menor coste al devolver el resultado completo, debido a que \texttt{not in} recorre las tablas el menor número de veces.
+    \item La segunda consulta realiza una elevada cantidad de operaciones al emplear \texttt{union}, que concatena las tablas para después recorrerlas, resultando así en el peor de los rendimientos.
+    \item La tercera consulta utiliza \texttt{except}, similar a \texttt{not in}, pero fuerza además operaciones de conjuntos, recorriendo las tablas múltiples veces y aumentando el coste previsto de ejecución.
+\end{itemize}
+Se deduce de todo esto que \texttt{not in} es la operación básica de este tipo de consultas, por lo que el optimizador SQL la ejecuta mucho más rápido que las otras aproximaciones al problema.
 \subsection{Ejercicio D: {\small Estudio del impacto de la generación de estadísticas}}
-Sin índice:
+El script \texttt{countOutcome.sql} incluye las sentencias SQL solicitadas y produce los siguientes resultados:
+
+\medbreak
+\textbf{Sin índice:}
+\vspace{-1mm}
 \begin{lstlisting}
      Aggregate  (cost=11787.79..11787.80 rows=1 width=8)
         ->  Seq Scan on clientbets  (cost=0.00..11779.52 rows=3308 width=0)
@@ -225,7 +272,8 @@ Sin índice:
         ->  Seq Scan on clientbets  (cost=0.00..13433.65 rows=3308 width=0)
              Filter: (outcome = '0'::numeric)
 \end{lstlisting}
-Con índice:
+\textbf{Con índice:}
+\vspace{-1mm}
 \begin{lstlisting}
      Aggregate  (cost=4893.70..4893.71 rows=1 width=8)
         ->  Bitmap Heap Scan on clientbets  (cost=66.06..4885.43 rows=3308 width=0)
@@ -240,7 +288,8 @@ Con índice:
                       ->  Bitmap Index Scan on idx2  (cost=0.00..65.23 rows=3308 width=0)
                                      Index Cond: (outcome = '0'::numeric)
 \end{lstlisting}
-Con \texttt{ANALYZE}:
+\textbf{Tras \texttt{ANALYZE}:}
+\vspace{-1mm}
 \begin{lstlisting}
       Aggregate  (cost=5.37..5.38 rows=1 width=8)
          ->  Index Only Scan using idx2 on clientbets  (cost=0.42..5.37 rows=1 width=0)
@@ -251,9 +300,82 @@ Con \texttt{ANALYZE}:
          ->  Seq Scan on clientbets  (cost=0.00..13433.65 rows=358946 width=0)
              Filter: (outcome = '0'::numeric)
 \end{lstlisting}
+\begin{lstlisting}
+       Aggregate  (cost=14195.16..14195.17 rows=1 width=8)
+          ->  Seq Scan on clientbets  (cost=0.00..13433.65 rows=304603 width=0)
+             Filter: (outcome > '0'::numeric)
+\end{lstlisting}
+\begin{lstlisting}
+       Aggregate  (cost=11782.57..11782.58 rows=1 width=8)
+          ->  Bitmap Heap Scan on clientbets  (cost=3676.84..11292.11 rows=196182 width=0)
+             Recheck Cond: (outcome > '200'::numeric)
+                      ->  Bitmap Index Scan on idx2  (cost=0.00..3627.79 rows=196182 width=0)
+                                     Index Cond: (outcome > '200'::numeric)
+\end{lstlisting}
+\newpage
+\begin{itemize}
+    \item El índice proporciona una mejora del rendimiento cercana al 200\% en la planificación de las consultas.
+    \item La generación de estadísticas deja ver la simplicidad de la primera consulta con un coste aproximado de 5, frente a la segunda consulta que resulta ser aún más costosa de lo que se había previsto antes de ejecutar \texttt{ANALYZE}. También se descubre que el índice es prescindible en este caso.
+\end{itemize}
 \section{Transacciones y \textit{deadlocks}}
 \subsection{Ejercicio E: {\small Realización de una página PHP \texttt{borraCliente.php}}}
+Los \textit{scripts} PHP \texttt{borraCliente.php} y \texttt{borraClienteMal.php} implementan la funcionalidad solicitada:
+\begin{itemize}
+    \item Se observa que \texttt{borraCliente.php} borra correctamente los clientes con y sin transacciones.
+    \item En el caso de \texttt{borraClienteMal.php}, se produce intencionadamente un error de \textit{foreign key violation} borrando las entradas de \texttt{clientbets} relacionadas con el cliente, pero no las de \texttt{clientorders}. Así, se consiguen tres comportamientos distintos:
+        \begin{itemize}
+            \item \textbf{Sin transacción}: Se borran las filas de \texttt{clientbets} y al borrar el cliente se produce el error, mostrado en la página PHP. Las \texttt{clientbets} quedan irreversiblemente eliminadas de la base de datos, esto puede comprobarse mediante la columna \texttt{bet\_count} de las tablas, que queda a 0:
+                \smallbreak
+                \includegraphics[width=\linewidth]{img/trans}
+            \item \textbf{Con transacción}: Tras el error, se ejecuta un \textit{rollback} de la base de datos y se recuperan las entradas de \texttt{clientbets} borradas. Siguendo la salida PHP se observa la ejecución del \textit{rollback}:
+                \smallbreak
+                \includegraphics[width=\linewidth]{img/trans_rollback}
+                \newpage
+            \item \textbf{Con \textit{commit} intermedio}: El \textit{commit} intermedio completa la transacción de borrado de filas en \texttt{clientbets}, de modo que aunque se ejecute el \textit{rollback} tras el error, las filas no se recuperan:
+                \smallbreak
+                \includegraphics[width=\linewidth]{img/trans_commit}
+        \end{itemize}
+\end{itemize}
 \subsection{Ejercicio F: {\small Estudio de bloqueos y deadlocks}}
+Se incluyen el script \texttt{updPromo.sql} y la página \texttt{borraClienteSleep.php} para estudiar el bloqueo sugerido. Al actualizar el valor \texttt{promo} de un cliente que está siendo borrado desde la página se produce un \textit{deadlock}. En consecuencia no se actualizan los datos y salta la siguiente excepción PHP:
+\begin{lstlisting}
+Error!: SQLSTATE[40P01]: Deadlock detected: 7 ERROR: se ha detectado un deadlock DETAIL: El proceso 24602 espera ShareLock en transaccion 193095; bloqueado por proceso 24569. El proceso 24569 espera ShareLock en transaccion 193094; bloqueado por proceso 24602. HINT: Vea el registro del servidor para obtener detalles de las consultas. CONTEXT: mientras se borraba la tupla (63,69) en la relacion <<clientbets>>
+\end{lstlisting}
+Los bloqueos existentes en la base de datos durante la ejecución se listan a continuación:
+\begin{lstlisting}[basicstyle=\tiny]
+   locktype    | database | relation | virtualxid | transactionid | virtualtransaction |  pid  |       mode       | granted | fastpath
+----------------------------------------------------------------------------
+ relation      |    23740 |    23799 |            |               | 4/130              | 24602 | AccessShareLock  | t       | t
+ relation      |    23740 |    23799 |            |               | 4/130              | 24602 | RowExclusiveLock | t       | t
+ relation      |    23740 |    23797 |            |               | 4/130              | 24602 | AccessShareLock  | t       | t
+ relation      |    23740 |    23797 |            |               | 4/130              | 24602 | RowExclusiveLock | t       | t
+ relation      |    23740 |    23753 |            |               | 4/130              | 24602 | AccessShareLock  | t       | t
+ relation      |    23740 |    23753 |            |               | 4/130              | 24602 | RowShareLock     | t       | t
+ relation      |    23740 |    23753 |            |               | 4/130              | 24602 | RowExclusiveLock | t       | t
+ relation      |    23740 |    23759 |            |               | 4/130              | 24602 | AccessShareLock  | t       | t
+ relation      |    23740 |    23759 |            |               | 4/130              | 24602 | RowShareLock     | t       | t
+ relation      |    23740 |    23759 |            |               | 4/130              | 24602 | RowExclusiveLock | t       | t
+ relation      |    23740 |     2704 |            |               | 4/130              | 24602 | AccessShareLock  | t       | t
+ relation      |    23740 |     2703 |            |               | 4/130              | 24602 | AccessShareLock  | t       | t
+ relation      |    23740 |     1247 |            |               | 4/130              | 24602 | AccessShareLock  | t       | t
+ relation      |    23740 |     3455 |            |               | 4/130              | 24602 | AccessShareLock  | t       | t
+ relation      |    23740 |     2663 |            |               | 4/130              | 24602 | AccessShareLock  | t       | t
+ relation      |    23740 |     2662 |            |               | 4/130              | 24602 | AccessShareLock  | t       | t
+ relation      |    23740 |     1259 |            |               | 4/130              | 24602 | AccessShareLock  | t       | t
+ relation      |    23740 |    23803 |            |               | 4/130              | 24602 | AccessShareLock  | t       | t
+ relation      |    23740 |    23801 |            |               | 4/130              | 24602 | AccessShareLock  | t       | t
+ relation      |    23740 |    23768 |            |               | 4/130              | 24602 | AccessShareLock  | t       | t
+ virtualxid    |          |          | 4/130      |               | 4/130              | 24602 | ExclusiveLock    | t       | t
+ relation      |    23740 |    23803 |            |               | 2/2223             | 24569 | RowExclusiveLock | t       | t
+ relation      |    23740 |    23801 |            |               | 2/2223             | 24569 | RowExclusiveLock | t       | t
+ relation      |    23740 |    23768 |            |               | 2/2223             | 24569 | RowExclusiveLock | t       | t
+ virtualxid    |          |          | 2/2223     |               | 2/2223             | 24569 | ExclusiveLock    | t       | t
+ relation      |    23740 |    11695 |            |               | 3/587              | 24600 | AccessShareLock  | t       | t
+ virtualxid    |          |          | 3/587      |               | 3/587              | 24600 | ExclusiveLock    | t       | t
+ transactionid |          |          |            |        193095 | 2/2223             | 24569 | ExclusiveLock    | t       | f
+ transactionid |          |          |            |        193094 | 4/130              | 24602 | ExclusiveLock    | t       | f
+\end{lstlisting}
+Se observan bloqueos exclusivos para cada fila que está siendo borrada. Estos bloqueos impiden que el \textit{trigger} pueda realizar la operación de actualización de la columna \texttt{promo}, bloqueando así el recurso y dando lugar a la situación de \textit{deadlock} y anulando toda posible modificación de la tabla.
 \section{Seguridad}
 \subsection{Ejercicio G: {\small Acceso indebido a un sitio web}}
 Para ambos casos basta con introducir en el campo Contraseña la siguiente cadena:
@@ -266,14 +388,14 @@ Con ello lo que hará será formarse la siguiente consulta:
 \end{lstlisting}
 La cual siempre reporta la tabla entera de \texttt{customers}, validando el proceso de ingreso en la página.
 
-        \begin{minipage}{\linewidth}
-            \centering
-            \captionsetup{type=figure}
-            \caption{\textit{Login correcto}}
-            \label{fig:fig1}
-            \includegraphics[scale=0.3]{img/sql_inject1}
-        \end{minipage}
-
+\begin{minipage}{\linewidth}
+    \centering
+    \captionsetup{type=figure}
+    \caption{\textit{Login correcto}}
+    \label{fig:fig1}
+    \includegraphics[scale=0.3]{img/sql_inject1}
+\end{minipage}
+\medbreak
 Se propone para evitar el ataque de tipo \textit{SQLInjection} utilizar las función de PDO \texttt{bindParam} que ejecuta una validación (escapando carácteres especiales de SQL) y evita el poder realizar esto. Se encuentra la solución propuesta en el fichero \texttt{xLoginInjectionRepaired.php}
 \subsection{Ejercicio H: {\small Acceso indebido a información}}
 \subsubsection{Hallar el nombre de las tablas}
